@@ -265,6 +265,10 @@ svg text{stroke:#0B193A}
 .kgh{grid-column:1/-1;display:flex;align-items:baseline;gap:10px;flex-wrap:wrap;margin:6px 2px -2px;padding:8px 12px;border-radius:12px;background:linear-gradient(90deg,#D4B85A33,transparent);border-inline-start:4px solid #D4B85A}.kgh b{font-size:17px;color:#D4B85A}.kgh small{color:#c9d3e6;font-size:12.5px}
 .k.h1k{border-color:#D4B85A66!important;background:linear-gradient(160deg,#22407e,#152c5c)!important}
 #fSum .fk{grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}#fSum .fk .k:first-child{grid-column:1/-1;border-color:#D4B85A88;background:linear-gradient(160deg,#22407e,#152c5c)}#fSum .fk .k{padding:10px 12px;min-width:0}#fSum .fk .k small{font-size:12px}
+.psch{display:flex;align-items:center;gap:10px;margin:0 0 12px}.psch input{flex:1;font:16px Almarai,sans-serif;padding:10px 14px;border-radius:12px;border:1px solid #D4B85A66;min-height:46px;background:#ffffff0d;color:#fff}.psch input:focus{outline:2px solid #D4B85A;border-color:#D4B85A}#pQn{color:#D4B85A;font-weight:800;font-size:13px;white-space:nowrap}
+#pT .hm{margin-top:4px;font-size:12px;color:#D4B85A;line-height:1.5}#pT th,#pT td{padding:9px 5px;font-size:13px}#pT th{white-space:normal}
+.pk{grid-template-columns:repeat(2,minmax(0,1fr))!important}@media(min-width:820px){.pk{grid-template-columns:repeat(4,minmax(0,1fr))!important}}
+.pk .k b{white-space:normal;overflow-wrap:anywhere}
 .bento .lnk .go{left:auto;right:14px}
 </style>
 </head>
@@ -369,11 +373,13 @@ svg text{stroke:#0B193A}
   </section>
   <section id="vPr" class="hide">
     <div class="head"><h2>Kuwait's Exports and Imports by Product</h2><div class="unit">Values in KD million · Harmonized System (HS) chapters</div></div>
+    <div class="kpis pk" id="pK"></div>
     <div class="ctl">
       <select id="pF" aria-label="Direction"><option value="m">Imports</option><option value="x">Exports</option></select>
       <select id="pP" aria-label="Period"></select>
       <select id="pN" aria-label="Count"><option>20</option><option>40</option><option>97</option></select>
     </div>
+    <div class="psch"><input id="pQ" type="search" autocomplete="off" placeholder="Search by keyword or chapter code (cars, medicines, gold, 87…)" aria-label="Product search"><span id="pQn"></span></div>
     <div class="scroll"><table id="pT"></table></div>
     <div class="card" style="margin-top:16px"><h3 id="sT">Top products</h3><div class="scroll"><table id="sTb"></table></div></div>
   </section>
@@ -688,7 +694,7 @@ function gcc(){show('vGcc');unitFor(1e9);const L='2025',P='2024',cs=GCCI.map(id=
 // ---------- count-up numbers ----------
 const CNT_SEL='.k>b,.t>b,.xpt b,.xpl b,.inds b,.fleg b,#gcK b,#oK b';
 const cntIO=('IntersectionObserver' in window)?new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting){cntIO.unobserve(e.target);countUp(e.target);}}),{threshold:.3}):null;
-function countUp(el){const raw=el.textContent;const m=raw.match(/^([^\d]*?)(\d[\d,]*(?:\.\d+)?)(.*)$/s);if(!m||/\d{4}\s*·/.test(raw)&&!/,/.test(m[2]))return;
+function countUp(el){if(el.classList.contains('nocnt'))return;const raw=el.textContent;const m=raw.match(/^([^\d]*?)(\d[\d,]*(?:\.\d+)?)(.*)$/s);if(!m||/\d{4}\s*·/.test(raw)&&!/,/.test(m[2]))return;
   const pre=m[1],num=m[2],suf=m[3],dec=(num.split('.')[1]||'').length,target=parseFloat(num.replace(/,/g,''));if(!isFinite(target)||target===0)return;
   if(/^(19|20)\d\d$/.test(num))return;
   const t0=performance.now(),D=1300,fmt=v=>v.toLocaleString('en-US',{minimumFractionDigits:dec,maximumFractionDigits:dec});
@@ -697,7 +703,7 @@ function armCounts(root){if(!cntIO||matchMedia('(prefers-reduced-motion: reduce)
 new MutationObserver(ms=>{const set=new Set();ms.forEach(m=>{const t=m.target.nodeType===1?m.target:m.target.parentElement;if(t&&!t.closest('b'))set.add(t);});set.forEach(armCounts);}).observe(document.querySelector('main'),{childList:true,subtree:true});
 
 // ---------- auto-update (bypass stale phone cache) ----------
-const BUILD='1795646612';
+const BUILD='1795647026';
 try{fetch(location.pathname+'?b='+Date.now(),{cache:'no-store'}).then(r=>r.text()).then(h=>{const m=h.match(/const BUILD='(\d+)'/);if(m&&m[1]>BUILD&&!sessionStorage.getItem('rl'+m[1])){sessionStorage.setItem('rl'+m[1],'1');location.replace(location.pathname+'?v='+m[1]+location.hash);}}).catch(()=>{});}catch(_){}
 // ---------- intro ----------
 let INTRO_HTML='';
@@ -726,11 +732,29 @@ function rank(){const p=$('#sP').value,mk=$('#sM').value,n=+$('#sN').value;
   $('#rk').innerHTML=list.map((r,i)=>{const w=r.v/mx*100;const seg=mk==='v'?`<i style="width:${r.x/mx*100}%;background:var(--mint)"></i><i style="width:${r.m/mx*100}%;background:var(--navy)"></i>`:`<i style="width:${w}%;background:${mk==='x'||mk==='b'?'var(--mint)':'var(--navy)'}"></i>`;return `<button class="row" data-id="${esc(r.c.id)}"><span class="v">${i+1}</span><span class="nm">${esc(r.c.en)}</span><span class="trk">${seg}</span><span class="v">${fmtN(r.v/1000,2)}</span></button>`;}).join('')+(mk==='v'?'<div class="lg"><span style="--c:var(--mint)">Exports</span><span style="--c:var(--navy)">Imports</span></div>':'');}
 function groups(){const p='2025',list=G.map(c=>({c,x:g(c.x,p),m:g(c.m,p)})).sort((a,b)=>(b.x+b.m)-(a.x+a.m)),mx=Math.max(...list.map(r=>r.x+r.m));
   $('#gr').innerHTML=list.map((r,i)=>`<button class="row" data-g="${esc(r.c.id)}"><span class="v">${i+1}</span><span class="nm">${esc(r.c.en)}</span><span class="trk"><i style="width:${r.x/mx*100}%;background:var(--mint)"></i><i style="width:${r.m/mx*100}%;background:var(--navy)"></i></span><span class="v">${fmtN((r.x+r.m)/1000,1)}</span></button>`).join('');}
-function prods(){const fl=$('#pF').value,p=$('#pP').value,n=+$('#pN').value;
+const nrm=t=>String(t||'').toLowerCase().replace(/[أإآ]/g,'ا').replace(/ة/g,'ه').replace(/ى/g,'ي').replace(/[ًٌٍَُِّْ]/g,'');
+function prods(){const fl=$('#pF').value,p=$('#pP').value,n=+$('#pN').value,q=nrm($('#pQ').value.trim());
   const prev=p.includes('-')?p.replace(/^(\d{4})/,y=>String(+y-1)):String(+p-1);
   const tot=HS.reduce((a,h)=>a+g(h[fl],p),0);
-  const list=HS.map(h=>({h,v:g(h[fl],p),pv:g(h[fl],prev)})).filter(r=>r.v>0).sort((a,b)=>b.v-a.v).slice(0,n);
-  $('#pT').innerHTML=`<thead><tr><th>#</th><th>Chapter</th><th class="n">Value</th><th class="n">Share</th><th class="n">Change vs ${esc(QL[prev]||prev)}</th></tr></thead><tbody>`+list.map((r,i)=>{const c=pct(r.v,r.pv);return `<tr><td>${i+1}</td><td style="white-space:normal;min-width:12em">${esc(r.h.id+' – '+r.h.en)}</td><td class="n">${fmtN(r.v/1000,2)}</td><td class="n">${fmtN(r.v/tot*100,1)}%</td><td class="n ${c==null?'':c>=0?'up':'dn'}">${c==null?'–':fmtN(c,1)+'%'}</td></tr>`;}).join('')+`</tbody><tfoot><tr><td></td><td><b>Total</b></td><td class="n"><b>${fmtN(tot/1000,2)}</b></td><td></td><td></td></tr></tfoot>`;
+  const hs4=Object.keys(H4N);
+  const lat=/^[a-z0-9 ]+$/.test(q),has=x=>lat?(' '+nrm(x).replace(/[^a-z0-9]+/g,' ')).includes(' '+q):nrm(x).includes(q);const hit=h=>{if(!q)return {ok:true,sub:[]};const sub=hs4.filter(k=>k.slice(0,2)===h.id&&(k.startsWith(q)||has(H4N[k]))).slice(0,4);return {ok:h.id.startsWith(q)||has(h.en)||has(h.en)||sub.length>0,sub};};
+  let list=HS.map(h=>({h,v:g(h[fl],p),pv:g(h[fl],prev),m:hit(h)})).filter(r=>r.v>0&&r.m.ok).sort((a,b)=>b.v-a.v);
+  $('#pQn').textContent=q?(list.length?list.length+' results':'No results'):'';
+  if(!q)list=list.slice(0,n);
+  // summary cards
+  const tx=HS.reduce((a,h)=>a+g(h.x,p),0),tm=HS.reduce((a,h)=>a+g(h.m,p),0),txp=HS.reduce((a,h)=>a+g(h.x,prev),0),tmp=HS.reduce((a,h)=>a+g(h.m,prev),0);
+  const oil=g((HS.find(h=>h.id==='27')||{}).x,p),top=HS.map(h=>({h,v:g(h[fl],p)})).sort((a,b)=>b.v-a.v)[0];
+  const top2=HS.filter(h=>h.id!=='27').map(h=>({h,v:g(h[fl],p)})).sort((a,b)=>b.v-a.v)[0];
+  const cg2=(a,b)=>{const c=pct(a,b);return c==null||!isFinite(c)||!b?'':`<i class="${c>=0?'up':'dn'}" dir="ltr">${c>=0?'▲':'▼'} ${fmtN(Math.abs(c),1)}%</i>`;};
+  const pl=esc(QL[p]||p),pv=esc(QL[prev]||prev);
+  const pkKey=fl+'|'+p;if($('#pK').dataset.k!==pkKey){$('#pK').dataset.k=pkKey;$('#pK').innerHTML=`<div class="kgh"><b>${pl}</b><small>compared with ${pv}</small></div>
+   <div class="k h1k"><small>Total exports (incl. oil)</small><b>${fmtN(tx/1000,2)}</b>${cg2(tx,txp)}</div>
+   <div class="k h1k"><small>Non-oil exports</small><b>${fmtN((tx-oil)/1000,2)}</b>${cg2(tx-oil,txp-g((HS.find(h=>h.id==='27')||{}).x,prev))}</div>
+   <div class="k h1k"><small>Total imports</small><b>${fmtN(tm/1000,2)}</b>${cg2(tm,tmp)}</div>
+   <div class="k h1k"><small>Trade balance</small><b class="${tx-tm>=0?'up':'dn'}" dir="ltr">${(tx-tm<0?'-':'')+fmtN(Math.abs(tx-tm)/1000,2)}</b></div>
+   <div class="k"><small>${fl==='x'?'Largest export chapter':'Largest import chapter'}</small><b class="nocnt" style="font-size:16px">${top?esc(top.h.id+' – '+(CHS[top.h.id]||top.h.en).split(/[؛،,;]/)[0]):'–'}</b><small>${top?fmtN(top.v/(fl==='x'?tx:tm)*100,1)+'% of total':''}</small></div>
+   <div class="k"><small>${fl==='x'?'Largest non-oil export chapter':'Second-largest import chapter'}</small><b class="nocnt" style="font-size:16px">${(()=>{const t=fl==='x'?top2:HS.map(h=>({h,v:g(h[fl],p)})).sort((a,b)=>b.v-a.v)[1];return t?esc(t.h.id+' – '+(CHS[t.h.id]||t.h.en).split(/[؛،,;]/)[0]):'–';})()}</b></div>`;}
+  $('#pT').innerHTML=`<thead><tr><th>#</th><th>Chapter</th><th class="n">Value</th><th class="n">Share</th><th class="n">Change vs ${esc(QL[prev]||prev)}</th></tr></thead><tbody>`+list.map((r,i)=>{const c=pct(r.v,r.pv);return `<tr><td>${i+1}</td><td style="white-space:normal;min-width:9em">${esc(r.h.id+' – '+r.h.en)}${r.m.sub.length?`<div class="hm">${r.m.sub.map(k=>k+' '+esc(H4N[k])).join(' · ')}</div>`:''}</td><td class="n">${fmtN(r.v/1000,2)}</td><td class="n">${fmtN(r.v/tot*100,1)}%</td><td class="n ${c==null?'':c>=0?'up':'dn'}">${c==null?'–':fmtN(c,1)+'%'}</td></tr>`;}).join('')+`</tbody><tfoot><tr><td></td><td><b>Total</b></td><td class="n"><b>${fmtN(tot/1000,2)}</b></td><td></td><td></td></tr></tfoot>`;
   if(SITC){const [a,b]=SITC.periods,L=SITC[fl];$('#sT').textContent=`Top ${fl==='x'?'exports':'imports'} (Standard International Trade Classification, SITC) – ${QL[b]||b} vs ${QL[a]||a}`;
   $('#sTb').innerHTML=`<thead><tr><th>#</th><th>Product</th><th class="n">${esc(QL[a]||a)}</th><th class="n">${esc(QL[b]||b)}</th><th class="n">Change</th></tr></thead><tbody>`+L.map((r,i)=>{const c=pct(r.b,r.a);return `<tr><td>${i+1}</td><td style="white-space:normal">${esc(r.en)}</td><td class="n">${fmtN(r.a/1000,2)}</td><td class="n">${fmtN(r.b/1000,2)}</td><td class="n ${c==null?'':c>=0?'up':'dn'}">${c==null||!isFinite(c)?'–':fmtN(c,1)+'%'}</td></tr>`;}).join('')+'</tbody>';}}
 function search(t){t=t.trim().toLowerCase();const box=$('#sugg');if(!t){box.style.display='none';return;}
@@ -742,7 +766,7 @@ $('#sugg').addEventListener('click',e=>{const b=e.target.closest('button');if(!b
 $('#tKw').onclick=()=>render(entKw());$('#backIntro').onclick=()=>showIntro();document.querySelector('.brand').style.cursor='pointer';document.querySelector('.brand').onclick=()=>showIntro();$('#back').onclick=()=>{render(entKw());try{history.pushState(null,'',location.pathname+location.search);}catch(_){}window.scrollTo({top:0,behavior:'smooth'});};
 $('#tTop').onclick=()=>{show('vTop');rank();try{history.replaceState(null,'','#top');}catch(_){}};
 $('#tPr').onclick=()=>{show('vPr');prods();try{history.replaceState(null,'','#products');}catch(_){}};
-['pF','pP','pN'].forEach(id=>$('#'+id).addEventListener('change',prods));
+['pF','pP','pN'].forEach(id=>$('#'+id).addEventListener('change',prods));$('#pQ').addEventListener('input',prods);
 $('#tGr').onclick=()=>{show('vGr');groups();try{history.replaceState(null,'','#groups');}catch(_){}};
 ['sP','sM','sN'].forEach(id=>$('#'+id).addEventListener('change',rank));
 $('#rk').addEventListener('click',e=>{const b=e.target.closest('.row');if(b){render(BY[b.dataset.id]);window.scrollTo(0,0);}});
