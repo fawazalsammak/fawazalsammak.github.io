@@ -283,6 +283,7 @@ svg text{stroke:#0B193A}
 .bento .h1s{justify-content:center}
 .xpl div{text-align:start}.xpt>div:first-child{text-align:center}
 table td.n,table th.n{text-align:center!important}table th.n{direction:rtl;unicode-bidi:plaintext}
+#back{display:none!important}
 .bento .lnk .go{left:auto;right:14px}table th.n{direction:ltr}
 </style>
 </head>
@@ -717,7 +718,7 @@ function armCounts(root){if(!cntIO||matchMedia('(prefers-reduced-motion: reduce)
 new MutationObserver(ms=>{const set=new Set();ms.forEach(m=>{const t=m.target.nodeType===1?m.target:m.target.parentElement;if(t&&!t.closest('b'))set.add(t);});set.forEach(armCounts);}).observe(document.querySelector('main'),{childList:true,subtree:true});
 
 // ---------- auto-update (bypass stale phone cache) ----------
-const BUILD='1795647845';
+const BUILD='1795648000';
 try{fetch(location.pathname+'?b='+Date.now(),{cache:'no-store'}).then(r=>r.text()).then(h=>{const m=h.match(/const BUILD='(\d+)'/);if(m&&m[1]>BUILD&&!sessionStorage.getItem('rl'+m[1])){sessionStorage.setItem('rl'+m[1],'1');location.replace(location.pathname+'?v='+m[1]+location.hash);}}).catch(()=>{});}catch(_){}
 // ---------- intro ----------
 let INTRO_HTML='';
