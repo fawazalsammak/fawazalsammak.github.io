@@ -415,7 +415,7 @@ function render(e){cur=e;show('vEnt');
   const vg=pct(x+m,x0+m0);
   // lead sentence (as in the country sheet)
   const ld=$('#lead');if(isC&&(x+m)>0){ld.classList.remove('hide');ld.innerHTML=`بلغ حجم التبادل التجاري بين دولة الكويت و${esc(e.ar)} خلال عام 2025 نحو <b>${f(x+m)}</b> ${U.lab}${vg!=null&&isFinite(vg)?`، بنسبة ${vg>=0?'ارتفاع':'انخفاض'} قدرها ${fmtN(Math.abs(vg),1)}% مقارنة بعام 2024`:''}، وسجّل الميزان التجاري ${x-m>=0?'فائضاً':'عجزاً'} قدره <b>${f(Math.abs(x-m))}</b> ${U.lab}.`;}else if(e.kw){const T=TOT[L];ld.classList.remove('hide');ld.innerHTML=`الأرقام في هذه الصفحة <b>لا تشمل النفط ومشتقاته</b>. بلغت الصادرات غير النفطية في عام 2025 نحو <b>${f(x)}</b> ${U.lab}، منها صادرات وطنية <b>${f(T.nonoil)}</b> وسلع معاد تصديرها <b>${f(T.rex)}</b>، مقابل واردات <b>${f(m)}</b> ${U.lab}. (صادرات النفط ومشتقاته المستبعدة: ${f(T.oil)} ${U.lab}).`;}else ld.classList.add('hide');
-  const ag=$('#agr');if(isC){ag.classList.remove('hide');ag.innerHTML=e.rep&&e.rep.agr?'<b>الاتفاقيات:</b> '+esc(e.rep.agr):e.agr?'<b>الاتفاقيات:</b> توجد اتفاقية ثنائية مع دولة الكويت ضمن ملفات الاتفاقيات (الدليل الاقتصادي).':'<b>الاتفاقيات:</b> لا توجد اتفاقيات ثنائية مسجّلة ضمن ملفات الاتفاقيات.';}else ag.classList.add('hide');
+  const ag=$('#agr');if(isC&&((e.rep&&e.rep.agr)||e.agr)){ag.classList.remove('hide');ag.innerHTML=e.rep&&e.rep.agr?'<b>الاتفاقيات:</b> '+esc(e.rep.agr):e.agr?'<b>الاتفاقيات:</b> توجد اتفاقية ثنائية مع دولة الكويت ضمن ملفات الاتفاقيات (الدليل الاقتصادي).':'<b>الاتفاقيات:</b> لا توجد اتفاقيات ثنائية مسجّلة ضمن ملفات الاتفاقيات.';}else ag.classList.add('hide');
   const t4=e.top4||{},main=k=>t4[k]&&t4[k][0]?`<small class="mp">أهم سلعة: ${esc(H4N[t4[k][0].hs]||t4[k][0].hs)}</small>`:'';
   const OD=(OILD||{}),o5=isC&&OD['2025']&&OD['2025'][e.id]||null,o4=isC&&OD['2024']&&OD['2024'][e.id]||null,ou=u=>f(CUR==='usd'?u/1000/RATE:u*UK/1000),ov=(o,k)=>o&&o[k]?o[k][0]:0;
   $('#kpis').innerHTML=`<div class="k"><small>التبادل التجاري ل${Q.lab.slice(1)} 2026</small><b>${f(sx+sm)}</b>${ch(sx+sm,px+pm,'على أساس سنوي')}</div>
@@ -667,7 +667,7 @@ function armCounts(root){if(!cntIO||matchMedia('(prefers-reduced-motion: reduce)
 new MutationObserver(ms=>{const set=new Set();ms.forEach(m=>{const t=m.target.nodeType===1?m.target:m.target.parentElement;if(t&&!t.closest('b'))set.add(t);});set.forEach(armCounts);}).observe(document.querySelector('main'),{childList:true,subtree:true});
 
 // ---------- auto-update (bypass stale phone cache) ----------
-const BUILD='1795643155';
+const BUILD='1795643324';
 try{fetch(location.pathname+'?b='+Date.now(),{cache:'no-store'}).then(r=>r.text()).then(h=>{const m=h.match(/const BUILD='(\d+)'/);if(m&&m[1]>BUILD&&!sessionStorage.getItem('rl'+m[1])){sessionStorage.setItem('rl'+m[1],'1');location.replace(location.pathname+'?v='+m[1]+location.hash);}}).catch(()=>{});}catch(_){}
 // ---------- intro ----------
 function intro(){const el=$('#intro');let seen=false;try{seen=sessionStorage.getItem('kwIntro')==='1';}catch(_){}
