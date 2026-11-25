@@ -274,6 +274,14 @@ svg text{stroke:#0B193A}
 .pcap{caption-side:bottom;text-align:start;color:var(--mut);font-size:12px;padding-top:8px}
 #pT td[style*="min-width"]{min-width:7em!important}#pT th,#pT td{padding:8px 4px;font-size:12.5px}
 #pT{table-layout:fixed;width:100%}#pT th:nth-child(1){width:7%}#pT th:nth-child(2){width:41%}#pT th:nth-child(3){width:17%}#pT th:nth-child(4){width:14%}#pT th:nth-child(5){width:21%}#pT td{overflow-wrap:anywhere}
+
+/* centred content in cards and tiles */
+.k{text-align:center!important;display:flex;flex-direction:column;align-items:center;justify-content:center}
+.k>*{text-align:center}.k .mp,.k .src{text-align:center}
+.inds>div{text-align:center;display:flex;flex-direction:column;align-items:center;justify-content:center}
+.bento .t:not(.w4):not(.xp):not(:has(.lr)){text-align:center;display:flex;flex-direction:column;align-items:center;justify-content:center}
+.bento .h1s{justify-content:center}
+.xpl div{text-align:start}.xpt>div:first-child{text-align:center}
 .bento .lnk .go{left:auto;right:14px}
 </style>
 </head>
@@ -613,7 +621,7 @@ function layout(e,isC){const V=$('#vEnt');V.classList.toggle('isC',isC);V.classL
   // home bento
   const bt=$('#bento'),b2=$('#bento2');
   if(e.kw){bt.classList.remove('hide');b2.classList.remove('hide');const T=TOT[L],x0=g(e.x,'2024'),m0=g(e.m,'2024'),Q=ytd(),sx=Q.cur.reduce((a,p)=>a+g(e.x,p),0),sm=Q.cur.reduce((a,p)=>a+g(e.m,p),0),px=Q.prev.reduce((a,p)=>a+g(e.x,p),0),pm=Q.prev.reduce((a,p)=>a+g(e.m,p),0);
-    const ys=Y.slice(-7),vmx=Math.max(...ys.map(y=>g(e.x,y)+g(e.m,y)));const pc2=(a,b)=>{const c=pct(a,b);return `<span class="${c>=0?'up':'dn'}">${c>=0?'▲':'▼'} ${fmtN(Math.abs(c),1)}%</span>`;};
+    const ys=Y.slice(-7),vmx=Math.max(...ys.map(y=>g(e.x,y)+g(e.m,y)));const pc2=(a,b)=>{const c=pct(a,b);return `<span class="${c>=0?'up':'dn'}" dir="ltr">${c>=0?'▲':'▼'} ${fmtN(Math.abs(c),1)}%</span>`;};
     bt.innerHTML=`<div class="t h1t w2"><small>Total trade, ${Q.lab} 2026</small><b>${f(sx+sm)}</b><small>${pc2(sx+sm,px+pm)} year on year</small><div class="h1s"><span>Exports <b>${f(sx)}</b></span><span>Imports <b>${f(sm)}</b></span><span>Trade balance <b class="dn">${f(sx-sm)}</b></span></div></div>
      <div class="t dark w2"><small>Total non-oil trade 2025</small><b>${f(x+m)}</b><small>${U.lab} · ${pc2(x+m,x0+m0)} vs 2024 · excluding oil and oil products</small></div>
      <div class="t xp w2"><div class="xpt"><div><small>Non-oil exports 2025</small><b>${f(x)}</b><small class="gch">${pc2(x,x0)} vs 2024</small></div>${(()=>{const sh=T.nonoil/(T.nonoil+T.rex),C=2*Math.PI*40,a=C*sh;return `<svg class="xpr" viewBox="0 0 100 100" aria-hidden="true"><circle cx="50" cy="50" r="40" class="tk"/><circle cx="50" cy="50" r="40" class="rx" style="stroke-dasharray:${C-a-3} ${C};stroke-dashoffset:${-a-1.5}"/><circle cx="50" cy="50" r="40" class="na" style="stroke-dasharray:${a-3} ${C};stroke-dashoffset:-1.5"/><text x="50" y="49" class="p">${fmtN(sh*100,0)}%</text><text x="50" y="64" class="l">national</text></svg>`;})()}</div>
@@ -708,7 +716,7 @@ function armCounts(root){if(!cntIO||matchMedia('(prefers-reduced-motion: reduce)
 new MutationObserver(ms=>{const set=new Set();ms.forEach(m=>{const t=m.target.nodeType===1?m.target:m.target.parentElement;if(t&&!t.closest('b'))set.add(t);});set.forEach(armCounts);}).observe(document.querySelector('main'),{childList:true,subtree:true});
 
 // ---------- auto-update (bypass stale phone cache) ----------
-const BUILD='1795647286';
+const BUILD='1795647689';
 try{fetch(location.pathname+'?b='+Date.now(),{cache:'no-store'}).then(r=>r.text()).then(h=>{const m=h.match(/const BUILD='(\d+)'/);if(m&&m[1]>BUILD&&!sessionStorage.getItem('rl'+m[1])){sessionStorage.setItem('rl'+m[1],'1');location.replace(location.pathname+'?v='+m[1]+location.hash);}}).catch(()=>{});}catch(_){}
 // ---------- intro ----------
 let INTRO_HTML='';
