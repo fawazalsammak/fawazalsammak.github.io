@@ -215,6 +215,7 @@ svg text{stroke:#0B193A}
 #oDs .odt th,#oDs .odt td{padding:9px 5px;font-size:13px}#oDs .odt th{white-space:normal}#oDs .odt td:nth-child(2){white-space:normal}
 .lang{position:absolute;top:14px;inset-inline-end:14px;z-index:3;font:800 13px Almarai,sans-serif;color:#0B193A;background:#D4B85A;border-radius:999px;padding:6px 14px;text-decoration:none;min-height:32px;display:inline-flex;align-items:center}
 *,*::before,*::after,input,select,button,textarea,svg text{font-family:"Times New Roman",Times,serif!important}
+#vGcc .cmp th,#vGcc .cmp td{padding:8px 3px;font-size:12px}#vGcc #gcC td:first-child{max-width:5.5em}#vGcc .cmp th{white-space:normal}#vGcc .cmp td:first-child{white-space:normal}
 .bento .lnk .go{left:auto;right:14px}
 </style>
 </head>
@@ -243,6 +244,7 @@ svg text{stroke:#0B193A}
       <button id="tPr" aria-pressed="false">Products</button>
       <button id="tFd" aria-pressed="false">Food security</button>
       <button id="tOil" aria-pressed="false">Oil</button>
+      <button id="tGcc" aria-pressed="false">Intra-GCC trade</button>
     </div>
   </div>
   <div id="sugg" role="listbox"></div>
@@ -304,6 +306,17 @@ svg text{stroke:#0B193A}
     <div id="oDs"></div>
     <div class="note">Source: UN Comtrade – partner countries' imports from Kuwait as reported by the importers (mirror data). Some countries have not yet reported 2025, so only their 2024 values are shown. Figures differ from Central Statistical Bureau data because of valuation basis (CIF/FOB) and timing.</div>
   </section>
+  <section id="vGcc" class="hide">
+    <div class="head"><div><h2>Intra-GCC Trade</h2><div class="en">Trade between the State of Kuwait and the Gulf Cooperation Council countries</div></div><div class="unit" id="gcU"></div></div>
+    <div class="kpis" id="gcK"></div>
+    <div class="grid"><div class="card"><h3>Trade with GCC Countries 2015–2025</h3><div class="fig" id="gcY"></div><div class="lg"><span style="--c:var(--mint)">Exports</span><span style="--c:var(--navy)">Imports</span><span style="--c:var(--sage)">Trade balance</span></div></div>
+      <div class="card"><h3>Trade with GCC Countries – Quarterly Data</h3><div class="fig sm" id="gcQ"></div><div class="lg"><span style="--c:var(--mint)">Exports</span><span style="--c:var(--navy)">Imports</span></div></div></div>
+    <div class="card" style="margin-top:16px"><h3>Breakdown by Country – 2025</h3><div class="scroll"><table class="cmp" id="gcC"></table></div></div>
+    <div class="card" style="margin-top:16px"><h3>H1 2026 Compared with H1 2025</h3><div class="scroll"><table class="cmp" id="gcH"></table></div></div>
+    <div class="card" style="margin-top:16px"><h3>Detailed Table – GCC Total</h3><div class="scroll"><table class="cmp" id="gcT"></table></div></div>
+    <div class="card" style="margin-top:16px" id="gcO"></div>
+    <div class="note">Exports are non-oil and include re-exports. Source: Central Statistical Bureau. Data of 2025 and 2026 are provisional. Foreign trade statistics have been compiled according to the General Trade System starting January 2024.</div>
+  </section>
   <section id="vPr" class="hide">
     <div class="head"><h2>Kuwait's Exports and Imports by Product</h2><div class="unit">Values in KD million · Harmonized System (HS) chapters</div></div>
     <div class="ctl">
@@ -315,7 +328,7 @@ svg text{stroke:#0B193A}
     <div class="card" style="margin-top:16px"><h3 id="sT">Top products</h3><div class="scroll"><table id="sTb"></table></div></div>
   </section>
   <footer id="ft"></footer>
-<nav class="bnav" aria-label="Navigation"><button data-go="kw"><i>⌂</i>Home</button><button data-go="top"><i>☰</i>Partners</button><button data-go="food"><i>❀</i>Food security</button><button data-go="products"><i>▦</i>Products</button><button data-go="oil"><i>◈</i>Oil</button></nav>
+<nav class="bnav" aria-label="Navigation"><button data-go="kw"><i>⌂</i>Home</button><button data-go="top"><i>☰</i>Partners</button><button data-go="food"><i>❀</i>Food security</button><button data-go="products"><i>▦</i>Products</button><button data-go="oil"><i>◈</i>Oil</button><button data-go="gcc"><i>⬡</i>GCC</button></nav>
 </main>
 <script>
 {
@@ -353,8 +366,8 @@ function svgBars(el,labels,series,opts){
     el.innerHTML=`<svg style="direction:ltr" viewBox="0 0 ${W} ${H}" role="img" aria-label="${esc(opts.aria)}">${defs}${o}</svg>`;};
   if(el._ro)el._ro.disconnect();const ro=new ResizeObserver(draw);ro.observe(el);el._ro=ro;draw();
 }
-function show(v){const bm={vTop:'top',vGr:'groups',vPr:'products',vFd:'food',vOil:'oil'};document.querySelectorAll('.bnav button').forEach(b=>b.classList.toggle('on',b.dataset.go===(bm[v]||(v==='vEnt'&&cur&&cur.kw?'kw':''))));['vEnt','vTop','vGr','vPr','vFd','vOil'].forEach(id=>$('#'+id).classList.toggle('hide',id!==v));
-  $('#tKw').setAttribute('aria-pressed',v==='vEnt'&&cur&&cur.kw?'true':'false');$('#tTop').setAttribute('aria-pressed',v==='vTop');$('#tGr').setAttribute('aria-pressed',v==='vGr');$('#tPr').setAttribute('aria-pressed',v==='vPr');$('#tFd').setAttribute('aria-pressed',v==='vFd');$('#tOil').setAttribute('aria-pressed',v==='vOil');}
+function show(v){const bm={vTop:'top',vGr:'groups',vPr:'products',vFd:'food',vOil:'oil',vGcc:'gcc'};document.querySelectorAll('.bnav button').forEach(b=>b.classList.toggle('on',b.dataset.go===(bm[v]||(v==='vEnt'&&cur&&cur.kw?'kw':''))));['vEnt','vTop','vGr','vPr','vFd','vOil','vGcc'].forEach(id=>$('#'+id).classList.toggle('hide',id!==v));
+  $('#tKw').setAttribute('aria-pressed',v==='vEnt'&&cur&&cur.kw?'true':'false');$('#tTop').setAttribute('aria-pressed',v==='vTop');$('#tGr').setAttribute('aria-pressed',v==='vGr');$('#tPr').setAttribute('aria-pressed',v==='vPr');$('#tFd').setAttribute('aria-pressed',v==='vFd');$('#tOil').setAttribute('aria-pressed',v==='vOil');$('#tGcc').setAttribute('aria-pressed',v==='vGcc');}
 let CUR='kd',UNIT='m';const RATE=3.21,UK=0.3075;
 function unitFor(max){const usd=CUR==='usd',c=usd?'USD':'KD';U=UNIT==='m'?{div:1000,lab:c+' million',d:2}:{div:1,lab:c+' thousand',d:1};U.k=usd?RATE:1;}
 const f=v=>{if(v==null)return '–';const z=v*(U.k||1)/U.div;return z!==0&&Math.abs(z)<0.005?(z<0?'−':'')+'<0.01':fmtN(z,U.d);};
@@ -547,6 +560,7 @@ function layout(e,isC){const V=$('#vEnt');V.classList.toggle('isC',isC);V.classL
     b2.innerHTML=`<div class="t w2"><div class="th"><b>Top Partners 2025</b><a href="#top">All →</a></div>${tl.map((r,i)=>`<a class="lr" href="#c${r.c.id}"><span class="no">${i+1}</span><span class="nm">${esc(r.c.en)}</span><span class="tr"><i style="width:${r.v/tl[0].v*100}%"></i></span><b>${f(r.v)}</b></a>`).join('')}</div>
      <a class="t lnk food" href="#food"><small>Food security</small><b>${FOOD.length} items</b><small>${fv(fd)} ${FMU()} · ${new Set(FOOD.flatMap(r=>Object.keys(r.p))).size} countries</small><span class="go">→</span></a>
      <a class="t lnk" href="#products"><small>Products (chapters)</small><b>${HS.length} chapters</b><small>Exports and imports by chapter</small><span class="go">→</span></a>
+     <a class="t lnk gold" href="#gcc"><small>Intra-GCC trade</small><b>${f(GCCI.reduce((a,id)=>a+g(BY[id].x,L)+g(BY[id].m,L),0))}</b><small>Total trade with GCC 2025 · ${U.lab}</small><span class="go">→</span></a>
      <a class="t lnk dark" href="#groups"><small>Groups</small><b>${G.length} groups</b><small>GCC, EU, ASEAN…</small><span class="go">→</span></a>
      <a class="t lnk gold" href="#top"><small>Partner ranking</small><b>${C.filter(c=>c.id!=='603'&&(g(c.x,L)+g(c.m,L))>0).length} countries</b><small>By period and indicator</small><span class="go">→</span></a>`;}
   else{bt.classList.add('hide');b2.classList.add('hide');}
@@ -579,6 +593,35 @@ function oil(){show('vOil');const L='2025',T=TOT,o=p=>T[p]?T[p].oil:0,x=p=>T[p]?
   try{history.replaceState(null,'','#oil');}catch(_){}
 }
 
+
+// ---------- GCC intra-trade ----------
+const GCCI=['112','110','114','111','113'];
+function gcc(){show('vGcc');unitFor(1e9);const L='2025',P='2024',cs=GCCI.map(id=>BY[id]).filter(Boolean);
+  const sx=k=>cs.reduce((a,c)=>a+g(c.x,k),0),sm=k=>cs.reduce((a,c)=>a+g(c.m,k),0);
+  const chg=(a,b)=>{const c=pct(a,b);return c==null||!isFinite(c)?'–':(c>=0?'+':'−')+fmtN(Math.abs(c),1)+'%';},cls=(a,b)=>{const c=pct(a,b);return c==null||!isFinite(c)?'':c>=0?'up':'dn';};
+  const arr=(a,b,lab)=>{const c=pct(a,b);return c==null||!isFinite(c)?'':`<i class="${c>=0?'up':'dn'}">${c>=0?'▲':'▼'} ${fmtN(Math.abs(c),1)}% ${lab}</i>`;};
+  const x=sx(L),m=sm(L),x0=sx(P),m0=sm(P),hx=sx('2026-H1'),hm=sm('2026-H1'),px=sx('2025-H1'),pm=sm('2025-H1');
+  const kx=entKw(),allT=g(kx.x,L)+g(kx.m,L);
+  $('#gcU').textContent='Values in '+U.lab;
+  $('#gcK').innerHTML=`<div class="k"><small>Total trade with GCC 2025</small><b>${f(x+m)}</b>${arr(x+m,x0+m0,'vs 2024')}</div>
+   <div class="k"><small>Non-oil exports to GCC 2025</small><b>${f(x)}</b>${arr(x,x0,'vs 2024')}</div>
+   <div class="k"><small>Imports from GCC 2025</small><b>${f(m)}</b>${arr(m,m0,'vs 2024')}</div>
+   <div class="k"><small>Trade balance with GCC 2025</small><b class="${x-m>=0?'up':'dn'}">${f(x-m)}</b><small>${x-m>=0?'Surplus':'Deficit'}</small></div>
+   <div class="k"><small>GCC share of Kuwait's non-oil trade 2025</small><b>${fmtN((x+m)/allT*100,1)}%</b><small>Exports ${fmtN(x/g(kx.x,L)*100,1)}% · Imports ${fmtN(m/g(kx.m,L)*100,1)}%</small></div>
+   <div class="k"><small>Total trade with GCC H1 2026</small><b>${f(hx+hm)}</b>${arr(hx+hm,px+pm,'year on year')}</div>`;
+  svgBars($('#gcY'),Y,[{n:'Exports',c:'var(--mint)',v:Y.map(sx)},{n:'Imports',c:'var(--navy)',v:Y.map(sm)},{n:'Trade balance',c:'var(--sage)',line:1,v:Y.map(p=>sx(p)-sm(p))}],{aria:'Trade with GCC countries'});
+  const qs=quarters();svgBars($('#gcQ'),qs.map(q=>QS[q]||q),[{n:'Exports',c:'var(--mint)',v:qs.map(sx)},{n:'Imports',c:'var(--navy)',v:qs.map(sm)}],{aria:'Quarterly trade with GCC countries'});
+  const rows=cs.map(c=>({c,x:g(c.x,L),m:g(c.m,L),v0:g(c.x,P)+g(c.m,P)})).sort((a,b)=>(b.x+b.m)-(a.x+a.m));
+  $('#gcC').innerHTML=`<thead><tr><th>Country</th><th class="n">Exports</th><th class="n">Imports</th><th class="n">Trade balance</th><th class="n">Total trade</th><th class="n">Share</th></tr></thead><tbody>${rows.map(r=>`<tr><td><a href="#c${r.c.id}">${esc(r.c.en)}</a></td><td class="n">${f(r.x)}</td><td class="n">${f(r.m)}</td><td class="n ${r.x-r.m>=0?'up':'dn'}">${f(r.x-r.m)}</td><td class="n"><b>${f(r.x+r.m)}</b></td><td class="n">${fmtN((r.x+r.m)/(x+m)*100,1)}%</td></tr>`).join('')}<tr class="hl"><td>GCC total</td><td class="n">${f(x)}</td><td class="n">${f(m)}</td><td class="n ${x-m>=0?'up':'dn'}">${f(x-m)}</td><td class="n"><b>${f(x+m)}</b></td><td class="n">100%</td></tr><tr class="chg"><td>Change vs 2024</td><td class="n ${cls(x,x0)}">${chg(x,x0)}</td><td class="n ${cls(m,m0)}">${chg(m,m0)}</td><td class="n"></td><td class="n ${cls(x+m,x0+m0)}">${chg(x+m,x0+m0)}</td><td></td></tr></tbody>`;
+  const hr=cs.map(c=>({c,a:g(c.x,'2025-H1')+g(c.m,'2025-H1'),b:g(c.x,'2026-H1')+g(c.m,'2026-H1')})).sort((p,q)=>q.b-p.b);
+  $('#gcH').innerHTML=`<thead><tr><th>Country</th><th class="n">Total trade H1 2025</th><th class="n">Total trade H1 2026</th><th class="n">Change</th></tr></thead><tbody>${hr.map(r=>`<tr><td><a href="#c${r.c.id}">${esc(r.c.en)}</a></td><td class="n">${f(r.a)}</td><td class="n"><b>${f(r.b)}</b></td><td class="n ${cls(r.b,r.a)}">${chg(r.b,r.a)}</td></tr>`).join('')}<tr class="hl"><td>GCC total</td><td class="n">${f(px+pm)}</td><td class="n"><b>${f(hx+hm)}</b></td><td class="n ${cls(hx+hm,px+pm)}">${chg(hx+hm,px+pm)}</td></tr></tbody>`;
+  const per=[['H1 2026','2026-H1','hl'],['Q2 2026','2026-Q2',''],['Q1 2026','2026-Q1',''],['2025 (full year)','2025',''],['H2 2025','2025-H2',''],['H1 2025','2025-H1',''],...[...Y].reverse().slice(1).map(y=>[y,y,''])];
+  $('#gcT').innerHTML=`<thead><tr><th>Period</th><th class="n">Exports</th><th class="n">Imports</th><th class="n">Trade balance</th><th class="n">Total trade</th></tr></thead><tbody>${per.map(([l,k,c])=>`<tr class="${c}"><td>${l}</td><td class="n">${f(sx(k))}</td><td class="n">${f(sm(k))}</td><td class="n ${sx(k)-sm(k)>=0?'up':'dn'}">${f(sx(k)-sm(k))}</td><td class="n">${f(sx(k)+sm(k))}</td></tr>`).join('')}</tbody>`;
+  const D=OILD||{},ov=u=>CUR==='usd'?u/1e6:u*UK/1e6,fm=u=>{const z=ov(u);return z?fmtN(z,2):'–';},od=(y,id,k)=>D[y]&&D[y][id]&&D[y][id][k]?D[y][id][k][0]:0;
+  const orows=cs.map(c=>({c,a:od('2025',c.id,'27'),b:od('2024',c.id,'27'),cr:od('2025',c.id,'2709'),rf:od('2025',c.id,'2710')})).filter(r=>r.a||r.b);
+  $('#gcO').innerHTML=orows.length?`<h3>Oil Exports to GCC Countries – ${CUR==='usd'?'USD million':'KD million'}</h3><div class="scroll"><table class="cmp"><thead><tr><th>Country</th><th class="n">2025</th><th class="n">2024</th><th class="n">Change</th></tr></thead><tbody>${orows.map(r=>`<tr><td><a href="#c${r.c.id}">${esc(r.c.en)}</a></td><td class="n"><b>${fm(r.a)}</b></td><td class="n">${fm(r.b)}</td><td class="n ${r.a&&r.b?cls(r.a,r.b):''}">${r.a&&r.b?chg(r.a,r.b):'–'}</td></tr>`).join('')}</tbody></table></div><div class="note">Source: UN Comtrade – GCC countries' imports of chapter 27 from Kuwait as reported by the importers (mirror data). Some countries have not yet reported 2025.</div>`:'';
+  try{history.replaceState(null,'','#gcc');}catch(_){}
+}
 // ---------- intro ----------
 function intro(){const el=$('#intro');let seen=false;try{seen=sessionStorage.getItem('kwIntro')==='1';}catch(_){}
   if(seen||location.hash.length>1&&location.hash!=='#kw'){el.remove();return;}
@@ -614,7 +657,7 @@ function prods(){const fl=$('#pF').value,p=$('#pP').value,n=+$('#pN').value;
 function search(t){t=t.trim().toLowerCase();const box=$('#sugg');if(!t){box.style.display='none';return;}
   const hits=[...C,...G].filter(c=>c.ar.includes(t)||c.en.toLowerCase().includes(t)).slice(0,12);
   box.innerHTML=hits.length?hits.map(c=>`<button data-k="${esc(c.id)}"><b>${esc(c.en)}</b><span>${esc(c.ar)}</span></button>`).join(''):'<div style="padding:12px">No results</div>';box.style.display='block';}
-function route(){const h=location.hash.slice(1);if(h.startsWith('c')&&BY[h.slice(1)])render(BY[h.slice(1)]);else if(h.startsWith('g')&&BY[h])render(BY[h]);else if(h==='top'){show('vTop');rank();}else if(h==='groups'){show('vGr');groups();}else if(h==='products'){show('vPr');prods();}else if(h==='food')food();else if(h==='oil')oil();else if(h.startsWith('food:')){FSEL=h.slice(5).split(',').filter(x=>FBY[x]);food();}else render(entKw());}
+function route(){const h=location.hash.slice(1);if(h==='gcc'){gcc();return;}if(h.startsWith('c')&&BY[h.slice(1)])render(BY[h.slice(1)]);else if(h.startsWith('g')&&BY[h])render(BY[h]);else if(h==='top'){show('vTop');rank();}else if(h==='groups'){show('vGr');groups();}else if(h==='products'){show('vPr');prods();}else if(h==='food')food();else if(h==='oil')oil();else if(h.startsWith('food:')){FSEL=h.slice(5).split(',').filter(x=>FBY[x]);food();}else render(entKw());}
 $('#q').addEventListener('input',e=>search(e.target.value));
 $('#sugg').addEventListener('click',e=>{const b=e.target.closest('button');if(!b)return;render(BY[b.dataset.k]);$('#sugg').style.display='none';$('#q').value='';window.scrollTo(0,0);});
 $('#tKw').onclick=()=>render(entKw());
@@ -628,7 +671,7 @@ $('#gr').addEventListener('click',e=>{const b=e.target.closest('.row');if(b){ren
 $('#cp').addEventListener('click',async()=>{try{await navigator.clipboard.writeText(summary(cur));$('#cpMsg').textContent='Copied';}catch(_){$('#cpMsg').textContent='Copy is not available in this view';}});
 window.addEventListener('hashchange',route);
 document.querySelector('.bnav').addEventListener('click',ev=>{const b=ev.target.closest('button');if(!b)return;const k=b.dataset.go;if(k==='kw')render(entKw());else{location.hash=k;}window.scrollTo(0,0);});
-$('#tFd').onclick=()=>food();$('#tOil').onclick=()=>oil();
+$('#tFd').onclick=()=>food();$('#tOil').onclick=()=>oil();$('#tGcc').onclick=()=>gcc();
 const fSug=()=>{const t=$('#fq').value.trim().toLowerCase(),box=$('#fSug');if(!t){box.style.display='none';return;}
   const d=t.replace(/\D/g,''),hits=FOOD.filter(r=>(d&&r.h.startsWith(d))||(H4N[r.h]||'').includes(t)).sort((a,b)=>(b.w||0)-(a.w||0)).slice(0,15);
   box.innerHTML=hits.length?`<button class="all" data-h="${hits.map(r=>r.h).join(',')}">＋ Select all (${hits.length})</button>`+hits.map(r=>`<button data-h="${r.h}" class="${FSEL.includes(r.h)?'on':''}"><b>${r.h}</b> ${esc(H4N[r.h]||'')}<span>${fv(r.w||0)}</span></button>`).join(''):'<div style="padding:12px">No results</div>';box.style.display='block';};
