@@ -205,6 +205,8 @@ td a,.k a{color:#E3C873}
 .agr b{color:#fff}
 svg text{stroke:#0B193A}
 .ctry.hit:hover{fill:#ffffff22}
+.bento .gold .gch .up{color:#14532d!important;font-weight:800}.bento .gold .gch .dn{color:#7f1d1d!important;font-weight:800}
+.gsplit{display:grid;gap:5px;margin-top:8px}.gsplit div{display:flex;justify-content:space-between;align-items:center;gap:6px;background:#0B193A1a;border-radius:10px;padding:6px 10px}.gsplit span{font-size:12.5px;color:#3d3210;font-weight:700}.gsplit b{font-size:16px!important;margin:0!important;color:#0B193A;white-space:nowrap}
 </style>
 </head>
 <body>
@@ -302,7 +304,7 @@ svg text{stroke:#0B193A}
     <div class="card" style="margin-top:16px"><h3 id="sT">أهم السلع</h3><div class="scroll"><table id="sTb"></table></div></div>
   </section>
   <footer id="ft"></footer>
-<nav class="bnav" aria-label="التنقل"><button data-go="kw"><i>⌂</i>الرئيسية</button><button data-go="top"><i>☰</i>الشركاء</button><button data-go="food"><i>❀</i>الغذاء</button><button data-go="products"><i>▦</i>السلع</button><button data-go="oil"><i>◈</i>النفط</button></nav>
+<nav class="bnav" aria-label="التنقل"><button data-go="kw"><i>⌂</i>الرئيسية</button><button data-go="top"><i>☰</i>الشركاء</button><button data-go="food"><i>❀</i>الأمن الغذائي</button><button data-go="products"><i>▦</i>السلع</button><button data-go="oil"><i>◈</i>النفط</button></nav>
 </main>
 <script>
 {
@@ -516,7 +518,7 @@ function layout(e,isC){const V=$('#vEnt');V.classList.toggle('isC',isC);V.classL
   if(e.kw){bt.classList.remove('hide');b2.classList.remove('hide');const T=TOT[L],x0=g(e.x,'2024'),m0=g(e.m,'2024'),Q=ytd(),sx=Q.cur.reduce((a,p)=>a+g(e.x,p),0),sm=Q.cur.reduce((a,p)=>a+g(e.m,p),0),px=Q.prev.reduce((a,p)=>a+g(e.x,p),0),pm=Q.prev.reduce((a,p)=>a+g(e.m,p),0);
     const ys=Y.slice(-7),vmx=Math.max(...ys.map(y=>g(e.x,y)+g(e.m,y)));const pc2=(a,b)=>{const c=pct(a,b);return `<span class="${c>=0?'up':'dn'}">${c>=0?'▲':'▼'} ${fmtN(Math.abs(c),1)}%</span>`;};
     bt.innerHTML=`<div class="t dark w2"><small>حجم التبادل غير النفطي 2025</small><b>${f(x+m)}</b><small>${U.lab} · ${pc2(x+m,x0+m0)} عن 2024 · بدون النفط ومشتقاته</small></div>
-     <div class="t gold"><small>الصادرات غير النفطية</small><b>${f(x)}</b><small>${pc2(x,x0)} · وطنية ${f(T.nonoil)} + إعادة تصدير ${f(T.rex)}</small></div>
+     <div class="t gold"><small>الصادرات غير النفطية 2025</small><b>${f(x)}</b><small class="gch">${pc2(x,x0)} عن 2024</small><div class="gsplit"><div><span>ذات المنشأ الوطني</span><b>${f(T.nonoil)}</b></div><div><span>إعادة التصدير</span><b>${f(T.rex)}</b></div></div></div>
      <div class="t"><small>الواردات</small><b>${f(m)}</b><small>${pc2(m,m0)} عن 2024</small></div>
      <div class="t"><small>الميزان التجاري</small><b class="dn">${f(x-m)}</b><small>عجز غير نفطي</small></div>
      <div class="t"><small>التبادل ${Q.lab} 2026</small><b>${f(sx+sm)}</b><small>${pc2(sx+sm,px+pm)} سنوياً</small></div>
