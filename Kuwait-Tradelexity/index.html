@@ -207,6 +207,8 @@ svg text{stroke:#0B193A}
 .ctry.hit:hover{fill:#ffffff22}
 .bento .gold .gch .up{color:#14532d!important;font-weight:800}.bento .gold .gch .dn{color:#7f1d1d!important;font-weight:800}
 .gsplit{display:grid;gap:5px;margin-top:8px}.gsplit div{display:flex;justify-content:space-between;align-items:center;gap:6px;background:#0B193A1a;border-radius:10px;padding:6px 10px}.gsplit span{font-size:12.5px;color:#3d3210;font-weight:700}.gsplit b{font-size:16px!important;margin:0!important;color:#0B193A;white-space:nowrap}
+#oDs .okp{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}#oDs .okp .k{padding:10px 8px;min-width:0}#oDs .okp .k b{font-size:17px}#oDs .okp .k small{font-size:11px}
+#oDs .odt th,#oDs .odt td{padding:9px 5px;font-size:13px}#oDs .odt th{white-space:normal}#oDs .odt td:nth-child(2){white-space:normal}
 </style>
 </head>
 <body>
@@ -257,14 +259,14 @@ svg text{stroke:#0B193A}
     <div class="grid" id="charts" style="margin-top:16px">
       <div class="card"><h3 id="cTitle">التبادل التجاري السنوي 2015–2025</h3><div class="fig" id="fY"></div>
         <div class="lg"><span style="--c:var(--mint)">الصادرات</span><span style="--c:var(--navy)">الواردات</span><span style="--c:var(--sage)">الميزان التجاري</span></div></div>
-      <div class="card"><h3>البيانات الربعية 2025–2026</h3><div class="fig sm" id="fQ"></div>
+      <div class="card"><h3>بيانات ربع سنوية 2025–2026</h3><div class="fig sm" id="fQ"></div>
         <div class="lg"><span style="--c:var(--mint)">الصادرات</span><span style="--c:var(--navy)">الواردات</span></div></div>
     </div>
     <div class="card" id="tblc" style="margin-top:16px"><h3>الجدول التفصيلي</h3><div class="scroll"><table id="tbl"></table></div></div>
     <div style="margin-top:14px;display:flex;gap:10px;align-items:center;flex-wrap:wrap"><button class="copy" id="cp">نسخ ملخص البيانات</button><span class="note" id="cpMsg"></span></div>
   </section>
   <section id="vTop" class="hide">
-    <div class="head"><h2>أكبر الشركاء التجاريين</h2><div class="unit">القيم بالمليون دينار كويتي · لا تشمل الترتيب البضائع غير محددة الوجهة (صادرات النفط ومشتقاته)</div></div>
+    <div class="head"><h2>الشركاء التجاريون الرئيسيون لدولة الكويت</h2><div class="unit">القيم بالمليون دينار كويتي · لا تشمل الترتيب البضائع غير محددة الوجهة (صادرات النفط ومشتقاته)</div></div>
     <div class="ctl">
       <select id="sP" aria-label="الفترة"></select>
       <select id="sM" aria-label="المؤشر"><option value="v">التبادل التجاري</option><option value="x">الصادرات</option><option value="m">الواردات</option><option value="b">الميزان (فائض)</option><option value="bn">الميزان (عجز)</option></select>
@@ -289,9 +291,11 @@ svg text{stroke:#0B193A}
     <div class="head"><div><h2>الصادرات النفطية لدولة الكويت</h2><div class="en">النفط الخام والمشتقات والغاز</div></div><div class="unit">القيم بالمليون دينار كويتي</div></div>
     <div class="kpis" id="oK"></div>
     <div class="grid"><div class="card"><h3>الصادرات النفطية وغير النفطية 2015–2025</h3><div class="fig" id="oY"></div><div class="lg"><span style="--c:var(--navy)">النفط ومشتقاته</span><span style="--c:var(--mint)">غير النفطية</span></div></div>
-      <div class="card"><h3>الصادرات النفطية الربعية</h3><div class="fig sm" id="oQ"></div></div></div>
+      <div class="card"><h3>الصادرات النفطية – بيانات ربع سنوية</h3><div class="fig sm" id="oQ"></div></div></div>
     <div class="card" style="margin-top:16px"><h3>الجدول التفصيلي</h3><div class="scroll"><table id="oT"></table></div><div class="note">المصدر: الإدارة المركزية للإحصاء – صادرات النفط ومشتقاته (بيانات 2025 و2026 أولية).</div></div>
-    <div class="card" style="margin-top:16px"><h3>إلى أين يذهب النفط الكويتي؟ – <span id="oDu"></span></h3><div class="scroll"><table id="oD"></table></div><div class="note">المصدر: UN Comtrade – واردات الدول من الكويت كما سجّلتها الدول المستوردة (بيانات مرآة)، الفصل 27: النفط الخام 2709، المشتقات المكررة 2710، الغاز 2711. بعض الدول لم تُبلّغ بيانات 2025 بعد (مثل تايوان وقطر)، لذا تظهر قيمها لعام 2024 فقط. الأرقام لا تطابق إحصاءات الإدارة المركزية للإحصاء بسبب اختلاف التقييم (سيف/فوب) والتوقيت.</div></div>
+    <div class="head" style="margin-top:22px"><div><h2 style="font-size:20px">التوزيع الجغرافي للصادرات النفطية حسب المنتج – 2025</h2></div><div class="unit" id="oDu"></div></div>
+    <div id="oDs"></div>
+    <div class="note">المصدر: UN Comtrade – واردات الدول من الكويت كما سجّلتها الدول المستوردة (بيانات مرآة). بعض الدول لم تُبلّغ بيانات 2025 بعد، لذا تظهر قيمها لعام 2024 فقط. الأرقام لا تطابق إحصاءات الإدارة المركزية للإحصاء بسبب اختلاف أساس التقييم (سيف/فوب) والتوقيت.</div>
   </section>
   <section id="vPr" class="hide">
     <div class="head"><h2>صادرات وواردات دولة الكويت حسب السلع</h2><div class="unit">القيم بالمليون دينار كويتي · فصول النظام المنسق (HS)</div></div>
@@ -321,7 +325,7 @@ const g=(o,k)=>{if(!o)return 0;if(o[k])return o[k];if(/-H[12]$/.test(k)){const y
 function quarters(){return META.periods.filter(p=>p.includes('-Q'));}
 function ytd(){const q26=quarters().filter(p=>p.startsWith('2026'));return{cur:q26,prev:q26.map(p=>p.replace('2026','2025')),lab:q26.length===2?'النصف الأول':q26.length===1?'الربع الأول':q26.length===3?'الأرباع الثلاثة الأولى':'العام'};}
 function entKw(){const x={},m={};META.periods.forEach(p=>{if(TOT[p]){x[p]=TOT[p].x-TOT[p].oil;m[p]=TOT[p].m;}});return{id:'kw',ar:'دولة الكويت – التجارة الخارجية غير النفطية',en:'',x,m,kw:true};}
-let CHS3=(()=>{try{return new URLSearchParams(location.search).get('chart')||'3d';}catch(_){return '3d';}})();
+let CHS3=(()=>{try{return new URLSearchParams(location.search).get('chart')||'glow';}catch(_){return 'glow';}})();
 function svgBars(el,labels,series,opts){
   const draw=()=>{const W=el.clientWidth,H=el.clientHeight;if(!W)return;
     const pad={l:8,r:52,t:14,b:28},iw=W-pad.l-pad.r,ih=H-pad.t-pad.b;
@@ -394,7 +398,7 @@ function render(e){cur=e;show('vEnt');
   else if(isC&&e.top){cp.classList.remove('hide');cp.innerHTML='<h3>أهم 5 فصول سلعية – 2024 (مليون د.ك)</h3>'+['x','m'].map(k=>e.top[k]?`<h4>${k==='x'?'صادرات الكويت':'واردات الكويت'}</h4><table><tbody>${e.top[k].map((r,i)=>`<tr><td>${i+1}</td><td style="white-space:normal">${esc(r.hs+' – '+r.n)}</td><td class="n">${fmtN(r.kd,2)}</td><td class="n">${fmtN(r.s,1)}%</td></tr>`).join('')}</tbody></table>`:'').join('')+'<div class="note">المصدر: UN Comtrade 2024.</div>';}
   else cp.classList.add('hide');
   // extras from the issued country report
-  const rp=$('#rep');if(isC&&e.rep){const r=e.rep;rp.classList.remove('hide');let h=`<h3>من تقرير ${esc(e.ar)} (صدر ${esc(r.date)})</h3>`;
+  const rp=$('#rep');if(isC&&e.rep){const r=e.rep;rp.classList.remove('hide');let h=`<h3>مؤشرات التقرير القطري – ${esc(e.ar)} (${esc(r.date)})</h3>`;
     if(r.food&&r.food.txt)h+=`<p>${esc(r.food.txt)}</p>`;
     if(r.gcc){const mx2=Math.max(...r.gcc.rows.map(z=>z[1]));h+=`<h4>${esc(r.gcc.ttl)}</h4><div class="rank">`+r.gcc.rows.map(z=>`<div class="row" style="cursor:default"><span></span><span class="nm">${esc(z[0])}</span><span class="trk"><i style="width:${z[1]/mx2*100}%;background:${z[0]==='الكويت'?'var(--mint)':'var(--grey)'}"></i></span><span class="v">${fmtN(z[1],2)}</span></div>`).join('')+`</div><div class="note">${esc(r.gcc.note)}</div>`;}
     if(r.opp)h+=`<h4>أهم الفرص التصديرية لـ${esc(e.ar)} إلى دولة الكويت</h4><div class="scroll"><table><thead><tr><th>#</th><th>الفرصة</th><th>الأساس</th><th>المدى</th></tr></thead><tbody>${r.opp.map((z,i)=>`<tr><td>${i+1}</td><td><b>${esc(z[0])}</b></td><td style="white-space:normal;min-width:14em">${esc(z[1])}</td><td>${esc(z[2])}</td></tr>`).join('')}</tbody></table></div>`;
@@ -447,7 +451,7 @@ function food(){show('vFd');const out=$('#fOut');
   const byc={};FOOD.forEach(r=>{(byc[r.h.slice(0,2)]=byc[r.h.slice(0,2)]||[]).push(r);});
   out.innerHTML=`<div class="card"><h3>الواردات الغذائية حسب الفصل – 2025 · ${FMU()}</h3><div class="note" style="margin-top:0">اضغط على الفصل لعرض بنوده، ثم على البند لعرض الدول المورّدة.</div><div class="scroll"><table class="fct"><thead><tr><th>HS</th><th>الفصل</th><th class="n">القيمة</th><th class="n">الحصة</th><th>أكبر مورّد</th></tr></thead><tbody>${Object.keys(byc).sort().map(c=>{const rs=byc[c],ct=rs.reduce((a,r)=>a+(r.w||0),0),s={};rs.forEach(r=>Object.entries(r.p).forEach(([id,v])=>{s[id]=(s[id]||0)+v;}));const t=Object.entries(s).filter(([id])=>BY[id]).sort((a,b)=>b[1]-a[1])[0];
     return `<tr class="fc" data-c="${c}"><td><b>${c}</b></td><td>${esc(CHS[c]||chName(c))} <span class="cnt">(${rs.length})</span></td><td class="n">${fv(ct)}</td><td class="n">${fmtN(ct/tot*100,1)}%</td><td>${t?esc(BY[t[0]].ar)+' <span class="cnt">'+fmtN(t[1]/ct*100,0)+'%</span>':'–'}</td></tr>`;}).join('')}</tbody></table></div></div>
-  <div class="card" style="margin-top:16px"><h3>أكبر 10 دول مورّدة للغذاء</h3><div class="scroll"><table><thead><tr><th>#</th><th>الدولة</th><th class="n">القيمة</th><th class="n">الحصة</th></tr></thead><tbody>${ts.map(([id,v],i)=>`<tr><td>${i+1}</td><td><a href="#c${esc(id)}">${esc(BY[id].ar)}</a></td><td class="n">${fv(v)}</td><td class="n">${fmtN(v/tot*100,1)}%</td></tr>`).join('')}</tbody></table></div></div>`;
+  <div class="card" style="margin-top:16px"><h3>الدول العشر الأولى المورّدة للسلع الغذائية – 2025</h3><div class="scroll"><table><thead><tr><th>#</th><th>الدولة</th><th class="n">القيمة</th><th class="n">الحصة</th></tr></thead><tbody>${ts.map(([id,v],i)=>`<tr><td>${i+1}</td><td><a href="#c${esc(id)}">${esc(BY[id].ar)}</a></td><td class="n">${fv(v)}</td><td class="n">${fmtN(v/tot*100,1)}%</td></tr>`).join('')}</tbody></table></div></div>`;
   try{history.replaceState(null,'','#food');}catch(_){}
 }
 function chRows(c){const rs=FOOD.filter(r=>r.h.startsWith(c)).sort((a,b)=>(b.w||0)-(a.w||0));
@@ -510,10 +514,10 @@ function layout(e,isC){const V=$('#vEnt');V.classList.toggle('isC',isC);V.classL
   let hs=$('#hstory');if(!hs){hs=document.createElement('div');hs.id='hstory';$('#nmEn').after(hs);}
   if(isC){const r=C.filter(c=>c.id!=='603').map(c=>[c.id,g(c.x,L)+g(c.m,L)]).sort((a,b)=>b[1]-a[1]).findIndex(z=>z[0]===e.id)+1;
     const t4=e.top4||{},tm=t4.m&&t4.m[0],tx=t4.x&&t4.x[0];
-    hs.innerHTML=`<div class="rk">الشريك رقم ${r} · 2025</div><p>${x-m>=0?'فائض لصالح الكويت':'عجز لصالح '+esc(e.ar)} قدره <b>${f(Math.abs(x-m))}</b> ${U.lab}${tm?`؛ وأهم ما نستورده منها ${esc(H4N[tm.hs]||tm.hs)} (${fmtN(tm.s,0)}%)`:''}${tx?`، وأهم ما نصدّره إليها ${esc(H4N[tx.hs]||tx.hs)}`:''}.</p>`;}
+    hs.innerHTML=`<div class="rk">الترتيب بين الشركاء التجاريين: ${r} · 2025</div><p>الميزان التجاري ${x-m>=0?'فائض لصالح دولة الكويت':'عجز لصالح '+esc(e.ar)} بقيمة <b>${f(Math.abs(x-m))}</b> ${U.lab}${tm?`؛ وأبرز الواردات ${esc(H4N[tm.hs]||tm.hs)} (${fmtN(tm.s,0)}% من إجمالي الواردات)`:''}${tx?`، وأبرز الصادرات ${esc(H4N[tx.hs]||tx.hs)}`:''}.</p>`;}
   else hs.innerHTML='';
   // section nav (country)
-  const sn=$('#secnav');if(isC){const S=[['flow','نظرة عامة'],['ind','المؤشرات'],['itc','القدرة التوريدية'],['ctp','السلع'],['cfood','الغذاء'],['rep','من التقرير'],['charts','الرسوم'],['tblc','الجدول']].filter(([id])=>id==='flow'?!!CSB2ISO[e.id]:!$('#'+id).classList.contains('hide'));
+  const sn=$('#secnav');if(isC){const S=[['flow','التدفقات التجارية'],['ind','المؤشرات'],['itc','القدرة التوريدية'],['ctp','السلع'],['cfood','الأمن الغذائي'],['rep','التقرير القطري'],['charts','الرسوم البيانية'],['tblc','الجدول']].filter(([id])=>id==='flow'?!!CSB2ISO[e.id]:!$('#'+id).classList.contains('hide'));
     sn.classList.remove('hide');sn.innerHTML=S.map(([id,l],i)=>`<button data-s="${id}" class="${i?'':'on'}">${l}</button>`).join('');
     sn.onclick=ev=>{const b=ev.target.closest('button');if(!b)return;const t=$('#'+b.dataset.s);window.scrollTo({top:t.getBoundingClientRect().top+scrollY-70,behavior:'smooth'});};
     if(window._io)window._io.disconnect();window._io=new IntersectionObserver(es=>{es.forEach(en=>{if(en.isIntersecting){sn.querySelectorAll('button').forEach(b=>b.classList.toggle('on',b.dataset.s===en.target.id));const a=sn.querySelector('.on');if(a)a.scrollIntoView({block:'nearest',inline:'center'});}});},{rootMargin:'-40% 0px -55% 0px'});
@@ -530,7 +534,7 @@ function layout(e,isC){const V=$('#vEnt');V.classList.toggle('isC',isC);V.classL
      <div class="t"><small>التبادل ${Q.lab} 2026</small><b>${f(sx+sm)}</b><small>${pc2(sx+sm,px+pm)} سنوياً</small></div>
      <a class="t lnk dark w2" href="#oil"><small>قيمة الصادرات النفطية 2025</small><b>${f(tv('oil','2025'))}</b><small>${pc2(tv('oil','2025'),tv('oil','2024'))} عن 2024 · ${fmtN(tv('oil','2025')/tv('x','2025')*100,1)}% من إجمالي الصادرات · النصف الأول 2026: ${f(tv('oil','2026-H1'))} (${pc2(tv('oil','2026-H1'),tv('oil','2025-H1'))})</small><span class="go">←</span></a>
      <div class="t w4"><div class="th"><b></b><small>${U.lab}</small></div><div class="scroll"><table class="cmp"><thead><tr><th>الفترة</th><th class="n">الصادرات</th><th class="n">الواردات</th><th class="n">الميزان</th><th class="n">التبادل</th></tr></thead><tbody>${[['2025 (كامل)','2025',''],['النصف الأول 2025','2025-H1',''],['النصف الثاني 2025','2025-H2',''],['النصف الأول 2026','2026-H1','hl']].map(([l,k,c])=>{const a=g(e.x,k),b=g(e.m,k);return `<tr class="${c}"><td>${l}</td><td class="n">${f(a)}</td><td class="n">${f(b)}</td><td class="n dn">${f(a-b)}</td><td class="n">${f(a+b)}</td></tr>`;}).join('')}${(()=>{const ch=(fn)=>{const c=pct(fn('2026-H1'),fn('2025-H1'));return `<td class="n ${c>=0?'up':'dn'}">${c==null||!isFinite(c)?'–':(c>=0?'+':'−')+fmtN(Math.abs(c),1)+'%'}</td>`;};return `<tr class="chg"><td>التغير السنوي</td>${ch(k=>g(e.x,k))}${ch(k=>g(e.m,k))}${ch(k=>g(e.x,k)-g(e.m,k))}${ch(k=>g(e.x,k)+g(e.m,k))}</tr>`;})()}</tbody></table></div><div class="note" style="margin-top:6px">الصادرات في هذا الجدول غير نفطية. التغير: النصف الأول 2026 مقارنة بالنصف الأول 2025. بيانات النصف الثاني 2026 لم تُنشر بعد.</div></div>
-     <div class="t w4"><div class="th"><b>تركيبة الصادرات: الوطنية وإعادة التصدير والنفط</b><small>${U.lab}</small></div><div class="scroll"><table class="cmp"><thead><tr><th>الفترة</th><th class="n">وطنية غير نفطية</th><th class="n">إعادة تصدير</th><th class="n">نفطية</th><th class="n">الإجمالي</th></tr></thead><tbody>${[['2025 (كامل)','2025',''],['النصف الأول 2025','2025-H1',''],['النصف الثاني 2025','2025-H2',''],['النصف الأول 2026','2026-H1','hl'],['الربع الأول 2026','2026-Q1',''],['الربع الثاني 2026','2026-Q2','']].map(([l,k,c])=>`<tr class="${c}"><td>${l}</td><td class="n">${f(tv('nonoil',k))}</td><td class="n">${f(tv('rex',k))}</td><td class="n">${f(tv('oil',k))}</td><td class="n">${f(tv('x',k))}</td></tr>`).join('')}${(()=>{const ch=fl=>{const c=pct(tv(fl,'2026-H1'),tv(fl,'2025-H1'));return `<td class="n ${c>=0?'up':'dn'}">${(c>=0?'+':'−')+fmtN(Math.abs(c),1)}%</td>`;};return `<tr class="chg"><td>التغير (النصف الأول)</td>${ch('nonoil')}${ch('rex')}${ch('oil')}${ch('x')}</tr>`;})()}</tbody></table></div><div class="note" style="margin-top:6px">ذات المنشأ الوطني: السلع المنتجة في الكويت عدا النفط ومشتقاته. إعادة التصدير: سلع مستوردة أُعيد تصديرها. المصدر: الإدارة المركزية للإحصاء.</div></div>`;
+     <div class="t w4"><div class="th"><b>هيكل الصادرات: الصادرات الوطنية وإعادة التصدير والصادرات النفطية</b><small>${U.lab}</small></div><div class="scroll"><table class="cmp"><thead><tr><th>الفترة</th><th class="n">وطنية غير نفطية</th><th class="n">إعادة تصدير</th><th class="n">نفطية</th><th class="n">الإجمالي</th></tr></thead><tbody>${[['2025 (كامل)','2025',''],['النصف الأول 2025','2025-H1',''],['النصف الثاني 2025','2025-H2',''],['النصف الأول 2026','2026-H1','hl'],['الربع الأول 2026','2026-Q1',''],['الربع الثاني 2026','2026-Q2','']].map(([l,k,c])=>`<tr class="${c}"><td>${l}</td><td class="n">${f(tv('nonoil',k))}</td><td class="n">${f(tv('rex',k))}</td><td class="n">${f(tv('oil',k))}</td><td class="n">${f(tv('x',k))}</td></tr>`).join('')}${(()=>{const ch=fl=>{const c=pct(tv(fl,'2026-H1'),tv(fl,'2025-H1'));return `<td class="n ${c>=0?'up':'dn'}">${(c>=0?'+':'−')+fmtN(Math.abs(c),1)}%</td>`;};return `<tr class="chg"><td>التغير (النصف الأول)</td>${ch('nonoil')}${ch('rex')}${ch('oil')}${ch('x')}</tr>`;})()}</tbody></table></div><div class="note" style="margin-top:6px">ذات المنشأ الوطني: السلع المنتجة في الكويت عدا النفط ومشتقاته. إعادة التصدير: سلع مستوردة أُعيد تصديرها. المصدر: الإدارة المركزية للإحصاء.</div></div>`;
     const tl=C.filter(c=>c.id!=='603').map(c=>({c,v:g(c.x,L)+g(c.m,L)})).sort((a,b)=>b.v-a.v).slice(0,5);
     const fd=FOOD.reduce((a,r)=>a+(r.w||0),0);
     b2.innerHTML=`<div class="t w2"><div class="th"><b>أكبر الشركاء 2025</b><a href="#top">الكل ←</a></div>${tl.map((r,i)=>`<a class="lr" href="#c${r.c.id}"><span class="no">${i+1}</span><span class="nm">${esc(r.c.ar)}</span><span class="tr"><i style="width:${r.v/tl[0].v*100}%"></i></span><b>${f(r.v)}</b></a>`).join('')}</div>
@@ -558,10 +562,13 @@ function oil(){show('vOil');const L='2025',T=TOT,o=p=>T[p]?T[p].oil:0,x=p=>T[p]?
   // destinations (mirror)
   const D=OILD||{},d25=D['2025']||{},d24=D['2024']||{},ids=[...new Set([...Object.keys(d25),...Object.keys(d24)])];
   const val=(d,id,k)=>d[id]&&d[id][k]?d[id][k][0]:0,ton=(d,id,k)=>d[id]&&d[id][k]?d[id][k][1]:0,ov=u=>CUR==='usd'?u/1e6:u*UK/1e6,fm=u=>{const z=ov(u);return z?(z<0.005?'<0.01':fmtN(z,2)):'–';};
-  const L2=ids.map(id=>({id,c:BY[id],t5:val(d25,id,'27'),t4:val(d24,id,'27'),cr:val(d25,id,'2709'),rf:val(d25,id,'2710'),lg:val(d25,id,'2711'),kt:ton(d25,id,'2709')})).filter(z=>z.c).sort((a,b)=>(b.t5||b.t4*0.0001)-(a.t5||a.t4*0.0001));
-  const s5=L2.reduce((a,z)=>a+z.t5,0);
-  $('#oD').innerHTML=`<thead><tr><th>#</th><th>الدولة المستوردة</th><th class="n">إجمالي 2025</th><th class="n">الحصة</th><th class="n">نفط خام</th><th class="n">مشتقات مكررة</th><th class="n">غاز</th><th class="n">إجمالي 2024</th></tr></thead><tbody>${L2.map((z,i)=>`<tr><td>${i+1}</td><td><a href="#c${z.id}">${esc(z.c.ar)}</a></td><td class="n"><b>${fm(z.t5)}</b></td><td class="n">${z.t5?fmtN(z.t5/s5*100,1)+'%':'–'}</td><td class="n">${fm(z.cr)}</td><td class="n">${fm(z.rf)}</td><td class="n">${fm(z.lg)}</td><td class="n">${fm(z.t4)}</td></tr>`).join('')}</tbody>`;
-  $('#oDu').textContent=CUR==='usd'?'مليون دولار':'مليون د.ك';
+  const PR=[['2709','صادرات النفط الخام','HS 2709'],['2710','صادرات المنتجات النفطية المكررة','HS 2710'],['2711','صادرات الغاز النفطي والهيدروكربونات الغازية','HS 2711']];
+  $('#oDs').innerHTML=PR.map(([k,t,hs])=>{const L2=ids.map(id=>({id,c:BY[id],v5:val(d25,id,k),v4:val(d24,id,k),kt:ton(d25,id,k)})).filter(z=>z.c&&(z.v5||z.v4)).sort((a,b)=>(b.v5||b.v4*1e-4)-(a.v5||a.v4*1e-4));
+    const s5=L2.reduce((a,z)=>a+z.v5,0),s4=L2.reduce((a,z)=>a+z.v4,0),k5=L2.reduce((a,z)=>a+z.kt,0),ch=pct(s5,s4);
+    return `<div class="card" style="margin-top:16px"><h3>${t} حسب الدولة المستوردة <span style="font-weight:400;color:var(--mute);font-size:13px">(${hs})</span></h3>
+    <div class="kpis okp" style="margin:8px 0 10px"><div class="k"><small>الإجمالي 2025</small><b>${fm(s5)}</b>${arr(ch)}<small>عن 2024</small></div><div class="k"><small>الكمية 2025 (ألف طن)</small><b>${k5?fmtN(k5,0):'–'}</b></div><div class="k"><small>عدد الدول المستوردة</small><b>${L2.filter(z=>z.v5).length}</b></div></div>
+    <div class="scroll"><table class="odt"><thead><tr><th>#</th><th>الدولة</th><th class="n">2025</th><th class="n">الحصة</th><th class="n">ألف طن</th><th class="n">التغير عن 2024</th></tr></thead><tbody>${L2.map((z,i)=>{const c=z.v5&&z.v4?pct(z.v5,z.v4):null;return `<tr><td>${i+1}</td><td><a href="#c${z.id}">${esc(z.c.ar)}</a></td><td class="n"><b>${z.v5?fm(z.v5):fm(z.v4)+'*'}</b></td><td class="n">${z.v5&&s5?fmtN(z.v5/s5*100,1)+'%':'–'}</td><td class="n">${z.kt?fmtN(z.kt,0):'–'}</td><td class="n ${c==null?'':c>=0?'up':'dn'}">${c==null?'–':(c>=0?'+':'−')+fmtN(Math.abs(c),1)+'%'}</td></tr>`;}).join('')}</tbody></table></div>${L2.some(z=>!z.v5)?'<div class="note">* بيانات 2024، لم تُبلّغ الدولة عن بيانات 2025 بعد.</div>':''}</div>`;}).join('');
+  $('#oDu').textContent='القيم '+(CUR==='usd'?'بالمليون دولار':'بالمليون دينار كويتي');
   try{history.replaceState(null,'','#oil');}catch(_){}
 }
 
