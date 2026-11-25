@@ -283,7 +283,7 @@ svg text{stroke:#0B193A}
     <input id="q" type="search" placeholder="Search a country or group…" autocomplete="off" aria-label="Search">
     <div class="tabs" role="group" aria-label="View">
       <button id="tKw" aria-pressed="true">Overview</button>
-      <button id="tTop" aria-pressed="false">Top partners</button>
+      <button id="tTop" aria-pressed="false">Top trading partners</button>
       <button id="tGr" aria-pressed="false">Economic groups</button>
       <button id="tPr" aria-pressed="false">Products</button>
       <button id="tFd" aria-pressed="false">Food security</button>
@@ -373,7 +373,7 @@ svg text{stroke:#0B193A}
     <div class="card" style="margin-top:16px"><h3 id="sT">Top products</h3><div class="scroll"><table id="sTb"></table></div></div>
   </section>
   <footer id="ft"></footer>
-<nav class="bnav" aria-label="Navigation"><button data-go="top"><span>Partners</span></button><button data-go="groups"><span>Economic groups</span></button><button data-go="food"><span>Food security</span></button><button data-go="kw" class="ctr"><b>Home</b></button><button data-go="products"><span>Products</span></button><button data-go="oil"><span>Oil</span></button><button data-go="gcc"><span>GCC</span></button></nav>
+<nav class="bnav" aria-label="Navigation"><button data-go="top"><span>Trading partners</span></button><button data-go="groups"><span>Economic groups</span></button><button data-go="food"><span>Food security</span></button><button data-go="kw" class="ctr"><b>Home</b></button><button data-go="products"><span>Products</span></button><button data-go="oil"><span>Oil</span></button><button data-go="gcc"><span>GCC</span></button></nav>
 </main>
 <script>
 {
@@ -682,7 +682,7 @@ function armCounts(root){if(!cntIO||matchMedia('(prefers-reduced-motion: reduce)
 new MutationObserver(ms=>{const set=new Set();ms.forEach(m=>{const t=m.target.nodeType===1?m.target:m.target.parentElement;if(t&&!t.closest('b'))set.add(t);});set.forEach(armCounts);}).observe(document.querySelector('main'),{childList:true,subtree:true});
 
 // ---------- auto-update (bypass stale phone cache) ----------
-const BUILD='1795644266';
+const BUILD='1795644423';
 try{fetch(location.pathname+'?b='+Date.now(),{cache:'no-store'}).then(r=>r.text()).then(h=>{const m=h.match(/const BUILD='(\d+)'/);if(m&&m[1]>BUILD&&!sessionStorage.getItem('rl'+m[1])){sessionStorage.setItem('rl'+m[1],'1');location.replace(location.pathname+'?v='+m[1]+location.hash);}}).catch(()=>{});}catch(_){}
 // ---------- intro ----------
 let INTRO_HTML='';
