@@ -522,7 +522,7 @@ function food(){show('vFd');[['fKd',CUR==='kd'],['fUsd',CUR==='usd'],['fM',UNIT=
    <div class="scroll"><table class="cmp"><thead><tr><th>Chapter</th><th class="n">H1 2026</th><th class="n">Change</th><th class="n">H1 2025</th><th class="n">2025</th></tr></thead><tbody>${FCH.map(h=>`<tr><td><b>${h.id}</b> ${esc(CHS[h.id]||h.en)}</td><td class="n"><b>${u(g(h.m,'2026-H1'))}</b></td><td class="n">${cg(g(h.m,'2026-H1'),g(h.m,'2025-H1'))}</td><td class="n">${u(g(h.m,'2025-H1'))}</td><td class="n">${u(g(h.m,'2025'))}</td></tr>`).join('')}</tbody></table></div>
    <div class="note">2026 data are available at chapter level for Kuwait as a whole only; the breakdown of tariff lines (products) by supplier below is for 2025 because 2026 data by country have not yet been published.</div></div>`+$('#fSum').innerHTML;
   $('#fChips').innerHTML=FSEL.length?FSEL.map(h=>`<button class="chip" data-x="${h}">${h} ${esc(H4N[h]||'')} ✕</button>`).join('')+'<button class="chip clr" data-x="*">Clear all</button>':'';
-  if(FSEL.length){out.innerHTML=foodSel();try{history.replaceState(null,'','#food:'+FSEL.join(','));}catch(_){}return;}
+  $('#fSum').classList.toggle('hide',!!FSEL.length);if(FSEL.length){out.innerHTML=foodSel();try{history.replaceState(null,'','#food:'+FSEL.join(','));}catch(_){}requestAnimationFrame(()=>{const t=$('#fChips');window.scrollTo({top:t.getBoundingClientRect().top+scrollY-90,behavior:'smooth'});});return;}
   const byc={};FOOD.forEach(r=>{(byc[r.h.slice(0,2)]=byc[r.h.slice(0,2)]||[]).push(r);});
   out.innerHTML=`<div class="card"><h3>Food Imports by Chapter – 2025 · ${FMU()}</h3><div class="note" style="margin-top:0">Tap a chapter to show its tariff lines (products), then a tariff line to show its suppliers.</div><div class="scroll"><table class="fct"><thead><tr><th>HS</th><th>Chapter</th><th class="n">Value</th><th class="n">Share</th><th>Largest supplier</th></tr></thead><tbody>${Object.keys(byc).sort().map(c=>{const rs=byc[c],ct=rs.reduce((a,r)=>a+(r.w||0),0),s={};rs.forEach(r=>Object.entries(r.p).forEach(([id,v])=>{s[id]=(s[id]||0)+v;}));const t=Object.entries(s).filter(([id])=>BY[id]).sort((a,b)=>b[1]-a[1])[0];
     return `<tr class="fc" data-c="${c}"><td><b>${c}</b></td><td>${esc(CHS[c]||chName(c))} <span class="cnt">(${rs.length})</span></td><td class="n">${fv(ct)}</td><td class="n">${fmtN(ct/tot*100,1)}%</td><td>${t?esc(BY[t[0]].en)+' <span class="cnt">'+fmtN(t[1]/ct*100,0)+'%</span>':'–'}</td></tr>`;}).join('')}</tbody></table></div></div>
@@ -696,7 +696,7 @@ function armCounts(root){if(!cntIO||matchMedia('(prefers-reduced-motion: reduce)
 new MutationObserver(ms=>{const set=new Set();ms.forEach(m=>{const t=m.target.nodeType===1?m.target:m.target.parentElement;if(t&&!t.closest('b'))set.add(t);});set.forEach(armCounts);}).observe(document.querySelector('main'),{childList:true,subtree:true});
 
 // ---------- auto-update (bypass stale phone cache) ----------
-const BUILD='1795646103';
+const BUILD='1795646280';
 try{fetch(location.pathname+'?b='+Date.now(),{cache:'no-store'}).then(r=>r.text()).then(h=>{const m=h.match(/const BUILD='(\d+)'/);if(m&&m[1]>BUILD&&!sessionStorage.getItem('rl'+m[1])){sessionStorage.setItem('rl'+m[1],'1');location.replace(location.pathname+'?v='+m[1]+location.hash);}}).catch(()=>{});}catch(_){}
 // ---------- intro ----------
 let INTRO_HTML='';
