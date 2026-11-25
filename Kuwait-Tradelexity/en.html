@@ -335,13 +335,13 @@ svg text{stroke:#0B193A}
     <div class="rank" id="gr" style="margin-top:14px"></div>
   </section>
   <section id="vFd" class="hide">
-    <div class="head"><div><h2>Food Imports by HS Item and Supplier</h2></div><div class="unit"><span class="cur" role="group" aria-label="Currency"><button id="fKd" aria-pressed="true">KD</button><button id="fUsd" aria-pressed="false">USD</button></span></div></div>
-    <div class="ctl" style="position:relative"><input id="fq" type="search" placeholder="Search by HS code or product name; select one or more items (wheat, rice, 1006…)" autocomplete="off" aria-label="Food product search" list="" style="flex:1 1 260px;font:16px Almarai,sans-serif;padding:10px 14px;border-radius:10px;border:1px solid var(--line);min-height:44px;background:var(--bg);color:var(--ink)"></div>
+    <div class="head"><div><h2>Food Imports by Tariff Line (Product) and Supplier</h2></div><div class="unit"><span class="cur" role="group" aria-label="Currency"><button id="fKd" aria-pressed="true">KD</button><button id="fUsd" aria-pressed="false">USD</button></span></div></div>
+    <div class="ctl" style="position:relative"><input id="fq" type="search" placeholder="Search by HS code or product name; select one or more tariff lines (wheat, rice, 1006…)" autocomplete="off" aria-label="Food product search" list="" style="flex:1 1 260px;font:16px Almarai,sans-serif;padding:10px 14px;border-radius:10px;border:1px solid var(--line);min-height:44px;background:var(--bg);color:var(--ink)"></div>
     <div id="fSug" class="fsug" role="listbox"></div>
     <div id="fChips" class="chips"></div>
     <div id="fSum"></div>
     <div id="fOut" style="margin-top:14px"></div>
-    <div class="note">Kuwait's reported imports for 2025 at HS4 level, chapters 01–24. Values in millions (USD 1 = KD 0.3075). Select several items to see combined suppliers.</div>
+    <div class="note">Kuwait's reported imports for 2025 at HS4 level, chapters 01–24. Values in millions (USD 1 = KD 0.3075). Select several tariff lines (products) to see combined suppliers.</div>
   </section>
   <section id="vOil" class="hide">
     <div class="head"><div><h2>Kuwait's Oil Exports</h2><div class="en">Crude oil, refined products and gas</div></div><div class="unit">Values in KD million</div></div>
@@ -503,21 +503,21 @@ function foodItem(h){const r=FBY[h];if(!r)return '';const L=foodSup(r),T=r.w||L.
 function foodSel(){const rs=FSEL.map(h=>FBY[h]).filter(Boolean),T=rs.reduce((a,r)=>a+(r.w||0),0),sup={};
   rs.forEach(r=>Object.entries(r.p).forEach(([id,v])=>{sup[id]=(sup[id]||0)+v;}));
   const L=Object.entries(sup).map(([id,v])=>({id,v,c:BY[id]})).filter(z=>z.c).sort((a,b)=>b.v-a.v);
-  let h='';if(rs.length>1)h+=`<div class="card fi"><h3>Total for selected items (${rs.length})</h3><div class="note" style="margin-top:0">${rs.map(r=>r.h+' '+esc(H4N[r.h]||'')).join(' + ')}<br>Kuwait total imports 2025: <b>${fv(T)}</b> ${FMU()} · Suppliers: ${L.length}</div>${supTable(L,T)}</div>`;
+  let h='';if(rs.length>1)h+=`<div class="card fi"><h3>Total for selected tariff lines (products): ${rs.length}</h3><div class="note" style="margin-top:0">${rs.map(r=>r.h+' '+esc(H4N[r.h]||'')).join(' + ')}<br>Kuwait total imports 2025: <b>${fv(T)}</b> ${FMU()} · Suppliers: ${L.length}</div>${supTable(L,T)}</div>`;
   return h+rs.map(r=>foodItem(r.h)).join('');}
 function food(){show('vFd');const out=$('#fOut');
   const tot=FOOD.reduce((a,r)=>a+(r.w||0),0),sup={};FOOD.forEach(r=>Object.entries(r.p).forEach(([id,v])=>{sup[id]=(sup[id]||0)+v;}));
   const ts=Object.entries(sup).filter(([id])=>BY[id]).sort((a,b)=>b[1]-a[1]).slice(0,10);
-  $('#fSum').innerHTML=`<div class="kpis"><div class="k"><small>Kuwait food imports 2025</small><b>${fv(tot)}</b><small>${FMU()}</small></div><div class="k"><small>Food items (HS4)</small><b>${FOOD.length}</b></div><div class="k"><small>Supplier countries</small><b>${Object.keys(sup).filter(id=>BY[id]).length}</b></div></div>`;
+  $('#fSum').innerHTML=`<div class="kpis"><div class="k"><small>Kuwait food imports 2025</small><b>${fv(tot)}</b><small>${FMU()}</small></div><div class="k"><small>Food tariff lines (products) – HS4</small><b>${FOOD.length}</b></div><div class="k"><small>Supplier countries</small><b>${Object.keys(sup).filter(id=>BY[id]).length}</b></div></div>`;
   const FCH=HS.filter(h=>+h.id>=1&&+h.id<=23&&h.id!=='05'&&h.id!=='06'),sumC=k=>FCH.reduce((a,h)=>a+g(h.m,k),0);
   const u=v=>{const z=(CUR==='usd'?v*RATE:v)/1000;return fmtN(z,2);},cg=(a,b)=>{const c=pct(a,b);return c==null||!isFinite(c)?'–':`<span class="${c>=0?'up':'dn'}" dir="ltr">${c>=0?'+':'−'}${fmtN(Math.abs(c),1)}%</span>`;};
   $('#fSum').innerHTML=`<div class="card" style="margin-bottom:16px"><h3>Food Imports to the End of H1 2026 – ${FMU()}</h3><div class="kpis" style="margin:8px 0"><div class="k"><small>H1 2026</small><b>${u(sumC('2026-H1'))}</b>${cg(sumC('2026-H1'),sumC('2025-H1'))}</div><div class="k"><small>H1 2025</small><b>${u(sumC('2025-H1'))}</b></div><div class="k"><small>2025 (full year)</small><b>${u(sumC('2025'))}</b></div></div>
    <div class="scroll"><table class="cmp"><thead><tr><th>Chapter</th><th class="n">H1 2026</th><th class="n">Change</th><th class="n">H1 2025</th><th class="n">2025</th></tr></thead><tbody>${FCH.map(h=>`<tr><td><b>${h.id}</b> ${esc(CHS[h.id]||h.en)}</td><td class="n"><b>${u(g(h.m,'2026-H1'))}</b></td><td class="n">${cg(g(h.m,'2026-H1'),g(h.m,'2025-H1'))}</td><td class="n">${u(g(h.m,'2025-H1'))}</td><td class="n">${u(g(h.m,'2025'))}</td></tr>`).join('')}</tbody></table></div>
-   <div class="note">2026 data are available at chapter level for Kuwait as a whole only; the supplier breakdown below is for 2025 because 2026 data by country have not yet been published.</div></div>`+$('#fSum').innerHTML;
+   <div class="note">2026 data are available at chapter level for Kuwait as a whole only; the breakdown of tariff lines (products) by supplier below is for 2025 because 2026 data by country have not yet been published.</div></div>`+$('#fSum').innerHTML;
   $('#fChips').innerHTML=FSEL.length?FSEL.map(h=>`<button class="chip" data-x="${h}">${h} ${esc(H4N[h]||'')} ✕</button>`).join('')+'<button class="chip clr" data-x="*">Clear all</button>':'';
   if(FSEL.length){out.innerHTML=foodSel();try{history.replaceState(null,'','#food:'+FSEL.join(','));}catch(_){}return;}
   const byc={};FOOD.forEach(r=>{(byc[r.h.slice(0,2)]=byc[r.h.slice(0,2)]||[]).push(r);});
-  out.innerHTML=`<div class="card"><h3>Food Imports by Chapter – 2025 · ${FMU()}</h3><div class="note" style="margin-top:0">Tap a chapter to show its items, then an item to show its suppliers.</div><div class="scroll"><table class="fct"><thead><tr><th>HS</th><th>Chapter</th><th class="n">Value</th><th class="n">Share</th><th>Largest supplier</th></tr></thead><tbody>${Object.keys(byc).sort().map(c=>{const rs=byc[c],ct=rs.reduce((a,r)=>a+(r.w||0),0),s={};rs.forEach(r=>Object.entries(r.p).forEach(([id,v])=>{s[id]=(s[id]||0)+v;}));const t=Object.entries(s).filter(([id])=>BY[id]).sort((a,b)=>b[1]-a[1])[0];
+  out.innerHTML=`<div class="card"><h3>Food Imports by Chapter – 2025 · ${FMU()}</h3><div class="note" style="margin-top:0">Tap a chapter to show its tariff lines (products), then a tariff line to show its suppliers.</div><div class="scroll"><table class="fct"><thead><tr><th>HS</th><th>Chapter</th><th class="n">Value</th><th class="n">Share</th><th>Largest supplier</th></tr></thead><tbody>${Object.keys(byc).sort().map(c=>{const rs=byc[c],ct=rs.reduce((a,r)=>a+(r.w||0),0),s={};rs.forEach(r=>Object.entries(r.p).forEach(([id,v])=>{s[id]=(s[id]||0)+v;}));const t=Object.entries(s).filter(([id])=>BY[id]).sort((a,b)=>b[1]-a[1])[0];
     return `<tr class="fc" data-c="${c}"><td><b>${c}</b></td><td>${esc(CHS[c]||chName(c))} <span class="cnt">(${rs.length})</span></td><td class="n">${fv(ct)}</td><td class="n">${fmtN(ct/tot*100,1)}%</td><td>${t?esc(BY[t[0]].en)+' <span class="cnt">'+fmtN(t[1]/ct*100,0)+'%</span>':'–'}</td></tr>`;}).join('')}</tbody></table></div></div>
   <div class="card" style="margin-top:16px"><h3>Top 10 Food Supplier Countries – 2025</h3><div class="scroll"><table><thead><tr><th>#</th><th>Country</th><th class="n">Value</th><th class="n">Share</th></tr></thead><tbody>${ts.map(([id,v],i)=>`<tr><td>${i+1}</td><td><a href="#c${esc(id)}">${esc(BY[id].en)}</a></td><td class="n">${fv(v)}</td><td class="n">${fmtN(v/tot*100,1)}%</td></tr>`).join('')}</tbody></table></div></div>`;
   try{history.replaceState(null,'','#food');}catch(_){}
@@ -529,9 +529,9 @@ function foodCountry(e){const el=$('#cfood');if(!e||e.kw||e.id.startsWith('g')||
   if(!L.length){el.classList.add('hide');return;}
   const tot=L.reduce((a,z)=>a+z.v,0),all=FOOD.reduce((a,r)=>a+(r.w||0),0),n=el.dataset.all===e.id?L.length:Math.min(L.length,12);
   el.classList.remove('hide');
-  el.innerHTML=`<h3 class="cfh">Kuwait Food Imports from ${esc(e.en)} – 2025</h3><div class="cfu">${FMU()}</div><div class="kpis cfk"><div class="k"><small>Total food imports</small><b>${fv(tot)}</b></div><div class="k"><small>Share of Kuwait's food imports</small><b>${fmtN(tot/all*100,2)}%</b></div><div class="k"><small>Number of items</small><b>${L.length}</b></div></div>
+  el.innerHTML=`<h3 class="cfh">Kuwait Food Imports from ${esc(e.en)} – 2025</h3><div class="cfu">${FMU()}</div><div class="kpis cfk"><div class="k"><small>Total food imports</small><b>${fv(tot)}</b></div><div class="k"><small>Share of Kuwait's food imports</small><b>${fmtN(tot/all*100,2)}%</b></div><div class="k"><small>Tariff lines (products)</small><b>${L.length}</b></div></div>
   <div class="scroll"><table><thead><tr><th>#</th><th>HS</th><th>Product</th><th class="n">Value</th><th class="n" style="white-space:normal;min-width:6em">Share of Kuwait's imports of the item</th></tr></thead><tbody>${L.slice(0,n).map((z,i)=>`<tr><td>${i+1}</td><td><a href="#food:${z.h}">${z.h}</a></td><td style="white-space:normal;min-width:10em">${esc(H4N[z.h]||z.h)}</td><td class="n">${fv(z.v)}</td><td class="n">${z.w?fmtN(z.v/z.w*100,1)+'%':'–'}</td></tr>`).join('')}</tbody></table></div>
-  ${L.length>12&&n<L.length?`<button class="copy" id="cfAll" style="margin-top:8px">Show all items (${L.length})</button>`:''}`;
+  ${L.length>12&&n<L.length?`<button class="copy" id="cfAll" style="margin-top:8px">Show all tariff lines (products): ${L.length}</button>`:''}`;
   const b=$('#cfAll');if(b)b.onclick=()=>{el.dataset.all=e.id;foodCountry(e);};}
 
 // ---------- maps ----------
@@ -684,7 +684,7 @@ function armCounts(root){if(!cntIO||matchMedia('(prefers-reduced-motion: reduce)
 new MutationObserver(ms=>{const set=new Set();ms.forEach(m=>{const t=m.target.nodeType===1?m.target:m.target.parentElement;if(t&&!t.closest('b'))set.add(t);});set.forEach(armCounts);}).observe(document.querySelector('main'),{childList:true,subtree:true});
 
 // ---------- auto-update (bypass stale phone cache) ----------
-const BUILD='1795645384';
+const BUILD='1795645601';
 try{fetch(location.pathname+'?b='+Date.now(),{cache:'no-store'}).then(r=>r.text()).then(h=>{const m=h.match(/const BUILD='(\d+)'/);if(m&&m[1]>BUILD&&!sessionStorage.getItem('rl'+m[1])){sessionStorage.setItem('rl'+m[1],'1');location.replace(location.pathname+'?v='+m[1]+location.hash);}}).catch(()=>{});}catch(_){}
 // ---------- intro ----------
 let INTRO_HTML='';

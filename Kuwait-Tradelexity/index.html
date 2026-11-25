@@ -334,13 +334,13 @@ svg text{stroke:#0B193A}
     <div class="rank" id="gr" style="margin-top:14px"></div>
   </section>
   <section id="vFd" class="hide">
-    <div class="head"><div><h2>الواردات الغذائية حسب البند والدولة المورّدة</h2></div><div class="unit"><span class="cur" role="group" aria-label="العملة"><button id="fKd" aria-pressed="true">د.ك</button><button id="fUsd" aria-pressed="false">دولار</button></span></div></div>
-    <div class="ctl" style="position:relative"><input id="fq" type="search" placeholder="ابحث برمز HS أو اسم السلعة واختر بنداً أو أكثر (قمح، أرز، 1006…)" autocomplete="off" aria-label="بحث السلع الغذائية" list="" style="flex:1 1 260px;font:16px Almarai,sans-serif;padding:10px 14px;border-radius:10px;border:1px solid var(--line);min-height:44px;background:var(--bg);color:var(--ink)"></div>
+    <div class="head"><div><h2>الواردات الغذائية حسب البند الجمركي (السلعة) والدولة المورّدة</h2></div><div class="unit"><span class="cur" role="group" aria-label="العملة"><button id="fKd" aria-pressed="true">د.ك</button><button id="fUsd" aria-pressed="false">دولار</button></span></div></div>
+    <div class="ctl" style="position:relative"><input id="fq" type="search" placeholder="ابحث برمز HS أو اسم السلعة واختر بنداً جمركياً أو أكثر (قمح، أرز، 1006…)" autocomplete="off" aria-label="بحث السلع الغذائية" list="" style="flex:1 1 260px;font:16px Almarai,sans-serif;padding:10px 14px;border-radius:10px;border:1px solid var(--line);min-height:44px;background:var(--bg);color:var(--ink)"></div>
     <div id="fSug" class="fsug" role="listbox"></div>
     <div id="fChips" class="chips"></div>
     <div id="fSum"></div>
     <div id="fOut" style="margin-top:14px"></div>
-    <div class="note">واردات الكويت المُبلّغة لسنة 2025 على مستوى البند الرباعي (HS4)، الفصول 01–24. القيم بالمليون (التحويل 1 دولار = 0.3075 د.ك). يمكن اختيار أكثر من بند لعرض مجموع الموردين.</div>
+    <div class="note">واردات الكويت المُبلّغة لسنة 2025 على مستوى البند الجمركي الرباعي (HS4)، الفصول 01–24. القيم بالمليون (التحويل 1 دولار = 0.3075 د.ك). يمكن اختيار أكثر من بند جمركي (سلعة) لعرض مجموع الموردين.</div>
   </section>
   <section id="vOil" class="hide">
     <div class="head"><div><h2>الصادرات النفطية لدولة الكويت</h2><div class="en">النفط الخام والمشتقات والغاز</div></div><div class="unit">القيم بالمليون دينار كويتي</div></div>
@@ -461,7 +461,7 @@ ${(o5||o4)?`<div class="k oilk"><small>الصادرات النفطية إلى ${
   // top 5 HS4 products 2025 (UN Comtrade)
   const cp=$('#ctp');if(isC&&(t4.x||t4.m)){cp.classList.remove('hide');
     const tb=(Lst,ttl)=>`<div><h4 style="margin:6px 0">${ttl}</h4>`+(Lst?`<div class="scroll"><table><thead><tr><th>#</th><th>HS</th><th>السلعة</th><th class="n">القيمة</th><th class="n">الحصة</th></tr></thead><tbody>${Lst.map((r,i)=>{const v=CUR==='usd'?r.usd:r.kd;return `<tr><td>${i+1}</td><td>${esc(r.hs)}</td><td style="white-space:normal;min-width:10em">${esc(H4N[r.hs]||r.hs)}</td><td class="n">${v<0.01?'<0.01':fmtN(v,2)}</td><td class="n">${fmtN(r.s,1)}%</td></tr>`;}).join('')}</tbody></table></div>`:'<div class="note">لا توجد بيانات.</div>')+'</div>';
-    cp.innerHTML=`<h3>أهم 5 سلع في التبادل التجاري مع ${esc(e.ar)} – 2025 · ${MU()}</h3><div class="two">`+tb(t4.m,'أهم 5 سلع مستوردة من '+esc(e.ar))+tb(t4.x,'أهم 5 سلع مصدّرة إلى '+esc(e.ar))+`</div><div class="note">بيانات الكويت المُبلّغة لسنة 2025 على مستوى البند الرباعي (HS4)${CUR==='kd'?'، محوّلة من الدولار (1 دولار = 0.3075 د.ك)':''}. الحصة من إجمالي الصادرات أو الواردات مع ${esc(e.ar)}. الصادرات تشمل إعادة التصدير.</div>`;}
+    cp.innerHTML=`<h3>أهم 5 سلع في التبادل التجاري مع ${esc(e.ar)} – 2025 · ${MU()}</h3><div class="two">`+tb(t4.m,'أهم 5 سلع مستوردة من '+esc(e.ar))+tb(t4.x,'أهم 5 سلع مصدّرة إلى '+esc(e.ar))+`</div><div class="note">بيانات الكويت المُبلّغة لسنة 2025 على مستوى البند الجمركي الرباعي (HS4)${CUR==='kd'?'، محوّلة من الدولار (1 دولار = 0.3075 د.ك)':''}. الحصة من إجمالي الصادرات أو الواردات مع ${esc(e.ar)}. الصادرات تشمل إعادة التصدير.</div>`;}
   else if(isC&&e.top){cp.classList.remove('hide');cp.innerHTML='<h3>أهم 5 فصول سلعية – 2024 (مليون د.ك)</h3>'+['x','m'].map(k=>e.top[k]?`<h4>${k==='x'?'صادرات الكويت':'واردات الكويت'}</h4><table><tbody>${e.top[k].map((r,i)=>`<tr><td>${i+1}</td><td style="white-space:normal">${esc(r.hs+' – '+r.n)}</td><td class="n">${fmtN(r.kd,2)}</td><td class="n">${fmtN(r.s,1)}%</td></tr>`).join('')}</tbody></table>`:'').join('');}
   else cp.classList.add('hide');
   // extras from the issued country report
@@ -502,21 +502,21 @@ function foodItem(h){const r=FBY[h];if(!r)return '';const L=foodSup(r),T=r.w||L.
 function foodSel(){const rs=FSEL.map(h=>FBY[h]).filter(Boolean),T=rs.reduce((a,r)=>a+(r.w||0),0),sup={};
   rs.forEach(r=>Object.entries(r.p).forEach(([id,v])=>{sup[id]=(sup[id]||0)+v;}));
   const L=Object.entries(sup).map(([id,v])=>({id,v,c:BY[id]})).filter(z=>z.c).sort((a,b)=>b.v-a.v);
-  let h='';if(rs.length>1)h+=`<div class="card fi"><h3>المجموع للبنود المختارة (${rs.length})</h3><div class="note" style="margin-top:0">${rs.map(r=>r.h+' '+esc(H4N[r.h]||'')).join(' + ')}<br>إجمالي واردات الكويت 2025: <b>${fv(T)}</b> ${FMU()} · عدد الموردين: ${L.length}</div>${supTable(L,T)}</div>`;
+  let h='';if(rs.length>1)h+=`<div class="card fi"><h3>المجموع للبنود الجمركية (السلع) المختارة: ${rs.length}</h3><div class="note" style="margin-top:0">${rs.map(r=>r.h+' '+esc(H4N[r.h]||'')).join(' + ')}<br>إجمالي واردات الكويت 2025: <b>${fv(T)}</b> ${FMU()} · عدد الموردين: ${L.length}</div>${supTable(L,T)}</div>`;
   return h+rs.map(r=>foodItem(r.h)).join('');}
 function food(){show('vFd');const out=$('#fOut');
   const tot=FOOD.reduce((a,r)=>a+(r.w||0),0),sup={};FOOD.forEach(r=>Object.entries(r.p).forEach(([id,v])=>{sup[id]=(sup[id]||0)+v;}));
   const ts=Object.entries(sup).filter(([id])=>BY[id]).sort((a,b)=>b[1]-a[1]).slice(0,10);
-  $('#fSum').innerHTML=`<div class="kpis"><div class="k"><small>واردات الكويت الغذائية 2025</small><b>${fv(tot)}</b><small>${FMU()}</small></div><div class="k"><small>عدد البنود الغذائية (HS4)</small><b>${FOOD.length}</b></div><div class="k"><small>عدد الدول المورّدة</small><b>${Object.keys(sup).filter(id=>BY[id]).length}</b></div></div>`;
+  $('#fSum').innerHTML=`<div class="kpis"><div class="k"><small>واردات الكويت الغذائية 2025</small><b>${fv(tot)}</b><small>${FMU()}</small></div><div class="k"><small>عدد البنود الجمركية (السلع) الغذائية – HS4</small><b>${FOOD.length}</b></div><div class="k"><small>عدد الدول المورّدة</small><b>${Object.keys(sup).filter(id=>BY[id]).length}</b></div></div>`;
   const FCH=HS.filter(h=>+h.id>=1&&+h.id<=23&&h.id!=='05'&&h.id!=='06'),sumC=k=>FCH.reduce((a,h)=>a+g(h.m,k),0);
   const u=v=>{const z=(CUR==='usd'?v*RATE:v)/1000;return fmtN(z,2);},cg=(a,b)=>{const c=pct(a,b);return c==null||!isFinite(c)?'–':`<span class="${c>=0?'up':'dn'}" dir="ltr">${c>=0?'+':'−'}${fmtN(Math.abs(c),1)}%</span>`;};
   $('#fSum').innerHTML=`<div class="card" style="margin-bottom:16px"><h3>الواردات الغذائية حتى نهاية النصف الأول 2026 – ${FMU()}</h3><div class="kpis" style="margin:8px 0"><div class="k"><small>النصف الأول 2026</small><b>${u(sumC('2026-H1'))}</b>${cg(sumC('2026-H1'),sumC('2025-H1'))}</div><div class="k"><small>النصف الأول 2025</small><b>${u(sumC('2025-H1'))}</b></div><div class="k"><small>2025 (العام كاملاً)</small><b>${u(sumC('2025'))}</b></div></div>
    <div class="scroll"><table class="cmp"><thead><tr><th>الفصل</th><th class="n">النصف الأول 2026</th><th class="n">التغير</th><th class="n">النصف الأول 2025</th><th class="n">2025</th></tr></thead><tbody>${FCH.map(h=>`<tr><td><b>${h.id}</b> ${esc(CHS[h.id]||h.ar)}</td><td class="n"><b>${u(g(h.m,'2026-H1'))}</b></td><td class="n">${cg(g(h.m,'2026-H1'),g(h.m,'2025-H1'))}</td><td class="n">${u(g(h.m,'2025-H1'))}</td><td class="n">${u(g(h.m,'2025'))}</td></tr>`).join('')}</tbody></table></div>
-   <div class="note">بيانات 2026 متاحة على مستوى الفصل للكويت ككل فقط؛ أما توزيع البنود على الدول المورّدة أدناه فهو لسنة 2025 لأن بيانات 2026 حسب الدولة لم تُنشر بعد.</div></div>`+$('#fSum').innerHTML;
+   <div class="note">بيانات 2026 متاحة على مستوى الفصل للكويت ككل فقط؛ أما توزيع البنود الجمركية (السلع) على الدول المورّدة أدناه فهو لسنة 2025 لأن بيانات 2026 حسب الدولة لم تُنشر بعد.</div></div>`+$('#fSum').innerHTML;
   $('#fChips').innerHTML=FSEL.length?FSEL.map(h=>`<button class="chip" data-x="${h}">${h} ${esc(H4N[h]||'')} ✕</button>`).join('')+'<button class="chip clr" data-x="*">مسح الكل</button>':'';
   if(FSEL.length){out.innerHTML=foodSel();try{history.replaceState(null,'','#food:'+FSEL.join(','));}catch(_){}return;}
   const byc={};FOOD.forEach(r=>{(byc[r.h.slice(0,2)]=byc[r.h.slice(0,2)]||[]).push(r);});
-  out.innerHTML=`<div class="card"><h3>الواردات الغذائية حسب الفصل – 2025 · ${FMU()}</h3><div class="note" style="margin-top:0">اضغط على الفصل لعرض بنوده، ثم على البند لعرض الدول المورّدة.</div><div class="scroll"><table class="fct"><thead><tr><th>HS</th><th>الفصل</th><th class="n">القيمة</th><th class="n">الحصة</th><th>أكبر مورّد</th></tr></thead><tbody>${Object.keys(byc).sort().map(c=>{const rs=byc[c],ct=rs.reduce((a,r)=>a+(r.w||0),0),s={};rs.forEach(r=>Object.entries(r.p).forEach(([id,v])=>{s[id]=(s[id]||0)+v;}));const t=Object.entries(s).filter(([id])=>BY[id]).sort((a,b)=>b[1]-a[1])[0];
+  out.innerHTML=`<div class="card"><h3>الواردات الغذائية حسب الفصل – 2025 · ${FMU()}</h3><div class="note" style="margin-top:0">اضغط على الفصل لعرض بنوده الجمركية (السلع)، ثم على البند الجمركي لعرض الدول المورّدة.</div><div class="scroll"><table class="fct"><thead><tr><th>HS</th><th>الفصل</th><th class="n">القيمة</th><th class="n">الحصة</th><th>أكبر مورّد</th></tr></thead><tbody>${Object.keys(byc).sort().map(c=>{const rs=byc[c],ct=rs.reduce((a,r)=>a+(r.w||0),0),s={};rs.forEach(r=>Object.entries(r.p).forEach(([id,v])=>{s[id]=(s[id]||0)+v;}));const t=Object.entries(s).filter(([id])=>BY[id]).sort((a,b)=>b[1]-a[1])[0];
     return `<tr class="fc" data-c="${c}"><td><b>${c}</b></td><td>${esc(CHS[c]||chName(c))} <span class="cnt">(${rs.length})</span></td><td class="n">${fv(ct)}</td><td class="n">${fmtN(ct/tot*100,1)}%</td><td>${t?esc(BY[t[0]].ar)+' <span class="cnt">'+fmtN(t[1]/ct*100,0)+'%</span>':'–'}</td></tr>`;}).join('')}</tbody></table></div></div>
   <div class="card" style="margin-top:16px"><h3>الدول العشر الأولى المورّدة للسلع الغذائية – 2025</h3><div class="scroll"><table><thead><tr><th>#</th><th>الدولة</th><th class="n">القيمة</th><th class="n">الحصة</th></tr></thead><tbody>${ts.map(([id,v],i)=>`<tr><td>${i+1}</td><td><a href="#c${esc(id)}">${esc(BY[id].ar)}</a></td><td class="n">${fv(v)}</td><td class="n">${fmtN(v/tot*100,1)}%</td></tr>`).join('')}</tbody></table></div></div>`;
   try{history.replaceState(null,'','#food');}catch(_){}
@@ -528,9 +528,9 @@ function foodCountry(e){const el=$('#cfood');if(!e||e.kw||e.id.startsWith('g')||
   if(!L.length){el.classList.add('hide');return;}
   const tot=L.reduce((a,z)=>a+z.v,0),all=FOOD.reduce((a,r)=>a+(r.w||0),0),n=el.dataset.all===e.id?L.length:Math.min(L.length,12);
   el.classList.remove('hide');
-  el.innerHTML=`<h3 class="cfh">واردات الكويت الغذائية من ${esc(e.ar)} – 2025</h3><div class="cfu">${FMU()}</div><div class="kpis cfk"><div class="k"><small>إجمالي الواردات الغذائية</small><b>${fv(tot)}</b></div><div class="k"><small>الحصة من واردات الكويت الغذائية</small><b>${fmtN(tot/all*100,2)}%</b></div><div class="k"><small>عدد البنود</small><b>${L.length}</b></div></div>
+  el.innerHTML=`<h3 class="cfh">واردات الكويت الغذائية من ${esc(e.ar)} – 2025</h3><div class="cfu">${FMU()}</div><div class="kpis cfk"><div class="k"><small>إجمالي الواردات الغذائية</small><b>${fv(tot)}</b></div><div class="k"><small>الحصة من واردات الكويت الغذائية</small><b>${fmtN(tot/all*100,2)}%</b></div><div class="k"><small>عدد البنود الجمركية (السلع)</small><b>${L.length}</b></div></div>
   <div class="scroll"><table><thead><tr><th>#</th><th>HS</th><th>السلعة</th><th class="n">القيمة</th><th class="n" style="white-space:normal;min-width:6em">حصتها من واردات الكويت من السلعة</th></tr></thead><tbody>${L.slice(0,n).map((z,i)=>`<tr><td>${i+1}</td><td><a href="#food:${z.h}">${z.h}</a></td><td style="white-space:normal;min-width:10em">${esc(H4N[z.h]||z.h)}</td><td class="n">${fv(z.v)}</td><td class="n">${z.w?fmtN(z.v/z.w*100,1)+'%':'–'}</td></tr>`).join('')}</tbody></table></div>
-  ${L.length>12&&n<L.length?`<button class="copy" id="cfAll" style="margin-top:8px">عرض جميع البنود (${L.length})</button>`:''}`;
+  ${L.length>12&&n<L.length?`<button class="copy" id="cfAll" style="margin-top:8px">عرض جميع البنود الجمركية (السلع): ${L.length}</button>`:''}`;
   const b=$('#cfAll');if(b)b.onclick=()=>{el.dataset.all=e.id;foodCountry(e);};}
 
 // ---------- maps ----------
@@ -683,7 +683,7 @@ function armCounts(root){if(!cntIO||matchMedia('(prefers-reduced-motion: reduce)
 new MutationObserver(ms=>{const set=new Set();ms.forEach(m=>{const t=m.target.nodeType===1?m.target:m.target.parentElement;if(t&&!t.closest('b'))set.add(t);});set.forEach(armCounts);}).observe(document.querySelector('main'),{childList:true,subtree:true});
 
 // ---------- auto-update (bypass stale phone cache) ----------
-const BUILD='1795645384';
+const BUILD='1795645601';
 try{fetch(location.pathname+'?b='+Date.now(),{cache:'no-store'}).then(r=>r.text()).then(h=>{const m=h.match(/const BUILD='(\d+)'/);if(m&&m[1]>BUILD&&!sessionStorage.getItem('rl'+m[1])){sessionStorage.setItem('rl'+m[1],'1');location.replace(location.pathname+'?v='+m[1]+location.hash);}}).catch(()=>{});}catch(_){}
 // ---------- intro ----------
 let INTRO_HTML='';
