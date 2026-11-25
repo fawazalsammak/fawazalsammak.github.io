@@ -284,6 +284,8 @@ svg text{stroke:#0B193A}
 .xpl div{text-align:start}.xpt>div:first-child{text-align:center}
 table td.n,table th.n{text-align:center!important}table th.n{direction:rtl;unicode-bidi:plaintext}
 #back{display:none!important}
+.csch{position:relative;margin:0 0 14px}.csch input{width:100%;box-sizing:border-box;font:16px Almarai,sans-serif;padding:11px 14px;border-radius:12px;min-height:46px;background:#ffffff12;color:#fff;border:1px solid #D4B85A66}.csch input::placeholder,#pQ::placeholder{color:#a9b6cf}
+#pSug{margin-top:-4px}#pSel .kpis{grid-template-columns:repeat(2,minmax(0,1fr))}
 .bento .lnk .go{left:auto;right:14px}table th.n{direction:ltr}
 </style>
 </head>
@@ -304,7 +306,6 @@ table td.n,table th.n{text-align:center!important}table th.n{direction:rtl;unico
   <div class="brand"><img src="emblem.png" alt="State of Kuwait emblem" width="54" height="56"><div><div class="min">Ministry of Commerce and Industry</div><h1>Kuwait Foreign Trade Statistics</h1></div></div>
   <p id="sub">Foreign trade statistics by country and group</p>
   <div class="bar">
-    <input id="q" type="search" placeholder="Search a country or group…" autocomplete="off" aria-label="Search">
     <div class="tabs" role="group" aria-label="View">
       <button id="tKw" aria-pressed="true">Overview</button>
       <button id="tTop" aria-pressed="false">Top trading partners</button>
@@ -315,7 +316,6 @@ table td.n,table th.n{text-align:center!important}table th.n{direction:rtl;unico
       <button id="tGcc" aria-pressed="false">Intra-GCC trade</button>
     </div>
   </div>
-  <div id="sugg" role="listbox"></div>
 </header>
 <main>
 <button id="back" class="back hide" type="button" aria-label="Back to home"><span>←</span> Back to home</button><button id="backIntro" class="back alt hide" type="button" aria-label="Opening page"><span>←</span> Opening page</button>
@@ -345,6 +345,7 @@ table td.n,table th.n{text-align:center!important}table th.n{direction:rtl;unico
   </section>
   <section id="vTop" class="hide">
     <div class="head"><h2>Kuwait's Main Trading Partners</h2><div class="unit">Values in KD million · Ranking excludes goods of unspecified destination (oil and oil-product exports)</div></div>
+    <div class="csch"><input id="q" type="search" placeholder="Search a country or group…" autocomplete="off" aria-label="Search"><div id="sugg" role="listbox"></div></div>
     <div class="ctl">
       <select id="sP" aria-label="Period"></select>
       <select id="sM" aria-label="Indicator"><option value="v">Total trade</option><option value="x">Exports</option><option value="m">Imports</option><option value="b">Trade balance (surplus)</option><option value="bn">Trade balance (deficit)</option></select>
@@ -388,15 +389,20 @@ table td.n,table th.n{text-align:center!important}table th.n{direction:rtl;unico
   </section>
   <section id="vPr" class="hide">
     <div class="head"><h2>Kuwait's Exports and Imports by Product</h2><div class="unit">Values in KD million · Harmonized System (HS) chapters</div></div>
+    <div class="psch"><input id="pQ" type="search" autocomplete="off" placeholder="Search by HS code or product name and pick one or more (cars, medicines, gold, 87…)" aria-label="Product search"></div>
+    <div id="pSug" class="fsug" role="listbox"></div>
+    <div id="pChips" class="chips"></div>
+    <div id="pSel"></div>
+    <div id="pAll">
     <div class="kpis pk" id="pK"></div>
     <div class="ctl">
       <select id="pF" aria-label="Direction"><option value="m">Imports</option><option value="x">Exports</option></select>
       <select id="pP" aria-label="Period"></select>
       <select id="pN" aria-label="Count"><option>20</option><option>40</option><option>97</option></select>
     </div>
-    <div class="psch"><input id="pQ" type="search" autocomplete="off" placeholder="Search by keyword or chapter code (cars, medicines, gold, 87…)" aria-label="Product search"><span id="pQn"></span></div>
     <div class="scroll"><table id="pT"></table></div><div class="note" id="pTn"></div>
     <div class="card" style="margin-top:16px"><h3 id="sT">Top products</h3><div class="scroll"><table id="sTb"></table></div></div>
+    </div>
   </section>
   <footer id="ft"></footer>
 <nav class="bnav" aria-label="Navigation"><button data-go="top"><span>Trading partners</span></button><button data-go="groups"><span>Economic groups</span></button><button data-go="food"><span>Food security</span></button><button data-go="kw" class="ctr"><b>Home</b></button><button data-go="products"><span>Products</span></button><button data-go="oil"><span>Oil</span></button><button data-go="gcc"><span>Intra-GCC trade</span></button></nav>
@@ -718,8 +724,32 @@ function armCounts(root){if(!cntIO||matchMedia('(prefers-reduced-motion: reduce)
 new MutationObserver(ms=>{const set=new Set();ms.forEach(m=>{const t=m.target.nodeType===1?m.target:m.target.parentElement;if(t&&!t.closest('b'))set.add(t);});set.forEach(armCounts);}).observe(document.querySelector('main'),{childList:true,subtree:true});
 
 // ---------- auto-update (bypass stale phone cache) ----------
-const BUILD='1795648000';
+const BUILD='1795648632';
 try{fetch(location.pathname+'?b='+Date.now(),{cache:'no-store'}).then(r=>r.text()).then(h=>{const m=h.match(/const BUILD='(\d+)'/);if(m&&m[1]>BUILD&&!sessionStorage.getItem('rl'+m[1])){sessionStorage.setItem('rl'+m[1],'1');location.replace(location.pathname+'?v='+m[1]+location.hash);}}).catch(()=>{});}catch(_){}
+
+// ---------- products: commodity search & selection ----------
+function pSugR(){const box=$('#pSug'),q=nrm($('#pQ').value.trim());if(!q){box.style.display='none';return;}
+  const lat=/^[a-z0-9 ]+$/.test(q),has=x=>lat?(' '+nrm(x).replace(/[^a-z0-9]+/g,' ')).includes(' '+q):nrm(x).includes(q);
+  const ch=HS.filter(h=>h.id.startsWith(q)||has(h.en)||has(h.en)).map(h=>({id:h.id,lab:h.en,sub:'whole chapter'}));
+  const h4=Object.keys(H4N).filter(k=>k.startsWith(q)||has(H4N[k])).slice(0,40).map(k=>({id:k.slice(0,2),lab:k+' '+H4N[k],sub:'in chapter '+k.slice(0,2)})).filter(z=>HS.some(h=>h.id===z.id));
+  const L=[...ch,...h4];const ids=[...new Set(L.map(z=>z.id))];
+  box.innerHTML=L.length?(ids.length>1?`<button class="all" data-h="${ids.join(',')}">＋ Select all (${ids.length})</button>`:'')+L.map(z=>`<button data-h="${z.id}" class="${PSEL.includes(z.id)?'on':''}"><b>${z.id}</b> ${esc(z.lab)}<span>${esc(z.sub)}</span></button>`).join(''):'<div style="padding:12px">No results</div>';box.style.display='block';}
+function pChipsR(){$('#pChips').innerHTML=PSEL.length?PSEL.map(h=>{const c=HS.find(z=>z.id===h);return `<button class="chip" data-x="${h}">${h} ${esc(c?(CHS[h]||c.en).split(/[؛،,;]/)[0]:'')} ✕</button>`;}).join('')+'<button class="chip clr" data-x="*">Clear all</button>':'';}
+function pSelR(){const cs=PSEL.map(h=>HS.find(z=>z.id===h)).filter(Boolean);const X=k=>cs.reduce((a,c)=>a+g(c.x,k),0),M=k=>cs.reduce((a,c)=>a+g(c.m,k),0);
+  const v=x=>{const z=(CUR==='usd'?x*RATE:x)/(UNIT==='m'?1000:1);return (z<0?'-':'')+fmtN(Math.abs(z),UNIT==='m'?2:1);};
+  const cg=(a,b)=>{const c=pct(a,b);return c==null||!isFinite(c)||!b?'':`<i class="${c>=0?'up':'dn'}" dir="ltr">${c>=0?'▲':'▼'} ${fmtN(Math.abs(c),1)}%</i>`;};
+  const per=[['H1 2026','2026-H1','hl'],['Q2 2026','2026-Q2',''],['Q1 2026','2026-Q1',''],['2025 (full year)','2025',''],['H2 2025','2025-H2',''],['H1 2025','2025-H1',''],...[...Y].reverse().slice(1).map(y=>[y,y,''])];
+  const nm=c=>c.id+' – '+c.en,oil=cs.some(c=>c.id==='27');
+  return `<div class="card fi"><h3 class="cfh">${cs.length>1?'Total for selected chapters: '+cs.length:esc(nm(cs[0]))}</h3>${cs.length>1?`<div class="note" style="margin-top:0">${cs.map(c=>esc(c.id+' '+(CHS[c.id]||c.en).split(/[؛،,;]/)[0])).join(' + ')}</div>`:''}<div class="cfu">${CUR==='usd'?'USD':'KD'} ${UNIT==='m'?'million':'thousand'}</div>
+   <div class="kpis"><div class="kgh"><b>H1 2026</b><small>compared with H1 2025</small></div>
+   <div class="k h1k"><small>Exports</small><b>${v(X('2026-H1'))}</b>${cg(X('2026-H1'),X('2025-H1'))}</div>
+   <div class="k h1k"><small>Imports</small><b>${v(M('2026-H1'))}</b>${cg(M('2026-H1'),M('2025-H1'))}</div>
+   <div class="k h1k" style="grid-column:1/-1"><small>Trade balance</small><b class="${X('2026-H1')-M('2026-H1')>=0?'up':'dn'}" dir="ltr">${v(X('2026-H1')-M('2026-H1'))}</b></div>
+   <div class="kgh"><b>Year 2025</b><small>compared with 2024</small></div>
+   <div class="k"><small>Exports</small><b>${v(X('2025'))}</b>${cg(X('2025'),X('2024'))}</div>
+   <div class="k"><small>Imports</small><b>${v(M('2025'))}</b>${cg(M('2025'),M('2024'))}</div></div>
+   <div class="scroll"><table class="cmp"><thead><tr><th>Period</th><th class="n">Exports</th><th class="n">Imports</th><th class="n">Trade balance</th></tr></thead><tbody>${per.map(([l,k,c])=>`<tr class="${c}"><td>${l}</td><td class="n">${v(X(k))}</td><td class="n">${v(M(k))}</td><td class="n ${X(k)-M(k)>=0?'up':'dn'}">${v(X(k)-M(k))}</td></tr>`).join('')}</tbody></table></div>
+   ${oil?'<div class="note">Chapter 27 includes oil exports.</div>':''}</div>`;}
 // ---------- intro ----------
 let INTRO_HTML='';
 function showIntro(){if(!INTRO_HTML)return;if(!$('#intro'))document.body.insertAdjacentHTML('afterbegin',INTRO_HTML);window.scrollTo(0,0);intro(true);}
@@ -748,13 +778,14 @@ function rank(){const p=$('#sP').value,mk=$('#sM').value,n=+$('#sN').value;
 function groups(){const p='2025',list=G.map(c=>({c,x:g(c.x,p),m:g(c.m,p)})).sort((a,b)=>(b.x+b.m)-(a.x+a.m)),mx=Math.max(...list.map(r=>r.x+r.m));
   $('#gr').innerHTML=list.map((r,i)=>`<button class="row" data-g="${esc(r.c.id)}"><span class="v">${i+1}</span><span class="nm">${esc(r.c.en)}</span><span class="trk"><i style="width:${r.x/mx*100}%;background:var(--mint)"></i><i style="width:${r.m/mx*100}%;background:var(--navy)"></i></span><span class="v">${fmtN((r.x+r.m)/1000,1)}</span></button>`).join('');}
 const nrm=t=>String(t||'').toLowerCase().replace(/[أإآ]/g,'ا').replace(/ة/g,'ه').replace(/ى/g,'ي').replace(/[ًٌٍَُِّْ]/g,'');
-function prods(){const fl=$('#pF').value,p=$('#pP').value,n=+$('#pN').value,q=nrm($('#pQ').value.trim());
+let PSEL=[];
+function prods(){const fl=$('#pF').value,p=$('#pP').value,n=+$('#pN').value,q='';
+  pChipsR();$('#pAll').classList.toggle('hide',!!PSEL.length);if(PSEL.length){$('#pSel').innerHTML=pSelR();return;}$('#pSel').innerHTML='';
   const prev=p.includes('-')?p.replace(/^(\d{4})/,y=>String(+y-1)):String(+p-1);
   const BH=HS.filter(h=>!(fl==='x'&&h.id==='27')),tot=BH.reduce((a,h)=>a+g(h[fl],p),0);
   const hs4=Object.keys(H4N);
   const lat=/^[a-z0-9 ]+$/.test(q),has=x=>lat?(' '+nrm(x).replace(/[^a-z0-9]+/g,' ')).includes(' '+q):nrm(x).includes(q);const hit=h=>{if(!q)return {ok:true,sub:[]};const sub=hs4.filter(k=>k.slice(0,2)===h.id&&(k.startsWith(q)||has(H4N[k]))).slice(0,4);return {ok:h.id.startsWith(q)||has(h.en)||has(h.en)||sub.length>0,sub};};
   let list=BH.map(h=>({h,v:g(h[fl],p),pv:g(h[fl],prev),m:hit(h)})).filter(r=>r.v>0&&r.m.ok).sort((a,b)=>b.v-a.v);
-  $('#pQn').textContent=q?(list.length?list.length+' results':'No results'):'';
   if(!q)list=list.slice(0,n);
   // summary cards – oil and non-oil kept separate
   const nx=tv('x',p)-tv('oil',p),nxp=tv('x',prev)-tv('oil',prev),ox=tv('oil',p),oxp=tv('oil',prev),tm=tv('m',p),tmp=tv('m',prev),bal=nx-tm;
@@ -776,13 +807,13 @@ function prods(){const fl=$('#pF').value,p=$('#pP').value,n=+$('#pN').value,q=nr
 function search(t){t=t.trim().toLowerCase();const box=$('#sugg');if(!t){box.style.display='none';return;}
   const hits=[...C,...G].filter(c=>c.ar.includes(t)||c.en.toLowerCase().includes(t)).slice(0,12);
   box.innerHTML=hits.length?hits.map(c=>`<button data-k="${esc(c.id)}"><b>${esc(c.en)}</b><span>${esc(c.ar)}</span></button>`).join(''):'<div style="padding:12px">No results</div>';box.style.display='block';}
-function route(){const h=location.hash.slice(1);if(h==='gcc'){gcc();return;}if(h.startsWith('c')&&BY[h.slice(1)])render(BY[h.slice(1)]);else if(h.startsWith('g')&&BY[h])render(BY[h]);else if(h==='top'){show('vTop');rank();}else if(h==='groups'){show('vGr');groups();}else if(h==='products'){show('vPr');prods();}else if(h==='food')food();else if(h==='oil')oil();else if(h.startsWith('food:')){FSEL=h.slice(5).split(',').filter(x=>FBY[x]);food();}else render(entKw());}
+function route(){const h=location.hash.slice(1);if(h==='gcc'){gcc();return;}if(h.startsWith('c')&&BY[h.slice(1)])render(BY[h.slice(1)]);else if(h.startsWith('g')&&BY[h])render(BY[h]);else if(h==='top'){show('vTop');rank();}else if(h==='groups'){show('vGr');groups();}else if(h==='products'){show('vPr');prods();}else if(h.startsWith('products:')){PSEL=h.slice(9).split(',').filter(x=>HS.some(z=>z.id===x));show('vPr');prods();}else if(h==='food')food();else if(h==='oil')oil();else if(h.startsWith('food:')){FSEL=h.slice(5).split(',').filter(x=>FBY[x]);food();}else render(entKw());}
 $('#q').addEventListener('input',e=>search(e.target.value));
 $('#sugg').addEventListener('click',e=>{const b=e.target.closest('button');if(!b)return;render(BY[b.dataset.k]);$('#sugg').style.display='none';$('#q').value='';window.scrollTo(0,0);});
 $('#tKw').onclick=()=>render(entKw());$('#backIntro').onclick=()=>showIntro();document.querySelector('.brand').style.cursor='pointer';document.querySelector('.brand').onclick=()=>showIntro();$('#back').onclick=()=>{render(entKw());try{history.pushState(null,'',location.pathname+location.search);}catch(_){}window.scrollTo({top:0,behavior:'smooth'});};
 $('#tTop').onclick=()=>{show('vTop');rank();try{history.replaceState(null,'','#top');}catch(_){}};
 $('#tPr').onclick=()=>{show('vPr');prods();try{history.replaceState(null,'','#products');}catch(_){}};
-['pF','pP','pN'].forEach(id=>$('#'+id).addEventListener('change',prods));$('#pQ').addEventListener('input',prods);
+['pF','pP','pN'].forEach(id=>$('#'+id).addEventListener('change',prods));$('#pQ').addEventListener('input',pSugR);$('#pSug').addEventListener('click',ev=>{const b=ev.target.closest('button');if(!b)return;b.dataset.h.split(',').forEach(h=>{if(!PSEL.includes(h))PSEL.push(h);});$('#pQ').value='';$('#pSug').style.display='none';prods();requestAnimationFrame(()=>{const t=$('#pChips');window.scrollTo({top:t.getBoundingClientRect().top+scrollY-90,behavior:'smooth'});});});$('#pChips').addEventListener('click',ev=>{const b=ev.target.closest('button');if(!b)return;const x=b.dataset.x;PSEL=x==='*'?[]:PSEL.filter(h=>h!==x);prods();});
 $('#tGr').onclick=()=>{show('vGr');groups();try{history.replaceState(null,'','#groups');}catch(_){}};
 ['sP','sM','sN'].forEach(id=>$('#'+id).addEventListener('change',rank));
 $('#rk').addEventListener('click',e=>{const b=e.target.closest('.row');if(b){render(BY[b.dataset.id]);window.scrollTo(0,0);}});
