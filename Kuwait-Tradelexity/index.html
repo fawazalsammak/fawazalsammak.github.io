@@ -258,6 +258,8 @@ svg text{stroke:#0B193A}
  .bnav button.ctr svg{width:26px;height:26px;color:#0B193A;stroke-width:2}
  .bnav button.ctr.on b{box-shadow:0 0 0 5px #0B193A,0 0 26px #D4B85Acc,0 8px 22px #D4B85A88}.bnav button.ctr.on svg{filter:none}
  body{padding-bottom:96px}}
+@media(max-width:760px){.bnav{align-items:center}.bnav button{justify-content:center;font-size:11.5px!important;min-height:44px}.bnav button.on span{text-shadow:0 0 10px #D4B85Acc}.bnav button.on::after{content:"";width:18px;height:2px;border-radius:2px;background:#D4B85A;box-shadow:0 0 8px #D4B85A;margin-top:3px}
+ .bnav button.ctr{align-self:flex-end}.bnav button.ctr b{font:800 12px Almarai,sans-serif;color:#0B193A;width:60px;height:60px}.bnav button.ctr.on::after{display:none}}
 </style>
 </head>
 <body>
@@ -370,7 +372,7 @@ svg text{stroke:#0B193A}
     <div class="card" style="margin-top:16px"><h3 id="sT">أهم السلع</h3><div class="scroll"><table id="sTb"></table></div></div>
   </section>
   <footer id="ft"></footer>
-<nav class="bnav" aria-label="التنقل"><button data-go="top"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="8" cy="9" r="3"/><circle cx="16" cy="9" r="3"/><path d="M2 20c0-3 3-5 6-5s6 2 6 5M12 20c0-3 2-5 4-5s6 2 6 5"/></svg><span>الشركاء</span></button><button data-go="groups"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3c3 3 3 15 0 18M12 3c-3 3-3 15 0 18"/></svg><span>المجموعات</span></button><button data-go="food"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 21c-5-3-8-7-8-11a4 4 0 0 1 8-1 4 4 0 0 1 8 1c0 4-3 8-8 11z"/></svg><span>الأمن الغذائي</span></button><button data-go="kw" class="ctr"><b><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 11l9-7 9 7v9a1 1 0 0 1-1 1h-5v-6h-6v6H4a1 1 0 0 1-1-1z"/></svg></b><span>الرئيسية</span></button><button data-go="products"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="7" width="18" height="13" rx="2"/><path d="M3 11h18M9 7V4h6v3"/></svg><span>السلع</span></button><button data-go="oil"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3c3 4 6 7 6 11a6 6 0 0 1-12 0c0-4 3-7 6-11z"/></svg><span>النفط</span></button><button data-go="gcc"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2l8 4.5v9L12 20l-8-4.5v-9z"/><path d="M12 11l8-4.5M12 11v9M12 11L4 6.5"/></svg><span>الخليج</span></button></nav>
+<nav class="bnav" aria-label="التنقل"><button data-go="top"><span>الشركاء</span></button><button data-go="groups"><span>المجموعات</span></button><button data-go="food"><span>الأمن الغذائي</span></button><button data-go="kw" class="ctr"><b>الرئيسية</b></button><button data-go="products"><span>السلع</span></button><button data-go="oil"><span>النفط</span></button><button data-go="gcc"><span>الخليج</span></button></nav>
 </main>
 <script>
 {
@@ -679,7 +681,7 @@ function armCounts(root){if(!cntIO||matchMedia('(prefers-reduced-motion: reduce)
 new MutationObserver(ms=>{const set=new Set();ms.forEach(m=>{const t=m.target.nodeType===1?m.target:m.target.parentElement;if(t&&!t.closest('b'))set.add(t);});set.forEach(armCounts);}).observe(document.querySelector('main'),{childList:true,subtree:true});
 
 // ---------- auto-update (bypass stale phone cache) ----------
-const BUILD='1795643907';
+const BUILD='1795644069';
 try{fetch(location.pathname+'?b='+Date.now(),{cache:'no-store'}).then(r=>r.text()).then(h=>{const m=h.match(/const BUILD='(\d+)'/);if(m&&m[1]>BUILD&&!sessionStorage.getItem('rl'+m[1])){sessionStorage.setItem('rl'+m[1],'1');location.replace(location.pathname+'?v='+m[1]+location.hash);}}).catch(()=>{});}catch(_){}
 // ---------- intro ----------
 let INTRO_HTML='';
