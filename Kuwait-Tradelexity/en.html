@@ -337,7 +337,7 @@ svg text{stroke:#0B193A}
     <div class="rank" id="gr" style="margin-top:14px"></div>
   </section>
   <section id="vFd" class="hide">
-    <div class="head"><div><h2>Food Imports by Tariff Line (Product) and Supplier</h2></div><div class="unit"><span class="cur" role="group" aria-label="Currency"><button id="fKd" aria-pressed="true">KD</button><button id="fUsd" aria-pressed="false">USD</button></span></div></div>
+    <div class="head"><div><h2>Food Imports by Tariff Line (Product) and Supplier</h2></div><div class="unit"><span class="cur" role="group" aria-label="Currency"><button id="fKd" aria-pressed="true">KD</button><button id="fUsd" aria-pressed="false">USD</button></span> <span class="cur" role="group" aria-label="Unit"><button id="fM" aria-pressed="true">Million</button><button id="fK" aria-pressed="false">Thousand</button></span></div></div>
     <div class="ctl" style="position:relative"><input id="fq" type="search" placeholder="Search by HS code or product name; select one or more tariff lines (wheat, rice, 1006…)" autocomplete="off" aria-label="Food product search" list="" style="flex:1 1 260px;font:16px Almarai,sans-serif;padding:10px 14px;border-radius:10px;border:1px solid var(--line);min-height:44px;background:var(--bg);color:var(--ink)"></div>
     <div id="fSug" class="fsug" role="listbox"></div>
     <div id="fChips" class="chips"></div>
@@ -420,8 +420,8 @@ function show(v){const bk=$('#back'),bo=$('#backIntro');if(bk)bk.classList.toggl
 let CUR='kd',UNIT='m';const RATE=3.21,UK=0.3075;
 function unitFor(max){const usd=CUR==='usd',c=usd?'USD':'KD';U=UNIT==='m'?{div:1000,lab:c+' million',d:2}:{div:1,lab:c+' thousand',d:1};U.k=usd?RATE:1;}
 const f=v=>{if(v==null)return '–';const z=v*(U.k||1)/U.div;const r=z!==0&&Math.abs(z)<0.005?(z<0?'−':'')+'<0.01':fmtN(z,U.d);return z<0?'\u2066'+r+'\u2069':r;};
-const mv=kd=>CUR==='usd'?kd/UK:kd; // ITC / Comtrade values stored in million KD
-const MU=()=>CUR==='usd'?'USD million':'KD million';
+const mv=kd=>(CUR==='usd'?kd/UK:kd)*(UNIT==='m'?1:1000); // ITC / Comtrade values stored in million KD
+const MU=()=>(CUR==='usd'?'USD':'KD')+(UNIT==='m'?' million':' thousand');
 const pc=(v,d=2)=>v==null||!isFinite(v)?'–':fmtN(v,d)+'%';
 function rankOf(e,key,L){const list=C.filter(c=>(key==='m'||c.id!=='603')&&g(c[key],L)>0).map(c=>[c.id,g(c[key],L)]).sort((a,b)=>b[1]-a[1]);const r=list.findIndex(z=>z[0]===e.id);return r>=0?r+1:null;}
 function render(e){cur=e;show('vEnt');
@@ -468,7 +468,7 @@ ${(o5||o4)?`<div class="k oilk"><small>Oil exports to ${esc(e.en)} 2025</small><
     it.innerHTML=h;}else it.classList.add('hide');
   // top 5 HS4 products 2025 (UN Comtrade)
   const cp=$('#ctp');if(isC&&(t4.x||t4.m)){cp.classList.remove('hide');
-    const tb=(Lst,ttl)=>`<div><h4 style="margin:6px 0">${ttl}</h4>`+(Lst?`<div class="scroll"><table><thead><tr><th>#</th><th>HS</th><th>Product</th><th class="n">Value</th><th class="n">Share</th></tr></thead><tbody>${Lst.map((r,i)=>{const v=CUR==='usd'?r.usd:r.kd;return `<tr><td>${i+1}</td><td>${esc(r.hs)}</td><td style="white-space:normal;min-width:10em">${esc(H4N[r.hs]||r.hs)}</td><td class="n">${v<0.01?'<0.01':fmtN(v,2)}</td><td class="n">${fmtN(r.s,1)}%</td></tr>`;}).join('')}</tbody></table></div>`:'<div class="note">No data.</div>')+'</div>';
+    const tb=(Lst,ttl)=>`<div><h4 style="margin:6px 0">${ttl}</h4>`+(Lst?`<div class="scroll"><table><thead><tr><th>#</th><th>HS</th><th>Product</th><th class="n">Value</th><th class="n">Share</th></tr></thead><tbody>${Lst.map((r,i)=>{const v=CUR==='usd'?r.usd:r.kd;return `<tr><td>${i+1}</td><td>${esc(r.hs)}</td><td style="white-space:normal;min-width:10em">${esc(H4N[r.hs]||r.hs)}</td><td class="n">${(()=>{const z=v*(UNIT==='m'?1:1000);return z<0.01?'<0.01':fmtN(z,UNIT==='m'?2:1);})()}</td><td class="n">${fmtN(r.s,1)}%</td></tr>`;}).join('')}</tbody></table></div>`:'<div class="note">No data.</div>')+'</div>';
     cp.innerHTML=`<h3>Top 5 Products Traded with ${esc(e.en)} – 2025 · ${MU()}</h3><div class="two">`+tb(t4.m,'Top 5 imports from '+esc(e.en))+tb(t4.x,'Top 5 exports to '+esc(e.en))+`</div><div class="note">Kuwait's reported data for 2025 at HS4 level${CUR==='kd'?', converted from USD (USD 1 = KD 0.3075)':''}. Share of total exports or imports with ${esc(e.en)}. Exports include re-exports.</div>`;}
   else if(isC&&e.top){cp.classList.remove('hide');cp.innerHTML='<h3>Top 5 HS Chapters – 2024 (KD million)</h3>'+['x','m'].map(k=>e.top[k]?`<h4>${k==='x'?'Kuwait exports':'Kuwait imports'}</h4><table><tbody>${e.top[k].map((r,i)=>`<tr><td>${i+1}</td><td style="white-space:normal">${esc(r.hs+' – '+r.n)}</td><td class="n">${fmtN(r.kd,2)}</td><td class="n">${fmtN(r.s,1)}%</td></tr>`).join('')}</tbody></table>`:'').join('');}
   else cp.classList.add('hide');
@@ -498,8 +498,8 @@ function summary(e){const Q=ytd(),Lx=[],u=U.lab;Lx.push(e.en+' ('+e.en+') – '+
   Lx.push('Source: Central Statistical Bureau. Data for 2025 and 2026 are provisional. Foreign trade statistics have been compiled according to the General Trade System starting January 2024.');return Lx.join('\n');}
 // ---------- food security ----------
 let FOOD=[],FBY={},FCH={};
-const fv=u=>{const v=CUR==='usd'?u/1e6:u*UK/1e6;return v!==0&&Math.abs(v)<0.005?'<0.01':fmtN(v,2);};
-const FMU=()=>CUR==='usd'?'USD million':'KD million';
+const fv=u=>{const v=(CUR==='usd'?u/1e6:u*UK/1e6)*(UNIT==='m'?1:1000),d=UNIT==='m'?2:1;return v!==0&&Math.abs(v)<0.005?'<0.01':fmtN(v,d);};
+const FMU=()=>(CUR==='usd'?'USD':'KD')+(UNIT==='m'?' million':' thousand');
 const chName=c=>{const h=HS.find(z=>z.id===c);return h?h.en:c;};
 function foodSup(r){return Object.entries(r.p).map(([id,v])=>({id,v,c:BY[id]})).filter(z=>z.c).sort((a,b)=>b.v-a.v);}
 const CHS={'01':'Live animals','02':'Meat','03':'Fish and seafood','04':'Dairy, eggs and honey','07':'Vegetables','08':'Fruit and nuts','09':'Coffee, tea and spices','10':'Cereals','11':'Milling products (flour, starch)','12':'Oilseeds and fodder','13':'Gums and plant extracts','14':'Other vegetable materials','15':'Oils and fats','16':'Prepared meat and fish','17':'Sugar and confectionery','18':'Cocoa and chocolate','19':'Cereal preparations and bakery','20':'Prepared vegetables, fruit and juices','21':'Miscellaneous food preparations','22':'Water and beverages','23':'Feed and food-industry residues'};
@@ -512,12 +512,12 @@ function foodSel(){const rs=FSEL.map(h=>FBY[h]).filter(Boolean),T=rs.reduce((a,r
   const L=Object.entries(sup).map(([id,v])=>({id,v,c:BY[id]})).filter(z=>z.c).sort((a,b)=>b.v-a.v);
   let h='';if(rs.length>1)h+=`<div class="card fi"><h3>Total for selected tariff lines (products): ${rs.length}</h3><div class="note" style="margin-top:0">${rs.map(r=>r.h+' '+esc(H4N[r.h]||'')).join(' + ')}<br>Kuwait total imports 2025: <b>${fv(T)}</b> ${FMU()} · Suppliers: ${L.length}</div>${supTable(L,T)}</div>`;
   return h+rs.map(r=>foodItem(r.h)).join('');}
-function food(){show('vFd');const out=$('#fOut');
+function food(){show('vFd');[['fKd',CUR==='kd'],['fUsd',CUR==='usd'],['fM',UNIT==='m'],['fK',UNIT==='k']].forEach(([id,v])=>{const b=$('#'+id);if(b)b.setAttribute('aria-pressed',v);});const out=$('#fOut');
   const tot=FOOD.reduce((a,r)=>a+(r.w||0),0),sup={};FOOD.forEach(r=>Object.entries(r.p).forEach(([id,v])=>{sup[id]=(sup[id]||0)+v;}));
   const ts=Object.entries(sup).filter(([id])=>BY[id]).sort((a,b)=>b[1]-a[1]).slice(0,10);
   $('#fSum').innerHTML=`<div class="kpis"><div class="k"><small>Kuwait food imports 2025</small><b>${fv(tot)}</b><small>${FMU()}</small></div><div class="k"><small>Food tariff lines (products) – HS4</small><b>${FOOD.length}</b></div><div class="k"><small>Supplier countries</small><b>${Object.keys(sup).filter(id=>BY[id]).length}</b></div></div>`;
   const FCH=HS.filter(h=>+h.id>=1&&+h.id<=23&&h.id!=='05'&&h.id!=='06'),sumC=k=>FCH.reduce((a,h)=>a+g(h.m,k),0);
-  const u=v=>{const z=(CUR==='usd'?v*RATE:v)/1000;return fmtN(z,2);},cg=(a,b)=>{const c=pct(a,b);return c==null||!isFinite(c)?'–':`<span class="${c>=0?'up':'dn'}" dir="ltr">${c>=0?'+':'−'}${fmtN(Math.abs(c),1)}%</span>`;};
+  const u=v=>{const z=(CUR==='usd'?v*RATE:v)/(UNIT==='m'?1000:1);return fmtN(z,UNIT==='m'?2:1);},cg=(a,b)=>{const c=pct(a,b);return c==null||!isFinite(c)?'–':`<span class="${c>=0?'up':'dn'}" dir="ltr">${c>=0?'+':'−'}${fmtN(Math.abs(c),1)}%</span>`;};
   $('#fSum').innerHTML=`<div class="card" style="margin-bottom:16px"><h3>Food Imports to the End of H1 2026 – ${FMU()}</h3><div class="kpis" style="margin:8px 0"><div class="k"><small>H1 2026</small><b>${u(sumC('2026-H1'))}</b>${cg(sumC('2026-H1'),sumC('2025-H1'))}</div><div class="k"><small>H1 2025</small><b>${u(sumC('2025-H1'))}</b></div><div class="k"><small>2025 (full year)</small><b>${u(sumC('2025'))}</b></div></div>
    <div class="scroll"><table class="cmp"><thead><tr><th>Chapter</th><th class="n">H1 2026</th><th class="n">Change</th><th class="n">H1 2025</th><th class="n">2025</th></tr></thead><tbody>${FCH.map(h=>`<tr><td><b>${h.id}</b> ${esc(CHS[h.id]||h.en)}</td><td class="n"><b>${u(g(h.m,'2026-H1'))}</b></td><td class="n">${cg(g(h.m,'2026-H1'),g(h.m,'2025-H1'))}</td><td class="n">${u(g(h.m,'2025-H1'))}</td><td class="n">${u(g(h.m,'2025'))}</td></tr>`).join('')}</tbody></table></div>
    <div class="note">2026 data are available at chapter level for Kuwait as a whole only; the breakdown of tariff lines (products) by supplier below is for 2025 because 2026 data by country have not yet been published.</div></div>`+$('#fSum').innerHTML;
@@ -638,14 +638,14 @@ function oil(){show('vOil');const L='2025',T=TOT,o=p=>T[p]?T[p].oil:0,x=p=>T[p]?
   $('#oT').innerHTML=`<thead><tr><th>Period</th><th class="n">Oil exports</th><th class="n">Annual change</th><th class="n">Total exports</th><th class="n">Oil share</th></tr></thead><tbody>${rows.map(r=>{let v,tx,pv;if(r[1]===null){v=r[2];tx=r[3];pv=r[4];}else{const p=r[1];v=o(p);tx=x(p);const pp=p.includes('-')?(+p.slice(0,4)-1)+p.slice(4):String(+p-1);pv=o(pp);}const ch=pct(v,pv);return `<tr class="${r[1]===null?'hl':''}"><td>${esc(r[0])}</td><td class="n">${f(v)}</td><td class="n ${ch==null||!isFinite(ch)?'':ch>=0?'up':'dn'}">${ch==null||!isFinite(ch)||!pv?'–':(ch>=0?'+':'−')+fmtN(Math.abs(ch),1)+'%'}</td><td class="n">${f(tx)}</td><td class="n">${tx?fmtN(v/tx*100,1)+'%':'–'}</td></tr>`;}).join('')}</tbody>`;
   // destinations (mirror)
   const D=OILD||{},d25=D['2025']||{},d24=D['2024']||{},ids=[...new Set([...Object.keys(d25),...Object.keys(d24)])];
-  const val=(d,id,k)=>d[id]&&d[id][k]?d[id][k][0]:0,ton=(d,id,k)=>d[id]&&d[id][k]?d[id][k][1]:0,ov=u=>CUR==='usd'?u/1e6:u*UK/1e6,fm=u=>{const z=ov(u);return z?(z<0.005?'<0.01':fmtN(z,2)):'–';};
+  const val=(d,id,k)=>d[id]&&d[id][k]?d[id][k][0]:0,ton=(d,id,k)=>d[id]&&d[id][k]?d[id][k][1]:0,ov=u=>(CUR==='usd'?u/1e6:u*UK/1e6)*(UNIT==='m'?1:1000),fm=u=>{const z=ov(u);return z?(z<0.005?'<0.01':fmtN(z,UNIT==='m'?2:1)):'–';};
   const PR=[['2709','Crude Oil Exports','HS 2709'],['2710','Refined Petroleum Product Exports','HS 2710'],['2711','Petroleum Gas and Gaseous Hydrocarbon Exports','HS 2711']];
   $('#oDs').innerHTML=PR.map(([k,t,hs])=>{const L2=ids.map(id=>({id,c:BY[id],v5:val(d25,id,k),v4:val(d24,id,k),kt:ton(d25,id,k)})).filter(z=>z.c&&(z.v5||z.v4)).sort((a,b)=>(b.v5||b.v4*1e-4)-(a.v5||a.v4*1e-4));
     const s5=L2.reduce((a,z)=>a+z.v5,0),s4=L2.reduce((a,z)=>a+z.v4,0),k5=L2.reduce((a,z)=>a+z.kt,0),ch=pct(s5,s4);
     return `<div class="card" style="margin-top:16px"><h3>${t} by Importing Country <span style="font-weight:400;color:var(--mute);font-size:13px">(${hs})</span></h3>
     <div class="kpis okp" style="margin:8px 0 10px"><div class="k"><small>Total 2025</small><b>${fm(s5)}</b>${arr(ch)}<small>vs 2024</small></div><div class="k"><small>Quantity 2025 (thousand tonnes)</small><b>${k5?fmtN(k5,0):'–'}</b></div><div class="k"><small>Importing countries</small><b>${L2.filter(z=>z.v5).length}</b></div></div>
     <div class="scroll"><table class="odt"><thead><tr><th>#</th><th>Country</th><th class="n">2025</th><th class="n">Share</th><th class="n">'000 t</th><th class="n">Change vs 2024</th></tr></thead><tbody>${L2.map((z,i)=>{const c=z.v5&&z.v4?pct(z.v5,z.v4):null;return `<tr><td>${i+1}</td><td><a href="#c${z.id}">${esc(z.c.en)}</a></td><td class="n"><b>${z.v5?fm(z.v5):fm(z.v4)+'*'}</b></td><td class="n">${z.v5&&s5?fmtN(z.v5/s5*100,1)+'%':'–'}</td><td class="n">${z.kt?fmtN(z.kt,0):'–'}</td><td class="n ${c==null?'':c>=0?'up':'dn'}">${c==null?'–':(c>=0?'+':'−')+fmtN(Math.abs(c),1)+'%'}</td></tr>`;}).join('')}</tbody></table></div>${L2.some(z=>!z.v5)?'<div class="note">* 2024 data; the country has not yet reported 2025.</div>':''}</div>`;}).join('');
-  $('#oDu').textContent='Values in '+(CUR==='usd'?'USD million':'KD million');
+  $('#oDu').textContent='Values in '+(CUR==='usd'?'USD':'KD')+(UNIT==='m'?' million':' thousand');
   try{history.replaceState(null,'','#oil');}catch(_){}
 }
 
@@ -678,9 +678,9 @@ function gcc(){show('vGcc');unitFor(1e9);const L='2025',P='2024',cs=GCCI.map(id=
   $('#gcH').innerHTML=`<thead><tr><th>Country</th><th class="n">Total trade H1 2025</th><th class="n">Total trade H1 2026</th><th class="n">Change</th></tr></thead><tbody>${hr.map(r=>`<tr><td><a href="#c${r.c.id}">${esc(r.c.en)}</a></td><td class="n">${f(r.a)}</td><td class="n"><b>${f(r.b)}</b></td><td class="n ${cls(r.b,r.a)}">${chg(r.b,r.a)}</td></tr>`).join('')}<tr class="hl"><td>GCC total</td><td class="n">${f(px+pm)}</td><td class="n"><b>${f(hx+hm)}</b></td><td class="n ${cls(hx+hm,px+pm)}">${chg(hx+hm,px+pm)}</td></tr></tbody>`;
   const per=[['H1 2026','2026-H1','hl'],['Q2 2026','2026-Q2',''],['Q1 2026','2026-Q1',''],['2025 (full year)','2025',''],['H2 2025','2025-H2',''],['H1 2025','2025-H1',''],...[...Y].reverse().slice(1).map(y=>[y,y,''])];
   $('#gcT').innerHTML=`<thead><tr><th>Period</th><th class="n">Exports</th><th class="n">Imports</th><th class="n">Trade balance</th><th class="n">Total trade</th></tr></thead><tbody>${per.map(([l,k,c])=>`<tr class="${c}"><td>${l}</td><td class="n">${f(sx(k))}</td><td class="n">${f(sm(k))}</td><td class="n ${sx(k)-sm(k)>=0?'up':'dn'}">${f(sx(k)-sm(k))}</td><td class="n">${f(sx(k)+sm(k))}</td></tr>`).join('')}</tbody>`;
-  const D=OILD||{},ov=u=>CUR==='usd'?u/1e6:u*UK/1e6,fm=u=>{const z=ov(u);return z?fmtN(z,2):'–';},od=(y,id,k)=>D[y]&&D[y][id]&&D[y][id][k]?D[y][id][k][0]:0;
+  const D=OILD||{},ov=u=>(CUR==='usd'?u/1e6:u*UK/1e6)*(UNIT==='m'?1:1000),fm=u=>{const z=ov(u);return z?fmtN(z,UNIT==='m'?2:1):'–';},od=(y,id,k)=>D[y]&&D[y][id]&&D[y][id][k]?D[y][id][k][0]:0;
   const orows=cs.map(c=>({c,a:od('2025',c.id,'27'),b:od('2024',c.id,'27'),cr:od('2025',c.id,'2709'),rf:od('2025',c.id,'2710')})).filter(r=>r.a||r.b);
-  $('#gcO').innerHTML=orows.length?`<h3>Oil Exports to GCC Countries – ${CUR==='usd'?'USD million':'KD million'}</h3><div class="scroll"><table class="cmp"><thead><tr><th>Country</th><th class="n">2025</th><th class="n">2024</th><th class="n">Change</th></tr></thead><tbody>${orows.map(r=>`<tr><td><a href="#c${r.c.id}">${esc(r.c.en)}</a></td><td class="n"><b>${fm(r.a)}</b></td><td class="n">${fm(r.b)}</td><td class="n ${r.a&&r.b?cls(r.a,r.b):''}">${r.a&&r.b?chg(r.a,r.b):'–'}</td></tr>`).join('')}</tbody></table></div><div class="note">Mirror data: GCC countries' imports of chapter 27 from Kuwait as reported by the importers. Some countries have not yet reported 2025.</div>`:'';
+  $('#gcO').innerHTML=orows.length?`<h3>Oil Exports to GCC Countries – ${MU()}</h3><div class="scroll"><table class="cmp"><thead><tr><th>Country</th><th class="n">2025</th><th class="n">2024</th><th class="n">Change</th></tr></thead><tbody>${orows.map(r=>`<tr><td><a href="#c${r.c.id}">${esc(r.c.en)}</a></td><td class="n"><b>${fm(r.a)}</b></td><td class="n">${fm(r.b)}</td><td class="n ${r.a&&r.b?cls(r.a,r.b):''}">${r.a&&r.b?chg(r.a,r.b):'–'}</td></tr>`).join('')}</tbody></table></div><div class="note">Mirror data: GCC countries' imports of chapter 27 from Kuwait as reported by the importers. Some countries have not yet reported 2025.</div>`:'';
   try{history.replaceState(null,'','#gcc');}catch(_){}
 }
 
@@ -696,7 +696,7 @@ function armCounts(root){if(!cntIO||matchMedia('(prefers-reduced-motion: reduce)
 new MutationObserver(ms=>{const set=new Set();ms.forEach(m=>{const t=m.target.nodeType===1?m.target:m.target.parentElement;if(t&&!t.closest('b'))set.add(t);});set.forEach(armCounts);}).observe(document.querySelector('main'),{childList:true,subtree:true});
 
 // ---------- auto-update (bypass stale phone cache) ----------
-const BUILD='1795645659';
+const BUILD='1795646103';
 try{fetch(location.pathname+'?b='+Date.now(),{cache:'no-store'}).then(r=>r.text()).then(h=>{const m=h.match(/const BUILD='(\d+)'/);if(m&&m[1]>BUILD&&!sessionStorage.getItem('rl'+m[1])){sessionStorage.setItem('rl'+m[1],'1');location.replace(location.pathname+'?v='+m[1]+location.hash);}}).catch(()=>{});}catch(_){}
 // ---------- intro ----------
 let INTRO_HTML='';
@@ -759,7 +759,7 @@ $('#fSug').addEventListener('click',e=>{const b=e.target.closest('button');if(!b
 $('#fChips').addEventListener('click',e=>{const b=e.target.closest('.chip');if(!b)return;FSEL=b.dataset.x==='*'?[]:FSEL.filter(h=>h!==b.dataset.x);food();});
 $('#fOut').addEventListener('click',e=>{const fr=e.target.closest('.fr');if(fr){const nx=fr.nextElementSibling;if(nx&&nx.classList.contains('fy')){nx.remove();return;}const r=document.createElement('tr');r.className='fy';r.innerHTML=`<td colspan="5">${foodItem(fr.dataset.h)}</td>`;fr.after(r);return;}
   const fc=e.target.closest('.fc');if(fc){const nx=fc.nextElementSibling;if(nx&&nx.classList.contains('fx')){nx.remove();fc.classList.remove('open');return;}fc.insertAdjacentHTML('afterend',chRows(fc.dataset.c));fc.classList.add('open');}});
-$('#cKd').onclick=()=>{CUR='kd';render(cur);};$('#cUsd').onclick=()=>{CUR='usd';render(cur);};$('#uM').onclick=()=>{UNIT='m';render(cur);};$('#uK').onclick=()=>{UNIT='k';render(cur);};
+$('#cKd').onclick=()=>{CUR='kd';render(cur);};$('#cUsd').onclick=()=>{CUR='usd';render(cur);};$('#uM').onclick=()=>{UNIT='m';render(cur);};$('#fKd').onclick=()=>{CUR='kd';food();};$('#fUsd').onclick=()=>{CUR='usd';food();};$('#fM').onclick=()=>{UNIT='m';food();};$('#fK').onclick=()=>{UNIT='k';food();};$('#uK').onclick=()=>{UNIT='k';render(cur);};
 fetch('data.json').then(r=>r.json()).then(arr=>{D=arr;arr.forEach(r=>{if(r.t==='meta')META=r;else if(r.t==='total')TOT[r.p]=r;else if(r.t==='c'){C.push(r);BY[r.id]=r;}else if(r.t==='g'){G.push(r);BY[r.id]=r;}else if(r.t==='hs')HS.push(r);else if(r.t==='sitc')SITC=r;else if(r.t==='hs4n')H4N=r.n;else if(r.t==='oil')OILD=r.d;else if(r.t==='iso'){ISO=r.m;Object.entries(r.m).forEach(([i,c])=>CSB2ISO[c]=i);}else if(r.t==='food'){FOOD.push(r);FBY[r.h]=r;}});
   $('#pP').innerHTML=$('#sP').innerHTML;
   $('#sub').textContent='Data available through the end of '+(QL[META.latest]||META.latest)+' · covering '+C.length+' countries and '+G.length+' economic groups';
