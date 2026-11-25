@@ -264,6 +264,7 @@ svg text{stroke:#0B193A}
 #cfood table th,#cfood table td{padding:8px 4px;font-size:12.5px}#cfood table td[style*="min-width"]{min-width:6.5em!important}#cfood table th{white-space:normal}
 .kgh{grid-column:1/-1;display:flex;align-items:baseline;gap:10px;flex-wrap:wrap;margin:6px 2px -2px;padding:8px 12px;border-radius:12px;background:linear-gradient(90deg,#D4B85A33,transparent);border-inline-start:4px solid #D4B85A}.kgh b{font-size:17px;color:#D4B85A}.kgh small{color:#c9d3e6;font-size:12.5px}
 .k.h1k{border-color:#D4B85A66!important;background:linear-gradient(160deg,#22407e,#152c5c)!important}
+#fSum .fk{grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}#fSum .fk .k:first-child{grid-column:1/-1;border-color:#D4B85A88;background:linear-gradient(160deg,#22407e,#152c5c)}#fSum .fk .k{padding:10px 12px;min-width:0}#fSum .fk .k small{font-size:12px}
 </style>
 </head>
 <body>
@@ -514,12 +515,12 @@ function foodSel(){const rs=FSEL.map(h=>FBY[h]).filter(Boolean),T=rs.reduce((a,r
 function food(){show('vFd');[['fKd',CUR==='kd'],['fUsd',CUR==='usd'],['fM',UNIT==='m'],['fK',UNIT==='k']].forEach(([id,v])=>{const b=$('#'+id);if(b)b.setAttribute('aria-pressed',v);});const out=$('#fOut');
   const tot=FOOD.reduce((a,r)=>a+(r.w||0),0),sup={};FOOD.forEach(r=>Object.entries(r.p).forEach(([id,v])=>{sup[id]=(sup[id]||0)+v;}));
   const ts=Object.entries(sup).filter(([id])=>BY[id]).sort((a,b)=>b[1]-a[1]).slice(0,10);
-  $('#fSum').innerHTML=`<div class="kpis"><div class="k"><small>واردات الكويت الغذائية 2025</small><b>${fv(tot)}</b><small>${FMU()}</small></div><div class="k"><small>عدد البنود الجمركية (السلع) الغذائية – HS4</small><b>${FOOD.length}</b></div><div class="k"><small>عدد الدول المورّدة</small><b>${Object.keys(sup).filter(id=>BY[id]).length}</b></div></div>`;
+  const fCounts=`<div class="k"><small>عدد البنود الجمركية (السلع) الغذائية – HS4</small><b>${FOOD.length}</b></div><div class="k"><small>عدد الدول المورّدة</small><b>${Object.keys(sup).filter(id=>BY[id]).length}</b></div>`;
   const FCH=HS.filter(h=>+h.id>=1&&+h.id<=23&&h.id!=='05'&&h.id!=='06'),sumC=k=>FCH.reduce((a,h)=>a+g(h.m,k),0);
   const u=v=>{const z=(CUR==='usd'?v*RATE:v)/(UNIT==='m'?1000:1);return fmtN(z,UNIT==='m'?2:1);},cg=(a,b)=>{const c=pct(a,b);return c==null||!isFinite(c)?'–':`<span class="${c>=0?'up':'dn'}" dir="ltr">${c>=0?'+':'−'}${fmtN(Math.abs(c),1)}%</span>`;};
-  $('#fSum').innerHTML=`<div class="card" style="margin-bottom:16px"><h3>الواردات الغذائية حتى نهاية النصف الأول 2026 – ${FMU()}</h3><div class="kpis" style="margin:8px 0"><div class="k"><small>النصف الأول 2026</small><b>${u(sumC('2026-H1'))}</b>${cg(sumC('2026-H1'),sumC('2025-H1'))}</div><div class="k"><small>النصف الأول 2025</small><b>${u(sumC('2025-H1'))}</b></div><div class="k"><small>2025 (العام كاملاً)</small><b>${u(sumC('2025'))}</b></div></div>
+  $('#fSum').innerHTML=`<div class="card" style="margin-bottom:16px"><h3>الواردات الغذائية حتى نهاية النصف الأول 2026 – ${FMU()}</h3><div class="kpis fk" style="margin:8px 0"><div class="k"><small>النصف الأول 2026</small><b>${u(sumC('2026-H1'))}</b>${cg(sumC('2026-H1'),sumC('2025-H1'))}</div><div class="k"><small>النصف الأول 2025</small><b>${u(sumC('2025-H1'))}</b></div><div class="k"><small>2025 (العام كاملاً)</small><b>${u(sumC('2025'))}</b></div>${fCounts}</div>
    <div class="scroll"><table class="cmp"><thead><tr><th>الفصل</th><th class="n">النصف الأول 2026</th><th class="n">التغير</th><th class="n">النصف الأول 2025</th><th class="n">2025</th></tr></thead><tbody>${FCH.map(h=>`<tr><td><b>${h.id}</b> ${esc(CHS[h.id]||h.ar)}</td><td class="n"><b>${u(g(h.m,'2026-H1'))}</b></td><td class="n">${cg(g(h.m,'2026-H1'),g(h.m,'2025-H1'))}</td><td class="n">${u(g(h.m,'2025-H1'))}</td><td class="n">${u(g(h.m,'2025'))}</td></tr>`).join('')}</tbody></table></div>
-   <div class="note">بيانات 2026 متاحة على مستوى الفصل للكويت ككل فقط؛ أما توزيع البنود الجمركية (السلع) على الدول المورّدة أدناه فهو لسنة 2025 لأن بيانات 2026 حسب الدولة لم تُنشر بعد.</div></div>`+$('#fSum').innerHTML;
+   <div class="note">بيانات 2026 متاحة على مستوى الفصل للكويت ككل فقط؛ أما توزيع البنود الجمركية (السلع) على الدول المورّدة أدناه فهو لسنة 2025 لأن بيانات 2026 حسب الدولة لم تُنشر بعد.</div></div>`;
   $('#fChips').innerHTML=FSEL.length?FSEL.map(h=>`<button class="chip" data-x="${h}">${h} ${esc(H4N[h]||'')} ✕</button>`).join('')+'<button class="chip clr" data-x="*">مسح الكل</button>':'';
   $('#fSum').classList.toggle('hide',!!FSEL.length);if(FSEL.length){out.innerHTML=foodSel();try{history.replaceState(null,'','#food:'+FSEL.join(','));}catch(_){}requestAnimationFrame(()=>{const t=$('#fChips');window.scrollTo({top:t.getBoundingClientRect().top+scrollY-90,behavior:'smooth'});});return;}
   const byc={};FOOD.forEach(r=>{(byc[r.h.slice(0,2)]=byc[r.h.slice(0,2)]||[]).push(r);});
@@ -695,7 +696,7 @@ function armCounts(root){if(!cntIO||matchMedia('(prefers-reduced-motion: reduce)
 new MutationObserver(ms=>{const set=new Set();ms.forEach(m=>{const t=m.target.nodeType===1?m.target:m.target.parentElement;if(t&&!t.closest('b'))set.add(t);});set.forEach(armCounts);}).observe(document.querySelector('main'),{childList:true,subtree:true});
 
 // ---------- auto-update (bypass stale phone cache) ----------
-const BUILD='1795646280';
+const BUILD='1795646612';
 try{fetch(location.pathname+'?b='+Date.now(),{cache:'no-store'}).then(r=>r.text()).then(h=>{const m=h.match(/const BUILD='(\d+)'/);if(m&&m[1]>BUILD&&!sessionStorage.getItem('rl'+m[1])){sessionStorage.setItem('rl'+m[1],'1');location.replace(location.pathname+'?v='+m[1]+location.hash);}}).catch(()=>{});}catch(_){}
 // ---------- intro ----------
 let INTRO_HTML='';
