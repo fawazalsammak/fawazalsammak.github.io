@@ -269,6 +269,11 @@ svg text{stroke:#0B193A}
 #pT .hm{margin-top:4px;font-size:12px;color:#D4B85A;line-height:1.5}#pT th,#pT td{padding:9px 5px;font-size:13px}#pT th{white-space:normal}
 .pk{grid-template-columns:repeat(2,minmax(0,1fr))!important}@media(min-width:820px){.pk{grid-template-columns:repeat(4,minmax(0,1fr))!important}}
 .pk .k b{white-space:normal;overflow-wrap:anywhere}
+.kgh.oilg{margin-top:10px;background:linear-gradient(90deg,#9fb3d933,transparent);border-inline-start-color:#9fb3d9}.kgh.oilg b{color:#cdd8ee}
+.k.oilk2{grid-column:1/-1;text-decoration:none;color:inherit;background:linear-gradient(160deg,#1a2c55,#0f1f42)!important;border:1px dashed #9fb3d988!important}.k.oilk2>small:last-child{color:#D4B85A;font-weight:800}
+.pcap{caption-side:bottom;text-align:start;color:var(--mut);font-size:12px;padding-top:8px}
+#pT td[style*="min-width"]{min-width:7em!important}#pT th,#pT td{padding:8px 4px;font-size:12.5px}
+#pT{table-layout:fixed;width:100%}#pT th:nth-child(1){width:7%}#pT th:nth-child(2){width:41%}#pT th:nth-child(3){width:17%}#pT th:nth-child(4){width:14%}#pT th:nth-child(5){width:21%}#pT td{overflow-wrap:anywhere}
 </style>
 </head>
 <body>
@@ -379,7 +384,7 @@ svg text{stroke:#0B193A}
       <select id="pN" aria-label="العدد"><option>20</option><option>40</option><option>97</option></select>
     </div>
     <div class="psch"><input id="pQ" type="search" autocomplete="off" placeholder="ابحث بكلمة مفتاحية أو رمز الفصل (سيارات، أدوية، ذهب، 87…)" aria-label="بحث السلع"><span id="pQn"></span></div>
-    <div class="scroll"><table id="pT"></table></div>
+    <div class="scroll"><table id="pT"></table></div><div class="note" id="pTn"></div>
     <div class="card" style="margin-top:16px"><h3 id="sT">أهم السلع</h3><div class="scroll"><table id="sTb"></table></div></div>
   </section>
   <footer id="ft"></footer>
@@ -702,7 +707,7 @@ function armCounts(root){if(!cntIO||matchMedia('(prefers-reduced-motion: reduce)
 new MutationObserver(ms=>{const set=new Set();ms.forEach(m=>{const t=m.target.nodeType===1?m.target:m.target.parentElement;if(t&&!t.closest('b'))set.add(t);});set.forEach(armCounts);}).observe(document.querySelector('main'),{childList:true,subtree:true});
 
 // ---------- auto-update (bypass stale phone cache) ----------
-const BUILD='1795647026';
+const BUILD='1795647286';
 try{fetch(location.pathname+'?b='+Date.now(),{cache:'no-store'}).then(r=>r.text()).then(h=>{const m=h.match(/const BUILD='(\d+)'/);if(m&&m[1]>BUILD&&!sessionStorage.getItem('rl'+m[1])){sessionStorage.setItem('rl'+m[1],'1');location.replace(location.pathname+'?v='+m[1]+location.hash);}}).catch(()=>{});}catch(_){}
 // ---------- intro ----------
 let INTRO_HTML='';
@@ -734,27 +739,28 @@ function groups(){const p='2025',list=G.map(c=>({c,x:g(c.x,p),m:g(c.m,p)})).sort
 const nrm=t=>String(t||'').toLowerCase().replace(/[أإآ]/g,'ا').replace(/ة/g,'ه').replace(/ى/g,'ي').replace(/[ًٌٍَُِّْ]/g,'');
 function prods(){const fl=$('#pF').value,p=$('#pP').value,n=+$('#pN').value,q=nrm($('#pQ').value.trim());
   const prev=p.includes('-')?p.replace(/^(\d{4})/,y=>String(+y-1)):String(+p-1);
-  const tot=HS.reduce((a,h)=>a+g(h[fl],p),0);
+  const BH=HS.filter(h=>!(fl==='x'&&h.id==='27')),tot=BH.reduce((a,h)=>a+g(h[fl],p),0);
   const hs4=Object.keys(H4N);
   const lat=/^[a-z0-9 ]+$/.test(q),has=x=>lat?(' '+nrm(x).replace(/[^a-z0-9]+/g,' ')).includes(' '+q):nrm(x).includes(q);const hit=h=>{if(!q)return {ok:true,sub:[]};const sub=hs4.filter(k=>k.slice(0,2)===h.id&&(k.startsWith(q)||has(H4N[k]))).slice(0,4);return {ok:h.id.startsWith(q)||has(h.ar)||has(h.en)||sub.length>0,sub};};
-  let list=HS.map(h=>({h,v:g(h[fl],p),pv:g(h[fl],prev),m:hit(h)})).filter(r=>r.v>0&&r.m.ok).sort((a,b)=>b.v-a.v);
+  let list=BH.map(h=>({h,v:g(h[fl],p),pv:g(h[fl],prev),m:hit(h)})).filter(r=>r.v>0&&r.m.ok).sort((a,b)=>b.v-a.v);
   $('#pQn').textContent=q?(list.length?list.length+' نتيجة':'لا توجد نتائج'):'';
   if(!q)list=list.slice(0,n);
-  // summary cards
-  const tx=HS.reduce((a,h)=>a+g(h.x,p),0),tm=HS.reduce((a,h)=>a+g(h.m,p),0),txp=HS.reduce((a,h)=>a+g(h.x,prev),0),tmp=HS.reduce((a,h)=>a+g(h.m,prev),0);
-  const oil=g((HS.find(h=>h.id==='27')||{}).x,p),top=HS.map(h=>({h,v:g(h[fl],p)})).sort((a,b)=>b.v-a.v)[0];
-  const top2=HS.filter(h=>h.id!=='27').map(h=>({h,v:g(h[fl],p)})).sort((a,b)=>b.v-a.v)[0];
+  // summary cards – oil and non-oil kept separate
+  const nx=tv('x',p)-tv('oil',p),nxp=tv('x',prev)-tv('oil',prev),ox=tv('oil',p),oxp=tv('oil',prev),tm=tv('m',p),tmp=tv('m',prev),bal=nx-tm;
+  const rk=BH.map(h=>({h,v:g(h[fl],p)})).sort((a,b)=>b.v-a.v),top=rk[0],top2=rk[1];
   const cg2=(a,b)=>{const c=pct(a,b);return c==null||!isFinite(c)||!b?'':`<i class="${c>=0?'up':'dn'}" dir="ltr">${c>=0?'▲':'▼'} ${fmtN(Math.abs(c),1)}%</i>`;};
+  const nm=t=>t?esc(t.h.id+' – '+(CHS[t.h.id]||t.h.ar).split(/[؛،,;]/)[0]):'–';
   const pl=esc(QL[p]||p),pv=esc(QL[prev]||prev);
   const pkKey=fl+'|'+p;if($('#pK').dataset.k!==pkKey){$('#pK').dataset.k=pkKey;$('#pK').innerHTML=`<div class="kgh"><b>${pl}</b><small>مقارنة ب${pv}</small></div>
-   <div class="k h1k"><small>إجمالي الصادرات (شاملة النفط)</small><b>${fmtN(tx/1000,2)}</b>${cg2(tx,txp)}</div>
-   <div class="k h1k"><small>الصادرات غير النفطية</small><b>${fmtN((tx-oil)/1000,2)}</b>${cg2(tx-oil,txp-g((HS.find(h=>h.id==='27')||{}).x,prev))}</div>
-   <div class="k h1k"><small>إجمالي الواردات</small><b>${fmtN(tm/1000,2)}</b>${cg2(tm,tmp)}</div>
-   <div class="k h1k"><small>الميزان التجاري</small><b class="${tx-tm>=0?'up':'dn'}" dir="ltr">${(tx-tm<0?'-':'')+fmtN(Math.abs(tx-tm)/1000,2)}</b></div>
-   <div class="k"><small>${fl==='x'?'أكبر فصل في الصادرات':'أكبر فصل في الواردات'}</small><b class="nocnt" style="font-size:16px">${top?esc(top.h.id+' – '+(CHS[top.h.id]||top.h.ar).split(/[؛،,;]/)[0]):'–'}</b><small>${top?fmtN(top.v/(fl==='x'?tx:tm)*100,1)+'% من الإجمالي':''}</small></div>
-   <div class="k"><small>${fl==='x'?'أكبر فصل غير نفطي في الصادرات':'ثاني أكبر فصل في الواردات'}</small><b class="nocnt" style="font-size:16px">${(()=>{const t=fl==='x'?top2:HS.map(h=>({h,v:g(h[fl],p)})).sort((a,b)=>b.v-a.v)[1];return t?esc(t.h.id+' – '+(CHS[t.h.id]||t.h.ar).split(/[؛،,;]/)[0]):'–';})()}</b></div>`;}
-  $('#pT').innerHTML=`<thead><tr><th>م</th><th>الفصل</th><th class="n">القيمة</th><th class="n">الحصة</th><th class="n">التغير مقارنة ب${esc(QL[prev]||prev)}</th></tr></thead><tbody>`+list.map((r,i)=>{const c=pct(r.v,r.pv);return `<tr><td>${i+1}</td><td style="white-space:normal;min-width:9em">${esc(r.h.id+' – '+r.h.ar)}${r.m.sub.length?`<div class="hm">${r.m.sub.map(k=>k+' '+esc(H4N[k])).join(' · ')}</div>`:''}</td><td class="n">${fmtN(r.v/1000,2)}</td><td class="n">${fmtN(r.v/tot*100,1)}%</td><td class="n ${c==null?'':c>=0?'up':'dn'}">${c==null?'–':fmtN(c,1)+'%'}</td></tr>`;}).join('')+`</tbody><tfoot><tr><td></td><td><b>الإجمالي</b></td><td class="n"><b>${fmtN(tot/1000,2)}</b></td><td></td><td></td></tr></tfoot>`;
-  if(SITC){const [a,b]=SITC.periods,L=SITC[fl];$('#sT').textContent=`أهم السلع ${fl==='x'?'المصدّرة':'المستوردة'} (التصنيف الدولي الموحد للتجارة SITC) – ${QL[b]||b} مقارنة ب${QL[a]||a}`;
+   <div class="k h1k"><small>الصادرات غير النفطية</small><b>${fmtN(nx/1000,2)}</b>${cg2(nx,nxp)}</div>
+   <div class="k h1k"><small>الواردات</small><b>${fmtN(tm/1000,2)}</b>${cg2(tm,tmp)}</div>
+   <div class="k h1k" style="grid-column:1/-1"><small>الميزان التجاري غير النفطي</small><b class="${bal>=0?'up':'dn'}" dir="ltr">${(bal<0?'-':'')+fmtN(Math.abs(bal)/1000,2)}</b></div>
+   <div class="k"><small>${fl==='x'?'أكبر فصل في الصادرات غير النفطية':'أكبر فصل في الواردات'}</small><b class="nocnt" style="font-size:16px">${nm(top)}</b><small>${top&&tot?fmtN(top.v/tot*100,1)+'% من الإجمالي':''}</small></div>
+   <div class="k"><small>${fl==='x'?'ثاني أكبر فصل في الصادرات غير النفطية':'ثاني أكبر فصل في الواردات'}</small><b class="nocnt" style="font-size:16px">${nm(top2)}</b><small>${top2&&tot?fmtN(top2.v/tot*100,1)+'% من الإجمالي':''}</small></div>
+   <div class="kgh oilg"><b>الصادرات النفطية</b><small>تُعرض منفصلة ولا تدخل في الأرقام أعلاه</small></div>
+   <a class="k oilk2" href="#oil"><small>الصادرات النفطية – ${pl}</small><b>${fmtN(ox/1000,2)}</b>${cg2(ox,oxp)}<small>عرض تفاصيل النفط ←</small></a>`;}
+  $('#pT').innerHTML=`<thead><tr><th>م</th><th>الفصل</th><th class="n">القيمة</th><th class="n">الحصة</th><th class="n">التغير مقارنة ب${esc(QL[prev]||prev)}</th></tr></thead><tbody>`+list.map((r,i)=>{const c=pct(r.v,r.pv);return `<tr><td>${i+1}</td><td style="white-space:normal;min-width:9em">${esc(r.h.id+' – '+r.h.ar)}${r.m.sub.length?`<div class="hm">${r.m.sub.map(k=>k+' '+esc(H4N[k])).join(' · ')}</div>`:''}</td><td class="n">${fmtN(r.v/1000,2)}</td><td class="n">${fmtN(r.v/tot*100,1)}%</td><td class="n ${c==null?'':c>=0?'up':'dn'}">${c==null?'–':fmtN(c,1)+'%'}</td></tr>`;}).join('')+`</tbody><tfoot><tr><td></td><td><b>${fl==='x'?'إجمالي الصادرات غير النفطية حسب الفصول':'الإجمالي'}</b></td><td class="n"><b>${fmtN(tot/1000,2)}</b></td><td></td><td></td></tr></tfoot>`;$('#pTn').innerHTML=fl==='x'?'لا يشمل الجدول الفصل 27 (الوقود المعدني والزيوت المعدنية)؛ الصادرات النفطية معروضة منفصلة.':'';
+  if(SITC){const [a,b]=SITC.periods,L=SITC[fl].filter(r=>fl!=='x'||!String(r.code).startsWith('3'));$('#sT').textContent=`أهم السلع ${fl==='x'?'المصدّرة غير النفطية':'المستوردة'} (التصنيف الدولي الموحد للتجارة SITC) – ${QL[b]||b} مقارنة ب${QL[a]||a}`;
   $('#sTb').innerHTML=`<thead><tr><th>م</th><th>السلعة</th><th class="n">${esc(QL[a]||a)}</th><th class="n">${esc(QL[b]||b)}</th><th class="n">التغير</th></tr></thead><tbody>`+L.map((r,i)=>{const c=pct(r.b,r.a);return `<tr><td>${i+1}</td><td style="white-space:normal">${esc(r.ar)}</td><td class="n">${fmtN(r.a/1000,2)}</td><td class="n">${fmtN(r.b/1000,2)}</td><td class="n ${c==null?'':c>=0?'up':'dn'}">${c==null||!isFinite(c)?'–':fmtN(c,1)+'%'}</td></tr>`;}).join('')+'</tbody>';}}
 function search(t){t=t.trim().toLowerCase();const box=$('#sugg');if(!t){box.style.display='none';return;}
   const hits=[...C,...G].filter(c=>c.ar.includes(t)||c.en.toLowerCase().includes(t)).slice(0,12);
