@@ -283,7 +283,7 @@ svg text{stroke:#0B193A}
     <div class="tabs" role="group" aria-label="العرض">
       <button id="tKw" aria-pressed="true">الإجمالي</button>
       <button id="tTop" aria-pressed="false">أكبر الشركاء</button>
-      <button id="tGr" aria-pressed="false">المجموعات</button>
+      <button id="tGr" aria-pressed="false">المجموعات الاقتصادية</button>
       <button id="tPr" aria-pressed="false">السلع</button>
       <button id="tFd" aria-pressed="false">الأمن الغذائي</button>
       <button id="tOil" aria-pressed="false">النفط</button>
@@ -372,7 +372,7 @@ svg text{stroke:#0B193A}
     <div class="card" style="margin-top:16px"><h3 id="sT">أهم السلع</h3><div class="scroll"><table id="sTb"></table></div></div>
   </section>
   <footer id="ft"></footer>
-<nav class="bnav" aria-label="التنقل"><button data-go="top"><span>الشركاء</span></button><button data-go="groups"><span>المجموعات</span></button><button data-go="food"><span>الأمن الغذائي</span></button><button data-go="kw" class="ctr"><b>الرئيسية</b></button><button data-go="products"><span>السلع</span></button><button data-go="oil"><span>النفط</span></button><button data-go="gcc"><span>الخليج</span></button></nav>
+<nav class="bnav" aria-label="التنقل"><button data-go="top"><span>الشركاء</span></button><button data-go="groups"><span>المجموعات الاقتصادية</span></button><button data-go="food"><span>الأمن الغذائي</span></button><button data-go="kw" class="ctr"><b>الرئيسية</b></button><button data-go="products"><span>السلع</span></button><button data-go="oil"><span>النفط</span></button><button data-go="gcc"><span>الخليج</span></button></nav>
 </main>
 <script>
 {
@@ -607,7 +607,7 @@ function layout(e,isC){const V=$('#vEnt');V.classList.toggle('isC',isC);V.classL
      <a class="t lnk food" href="#food"><small>الأمن الغذائي</small><b>${FOOD.length} سلعة</b><small>${fv(fd)} ${FMU()} · ${new Set(FOOD.flatMap(r=>Object.keys(r.p))).size} دولة</small><span class="go">←</span></a>
      <a class="t lnk" href="#products"><small>السلع حسب الفصول</small><b>${HS.length} فصلاً</b><small>الصادرات والواردات حسب الفصل</small><span class="go">←</span></a>
      <a class="t lnk gold" href="#gcc"><small>التجارة البينية الخليجية</small><b>${f(GCCI.reduce((a,id)=>a+g(BY[id].x,L)+g(BY[id].m,L),0))}</b><small>حجم التبادل التجاري مع دول المجلس 2025 · ${U.lab}</small><span class="go">←</span></a>
-     <a class="t lnk dark" href="#groups"><small>المجموعات</small><b>${G.length} مجموعة</b><small>مجلس التعاون، الاتحاد الأوروبي، آسيان…</small><span class="go">←</span></a>
+     <a class="t lnk dark" href="#groups"><small>المجموعات الاقتصادية</small><b>${G.length} مجموعة</b><small>مجلس التعاون، الاتحاد الأوروبي، آسيان…</small><span class="go">←</span></a>
      <a class="t lnk gold" href="#top"><small>ترتيب الشركاء</small><b>${C.filter(c=>c.id!=='603'&&(g(c.x,L)+g(c.m,L))>0).length} دولة</b><small>حسب الفترة والمؤشر</small><span class="go">←</span></a>`;}
   else{bt.classList.add('hide');b2.classList.add('hide');}
 }
@@ -681,7 +681,7 @@ function armCounts(root){if(!cntIO||matchMedia('(prefers-reduced-motion: reduce)
 new MutationObserver(ms=>{const set=new Set();ms.forEach(m=>{const t=m.target.nodeType===1?m.target:m.target.parentElement;if(t&&!t.closest('b'))set.add(t);});set.forEach(armCounts);}).observe(document.querySelector('main'),{childList:true,subtree:true});
 
 // ---------- auto-update (bypass stale phone cache) ----------
-const BUILD='1795644069';
+const BUILD='1795644266';
 try{fetch(location.pathname+'?b='+Date.now(),{cache:'no-store'}).then(r=>r.text()).then(h=>{const m=h.match(/const BUILD='(\d+)'/);if(m&&m[1]>BUILD&&!sessionStorage.getItem('rl'+m[1])){sessionStorage.setItem('rl'+m[1],'1');location.replace(location.pathname+'?v='+m[1]+location.hash);}}).catch(()=>{});}catch(_){}
 // ---------- intro ----------
 let INTRO_HTML='';
