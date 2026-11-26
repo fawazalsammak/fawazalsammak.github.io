@@ -315,8 +315,8 @@ table td.n,table th.n{text-align:center!important}table th.n{direction:rtl;unico
       <button id="tGr" aria-pressed="false">المجموعات الاقتصادية</button>
       <button id="tPr" aria-pressed="false">السلع</button>
       <button id="tFd" aria-pressed="false">الأمن الغذائي</button>
-      <button id="tOil" aria-pressed="false">النفط</button>
       <button id="tGcc" aria-pressed="false">التجارة البينية الخليجية</button>
+      <button id="tOil" aria-pressed="false">النفط</button>
     </div>
   </div>
 </header>
@@ -408,7 +408,7 @@ table td.n,table th.n{text-align:center!important}table th.n{direction:rtl;unico
     </div>
   </section>
   <footer id="ft"></footer>
-<nav class="bnav" aria-label="التنقل"><button data-go="top"><span>الشركاء التجاريون</span></button><button data-go="groups"><span>المجموعات الاقتصادية</span></button><button data-go="food"><span>الأمن الغذائي</span></button><button data-go="kw" class="ctr"><b>الرئيسية</b></button><button data-go="products"><span>السلع</span></button><button data-go="oil"><span>النفط</span></button><button data-go="gcc"><span>التجارة البينية الخليجية</span></button></nav>
+<nav class="bnav" aria-label="التنقل"><button data-go="top"><span>الشركاء التجاريون</span></button><button data-go="groups"><span>المجموعات الاقتصادية</span></button><button data-go="food"><span>الأمن الغذائي</span></button><button data-go="kw" class="ctr"><b>الرئيسية</b></button><button data-go="products"><span>السلع</span></button><button data-go="gcc"><span>التجارة البينية الخليجية</span></button><button data-go="oil"><span>النفط</span></button></nav>
 </main>
 <script>
 {
@@ -727,7 +727,7 @@ function armCounts(root){if(!cntIO||matchMedia('(prefers-reduced-motion: reduce)
 new MutationObserver(ms=>{const set=new Set();ms.forEach(m=>{const t=m.target.nodeType===1?m.target:m.target.parentElement;if(t&&!t.closest('b'))set.add(t);});set.forEach(armCounts);}).observe(document.querySelector('main'),{childList:true,subtree:true});
 
 // ---------- auto-update (bypass stale phone cache) ----------
-const BUILD='1795671177';
+const BUILD='1795671559';
 try{fetch(location.pathname+'?b='+Date.now(),{cache:'no-store'}).then(r=>r.text()).then(h=>{const m=h.match(/const BUILD='(\d+)'/);if(m&&m[1]>BUILD&&!sessionStorage.getItem('rl'+m[1])){sessionStorage.setItem('rl'+m[1],'1');location.replace(location.pathname+'?v='+m[1]+location.hash);}}).catch(()=>{});}catch(_){}
 
 // ---------- products: commodity search & selection ----------
