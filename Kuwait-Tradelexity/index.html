@@ -360,6 +360,7 @@ canvas.iemb{width:clamp(70px,14vh,130px)!important;height:clamp(70px,14vh,130px)
 .fbrand{display:flex!important;align-items:center;justify-content:center;gap:12px;direction:ltr}.fbg{width:52px!important;height:52px!important}
 .fbn{font:700 26px Montserrat,Almarai,sans-serif;color:#fff;line-height:1}.fbn span{color:#D4B85A}.fbt{font:600 9.5px Montserrat,sans-serif;letter-spacing:2.4px;color:#9fb3d9;margin-top:5px}
 .ien{letter-spacing:2.2px!important;font-size:clamp(11px,2.6vw,16px)!important}
+.tspT{letter-spacing:2px!important;white-space:nowrap;font-size:clamp(10px,2.9vw,14px)!important}
 </style>
 <style>/* sources hidden on request – remove this rule to restore */ .srcl{display:none!important}</style>
 </head>
@@ -378,7 +379,7 @@ let last=0,tt=2;function loop(now){const dt=last?Math.min((now-last)/1000,1/30):
 requestAnimationFrame(loop);})();
 </script>
 
-<div id="intro" data-w="1" role="dialog" aria-label="الصفحة الافتتاحية"><div class="tsp" aria-hidden="true"><canvas id="tspG"></canvas><div class="tspN"><span style="--d:0.90s" class="">T</span><span style="--d:0.99s" class="">r</span><span style="--d:1.08s" class="">a</span><span style="--d:1.17s" class="">d</span><span style="--d:1.26s" class="">e</span><span style="--d:1.35s" class="g">l</span><span style="--d:1.44s" class="g">e</span><span style="--d:1.53s" class="g">x</span><span style="--d:1.62s" class="g tspI">ı</span><span style="--d:1.71s" class="g">t</span><span style="--d:1.80s" class="g">y</span></div><div class="tspT">GLOBAL TRADE INTELLIGENCE</div></div>
+<div id="intro" data-w="1" role="dialog" aria-label="الصفحة الافتتاحية"><div class="tsp" aria-hidden="true"><canvas id="tspG"></canvas><div class="tspN"><span style="--d:0.90s" class="">T</span><span style="--d:0.99s" class="">r</span><span style="--d:1.08s" class="">a</span><span style="--d:1.17s" class="">d</span><span style="--d:1.26s" class="">e</span><span style="--d:1.35s" class="g">l</span><span style="--d:1.44s" class="g">e</span><span style="--d:1.53s" class="g">x</span><span style="--d:1.62s" class="g tspI">ı</span><span style="--d:1.71s" class="g">t</span><span style="--d:1.80s" class="g">y</span></div><div class="tspT">GLOBAL TRADE FINANCE INTELLIGENCE</div></div>
   <div class="istars"></div>
   <div class="iin">
     <canvas class="spin iemb" aria-label="Tradelexity"></canvas>
@@ -822,7 +823,7 @@ function armCounts(root){if(!cntIO||matchMedia('(prefers-reduced-motion: reduce)
 new MutationObserver(ms=>{const set=new Set();ms.forEach(m=>{const t=m.target.nodeType===1?m.target:m.target.parentElement;if(t&&!t.closest('b'))set.add(t);});set.forEach(armCounts);}).observe(document.querySelector('main'),{childList:true,subtree:true});
 
 // ---------- auto-update (bypass stale phone cache) ----------
-const BUILD='1795720794';
+const BUILD='1795721001';
 try{fetch(location.pathname+'?b='+Date.now(),{cache:'no-store'}).then(r=>r.text()).then(h=>{const m=h.match(/const BUILD='(\d+)'/);if(m&&m[1]>BUILD&&!sessionStorage.getItem('rl'+m[1])){sessionStorage.setItem('rl'+m[1],'1');location.replace(location.pathname+'?v='+m[1]+location.hash);}}).catch(()=>{});}catch(_){}
 
 // ---------- products: commodity search & selection ----------
