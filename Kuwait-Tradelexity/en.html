@@ -321,7 +321,7 @@ table td.n,table th.n{text-align:center!important}table th.n{direction:rtl;unico
 @keyframes ipk{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:none}}
 .ipc{display:flex;flex-direction:column;align-items:center;gap:6px;padding:10px 12px;border-radius:14px;background:#ffffff10;border:1px solid #ffffff26;color:#fff;font:inherit;font-weight:700;cursor:pointer;min-width:84px}
 .ipc:hover{border-color:#D4B85A;background:#d4b85a22}
-.ipc img{width:56px;height:56px;object-fit:contain;border-radius:50%;background:#fff;padding:4px;box-shadow:0 3px 10px #0007}
+.ipc img{width:58px;height:58px;object-fit:cover;border-radius:50%;box-shadow:0 0 0 2px #ffffff30,0 4px 12px #0008}
 .csw{display:flex;gap:6px;flex-wrap:wrap;justify-content:center;margin:6px 0 2px}
 .csw a{display:flex;align-items:center;gap:6px;padding:5px 10px;border-radius:999px;border:1px solid var(--line);color:var(--ink);text-decoration:none;font-size:.9rem}
 .csw a img{width:24px;height:24px;object-fit:contain;border-radius:50%;background:#fff;padding:1px}
@@ -335,14 +335,33 @@ table td.n,table th.n{text-align:center!important}table th.n{direction:rtl;unico
 .ipk-t{animation:ipkGlow 1.8s ease-in-out infinite alternate}
 @keyframes ipkGlow{from{text-shadow:0 0 6px #D4B85A66}to{text-shadow:0 0 14px #D4B85A,0 0 28px #D4B85Aaa}}
 #intro.fast .imin{animation:idrop .45s both!important}
+canvas.iemb{width:clamp(70px,14vh,130px)!important;height:clamp(70px,14vh,130px)!important;display:block;margin:0 auto}
+.brand canvas.bglobe{width:54px;height:54px;flex:none}
+@media(max-width:760px){.brand canvas.bglobe{width:44px;height:44px}}
+.cemb{width:52px;height:52px;flex:none;border-radius:50%;background:#fff;padding:3px;object-fit:contain;box-shadow:0 3px 10px #0006}
+@media(max-width:760px){.cemb{width:42px;height:42px}}
 .bento .lnk .go{left:auto;right:14px}table th.n{direction:ltr}
 </style>
 </head>
 <body>
+<script>
+/* rotating dotted globe for every canvas.spin */
+(()=>{const G=[];const pts=[];for(let la=-81;la<=81;la+=9)for(let lo=-180;lo<180;lo+=9)pts.push([la*Math.PI/180,lo*Math.PI/180]);
+const tilt=18*Math.PI/180,KW=[29.3*Math.PI/180,47.9*Math.PI/180],t0=performance.now(),RM=matchMedia('(prefers-reduced-motion: reduce)').matches;
+function draw(cv,now){const r=cv.getBoundingClientRect();if(!r.width)return;const dpr=Math.min(devicePixelRatio||1,2),S=r.width;if(cv.width!==Math.round(S*dpr)){cv.width=Math.round(S*dpr);cv.height=Math.round(S*dpr);}
+ const x=cv.getContext('2d');x.setTransform(dpr,0,0,dpr,0,0);x.clearRect(0,0,S,S);const R=S*.46,C=S/2,t=RM?2:(now-t0)/1000,l0=(-110+t*40)*Math.PI/180;
+ const P=(phi,lam)=>{const L=lam-l0,X=Math.cos(phi)*Math.sin(L),Y=Math.cos(tilt)*Math.sin(phi)-Math.sin(tilt)*Math.cos(phi)*Math.cos(L),Z=Math.sin(tilt)*Math.sin(phi)+Math.cos(tilt)*Math.cos(phi)*Math.cos(L);return [C+R*X,C-R*Y,Z];};
+ for(const [p,l] of pts){const [px,py,z]=P(p,l);if(z<=0.02)continue;x.globalAlpha=.25+.75*z;x.fillStyle='#D4B85A';x.beginPath();x.arc(px,py,(R/95)*(1.1+1.9*z),0,7);x.fill();}
+ const [kx,ky,kz]=P(KW[0],KW[1]);if(kz>0){x.globalAlpha=Math.min(1,kz*1.6);const g=x.createRadialGradient(kx,ky,0,kx,ky,R*.22);g.addColorStop(0,'rgba(255,255,255,.7)');g.addColorStop(1,'rgba(255,255,255,0)');x.fillStyle=g;x.beginPath();x.arc(kx,ky,R*.22,0,7);x.fill();x.fillStyle='#fff';x.beginPath();x.arc(kx,ky,R*.07,0,7);x.fill();}
+ x.globalAlpha=1;}
+function loop(now){document.querySelectorAll('canvas.spin').forEach(cv=>draw(cv,now));if(!RM)requestAnimationFrame(loop);}
+requestAnimationFrame(loop);})();
+</script>
+
 <div id="intro" data-w="1" role="dialog" aria-label="Opening page"><div class="tsp" aria-hidden="true"><canvas id="tspG"></canvas><div class="tspN"><span style="--d:0.90s" class="">T</span><span style="--d:0.99s" class="">r</span><span style="--d:1.08s" class="">a</span><span style="--d:1.17s" class="">d</span><span style="--d:1.26s" class="">e</span><span style="--d:1.35s" class="g">l</span><span style="--d:1.44s" class="g">e</span><span style="--d:1.53s" class="g">x</span><span style="--d:1.62s" class="g tspI">ı</span><span style="--d:1.71s" class="g">t</span><span style="--d:1.80s" class="g">y</span></div><div class="tspT">GLOBAL TRADE INTELLIGENCE</div></div>
   <div class="istars"></div>
   <div class="iin">
-    <img src="globe.png" alt="Tradelexity" class="iemb">
+    <canvas class="spin iemb" aria-label="Tradelexity"></canvas>
     <div class="imin" dir="ltr" style="font-family:Montserrat,Almarai,sans-serif;letter-spacing:.5px">Trade<span style="color:#D4B85A">lexity</span></div>
     <div class="iline"></div>
     <div class="ien">GLOBAL TRADE INTELLIGENCE</div>
@@ -352,7 +371,7 @@ table td.n,table th.n{text-align:center!important}table th.n{direction:rtl;unico
   </div>
 </div>
 <header class="top"><a class="lang" href="./" onclick="this.href='./'+location.hash" lang="ar">عربي</a>
-  <div class="brand"><img src="globe.png" alt="Tradelexity" width="54" height="54"><div><div class="min" dir="ltr" style="font-family:Montserrat,Almarai,sans-serif;font-size:15px"><span style="color:#fff">Trade</span>lexity</div><h1>Kuwait Foreign Trade Statistics</h1></div></div>
+  <div class="brand"><canvas class="spin bglobe" aria-label="Tradelexity"></canvas><div><div class="min" dir="ltr" style="font-family:Montserrat,Almarai,sans-serif;font-size:15px"><span style="color:#fff">Trade</span>lexity</div><h1>Kuwait Foreign Trade Statistics</h1></div><img class="cemb" src="emblems/kw.png" alt="State of Kuwait emblem"></div>
   <p id="sub">Foreign trade statistics by country and group</p>
   <div class="bar">
     <div class="tabs" role="group" aria-label="View">
@@ -773,7 +792,7 @@ function armCounts(root){if(!cntIO||matchMedia('(prefers-reduced-motion: reduce)
 new MutationObserver(ms=>{const set=new Set();ms.forEach(m=>{const t=m.target.nodeType===1?m.target:m.target.parentElement;if(t&&!t.closest('b'))set.add(t);});set.forEach(armCounts);}).observe(document.querySelector('main'),{childList:true,subtree:true});
 
 // ---------- auto-update (bypass stale phone cache) ----------
-const BUILD='1795704832';
+const BUILD='1795705077';
 try{fetch(location.pathname+'?b='+Date.now(),{cache:'no-store'}).then(r=>r.text()).then(h=>{const m=h.match(/const BUILD='(\d+)'/);if(m&&m[1]>BUILD&&!sessionStorage.getItem('rl'+m[1])){sessionStorage.setItem('rl'+m[1],'1');location.replace(location.pathname+'?v='+m[1]+location.hash);}}).catch(()=>{});}catch(_){}
 
 // ---------- products: commodity search & selection ----------
@@ -850,7 +869,7 @@ function intro(force){const el=$('#intro');if(!el)return;if(!INTRO_HTML)INTRO_HT
   const goKw=ev=>{if(el.dataset.go)return;el.dataset.go='1';if(matchMedia('(prefers-reduced-motion: reduce)').matches){close();return;}const r=ev.currentTarget.getBoundingClientRect();introExit(el,r.left+r.width/2,r.top+r.height/2).then(()=>close()).catch(e=>{console.error('exit',e);delete el.dataset.sh;close();});};
   $('#iGo').onclick=ev=>{const bx=el.querySelector('.ibtns');if(!bx||bx.dataset.pk)return;bx.dataset.pk='1';
     const CO=[['KW','kw','Kuwait'],['SA','sa','Saudi Arabia'],['AE','ae','UAE'],['QA','qa','Qatar'],['BH','bh','Bahrain'],['OM','om','Oman']];
-    bx.innerHTML='<div class="ipk-t">Choose a country</div><div class="ipk">'+CO.map(([c,i,n])=>`<button class="ipc" data-c="${c}"><img src="emblems/${i}.png" alt="">${n}</button>`).join('')+'</div>';
+    bx.innerHTML='<div class="ipk-t">Choose a country</div><div class="ipk">'+CO.map(([c,i,n])=>`<button class="ipc" data-c="${c}"><img src="cflags/${i}.svg" alt="">${n}</button>`).join('')+'</div>';
     bx.querySelectorAll('.ipc').forEach(b=>b.onclick=e=>{const c=b.dataset.c;if(c==='KW')goKw(e);else location.href='gcc.html?lang=en&c='+c;});};
   if(el.classList.contains('fast'))setTimeout(()=>{const b=el.querySelector('#iGo');if(b)b.click();},30);
 }

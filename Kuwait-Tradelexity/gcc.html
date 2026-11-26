@@ -321,7 +321,7 @@ table td.n,table th.n{text-align:center!important}table th.n{direction:rtl;unico
 @keyframes ipk{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:none}}
 .ipc{display:flex;flex-direction:column;align-items:center;gap:6px;padding:10px 12px;border-radius:14px;background:#ffffff10;border:1px solid #ffffff26;color:#fff;font:inherit;font-weight:700;cursor:pointer;min-width:84px}
 .ipc:hover{border-color:#D4B85A;background:#d4b85a22}
-.ipc img{width:56px;height:56px;object-fit:contain;border-radius:50%;background:#fff;padding:4px;box-shadow:0 3px 10px #0007}
+.ipc img{width:58px;height:58px;object-fit:cover;border-radius:50%;box-shadow:0 0 0 2px #ffffff30,0 4px 12px #0008}
 .csw{display:flex;gap:6px;flex-wrap:wrap;justify-content:center;margin:6px 0 2px}
 .csw a{display:flex;align-items:center;gap:6px;padding:5px 10px;border-radius:999px;border:1px solid var(--line);color:var(--ink);text-decoration:none;font-size:.9rem}
 .csw a img{width:24px;height:24px;object-fit:contain;border-radius:50%;background:#fff;padding:1px}
@@ -335,6 +335,11 @@ table td.n,table th.n{text-align:center!important}table th.n{direction:rtl;unico
 .ipk-t{animation:ipkGlow 1.8s ease-in-out infinite alternate}
 @keyframes ipkGlow{from{text-shadow:0 0 6px #D4B85A66}to{text-shadow:0 0 14px #D4B85A,0 0 28px #D4B85Aaa}}
 #intro.fast .imin{animation:idrop .45s both!important}
+canvas.iemb{width:clamp(70px,14vh,130px)!important;height:clamp(70px,14vh,130px)!important;display:block;margin:0 auto}
+.brand canvas.bglobe{width:54px;height:54px;flex:none}
+@media(max-width:760px){.brand canvas.bglobe{width:44px;height:44px}}
+.cemb{width:52px;height:52px;flex:none;border-radius:50%;background:#fff;padding:3px;object-fit:contain;box-shadow:0 3px 10px #0006}
+@media(max-width:760px){.cemb{width:42px;height:42px}}
 </style>
 <style>
 .pick{min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:22px;padding:30px 16px;text-align:center}
@@ -343,7 +348,7 @@ table td.n,table th.n{text-align:center!important}table th.n{direction:rtl;unico
 @media(max-width:560px){.pgrid{grid-template-columns:repeat(2,minmax(120px,1fr))}}
 .pc{display:flex;flex-direction:column;align-items:center;gap:10px;padding:18px 10px;border-radius:18px;background:var(--panel);border:1px solid var(--line);color:var(--ink);text-decoration:none;font-weight:700;transition:transform .2s,border-color .2s}
 .pc:hover{transform:translateY(-3px);border-color:var(--mint)}
-.pc img{width:86px;height:86px;object-fit:contain;border-radius:50%;background:#fff;padding:6px;box-shadow:0 4px 14px #0006}
+.pc img{width:84px;height:84px;object-fit:cover;border-radius:50%;box-shadow:0 0 0 2px #ffffff30,0 6px 16px #0008}
 .csw{display:flex;gap:6px;flex-wrap:wrap;justify-content:center;margin:6px 0 2px}
 .csw a{display:flex;align-items:center;gap:6px;padding:5px 10px;border-radius:999px;border:1px solid var(--line);color:var(--ink);text-decoration:none;font-size:.9rem}
 .csw a img{width:24px;height:24px;object-fit:contain;border-radius:50%;background:#fff;padding:1px}
@@ -364,12 +369,25 @@ table td.n,table th.n{text-align:center!important}table th.n{direction:rtl;unico
 </style>
 </head>
 <body>
+<script>
+/* rotating dotted globe for every canvas.spin */
+(()=>{const G=[];const pts=[];for(let la=-81;la<=81;la+=9)for(let lo=-180;lo<180;lo+=9)pts.push([la*Math.PI/180,lo*Math.PI/180]);
+const tilt=18*Math.PI/180,KW=[29.3*Math.PI/180,47.9*Math.PI/180],t0=performance.now(),RM=matchMedia('(prefers-reduced-motion: reduce)').matches;
+function draw(cv,now){const r=cv.getBoundingClientRect();if(!r.width)return;const dpr=Math.min(devicePixelRatio||1,2),S=r.width;if(cv.width!==Math.round(S*dpr)){cv.width=Math.round(S*dpr);cv.height=Math.round(S*dpr);}
+ const x=cv.getContext('2d');x.setTransform(dpr,0,0,dpr,0,0);x.clearRect(0,0,S,S);const R=S*.46,C=S/2,t=RM?2:(now-t0)/1000,l0=(-110+t*40)*Math.PI/180;
+ const P=(phi,lam)=>{const L=lam-l0,X=Math.cos(phi)*Math.sin(L),Y=Math.cos(tilt)*Math.sin(phi)-Math.sin(tilt)*Math.cos(phi)*Math.cos(L),Z=Math.sin(tilt)*Math.sin(phi)+Math.cos(tilt)*Math.cos(phi)*Math.cos(L);return [C+R*X,C-R*Y,Z];};
+ for(const [p,l] of pts){const [px,py,z]=P(p,l);if(z<=0.02)continue;x.globalAlpha=.25+.75*z;x.fillStyle='#D4B85A';x.beginPath();x.arc(px,py,(R/95)*(1.1+1.9*z),0,7);x.fill();}
+ const [kx,ky,kz]=P(KW[0],KW[1]);if(kz>0){x.globalAlpha=Math.min(1,kz*1.6);const g=x.createRadialGradient(kx,ky,0,kx,ky,R*.22);g.addColorStop(0,'rgba(255,255,255,.7)');g.addColorStop(1,'rgba(255,255,255,0)');x.fillStyle=g;x.beginPath();x.arc(kx,ky,R*.22,0,7);x.fill();x.fillStyle='#fff';x.beginPath();x.arc(kx,ky,R*.07,0,7);x.fill();}
+ x.globalAlpha=1;}
+function loop(now){document.querySelectorAll('canvas.spin').forEach(cv=>draw(cv,now));if(!RM)requestAnimationFrame(loop);}
+requestAnimationFrame(loop);})();
+</script>
 <div id="app"></div>
 <script>
 {
 const $=s=>document.querySelector(s);
 const esc=s=>String(s==null?'':s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
-const BUILD='1795704832';
+const BUILD='1795705077';
 try{fetch(location.pathname+'?b='+Date.now(),{cache:'no-store'}).then(r=>r.text()).then(h=>{const m=h.match(/const BUILD='(\d+)'/);if(m&&m[1]>BUILD&&!sessionStorage.getItem('grl'+m[1])){sessionStorage.setItem('grl'+m[1],'1');const u=new URLSearchParams(location.search);u.set('v',m[1]);location.replace(location.pathname+'?'+u.toString()+location.hash);}}).catch(()=>{});}catch(_){}
 const QP=new URLSearchParams(location.search);
 const EN=QP.get('lang')==='en';
@@ -378,14 +396,14 @@ const T=(a,e)=>EN?e:a;
 const fmtN=(v,d)=>v.toLocaleString('en-US',{minimumFractionDigits:d,maximumFractionDigits:d});
 const pct=(a,b)=>b?((a-b)/Math.abs(b))*100:null;
 const CO=[['KW','kw',T('الكويت','Kuwait')],['SA','sa',T('السعودية','Saudi Arabia')],['AE','ae',T('الإمارات','UAE')],['QA','qa',T('قطر','Qatar')],['BH','bh',T('البحرين','Bahrain')],['OM','om',T('عُمان','Oman')]];
-const FLAG=iso=>`emblems/${iso}.png`;
+const FLAG=iso=>`cflags/${iso}.svg`;const EMB=iso=>`emblems/${iso}.png`;
 const href=c=>c==='KW'?(EN?'en.html':'index.html'):`gcc.html?c=${c}${EN?'&lang=en':''}`;
 let D=null,N=null,CUR='loc',UNIT='m',VIEW='ov',SEL=null;
 let U={div:1000,lab:'',d:2,k:1};
 // ---- picker ----
 const code=(QP.get('c')||'').toUpperCase();
 if(!['SA','AE','QA','BH','OM'].includes(code)){
-  $('#app').innerHTML=`<div class="pick"><img src="globe.png" alt="" style="height:72px;width:auto"><div dir="ltr" style="font:800 30px Montserrat,Almarai,sans-serif;margin-top:-6px">Trade<span style="color:#D4B85A">lexity</span></div><h2>${T('اختر الدولة','Choose a country')}</h2><p>${T('إحصاءات التجارة الخارجية لدول مجلس التعاون لدول الخليج العربية','Foreign trade statistics of the GCC countries')}</p>
+  $('#app').innerHTML=`<div class="pick"><canvas class="spin" style="width:80px;height:80px"></canvas><div dir="ltr" style="font:800 30px Montserrat,Almarai,sans-serif;margin-top:-6px">Trade<span style="color:#D4B85A">lexity</span></div><h2>${T('اختر الدولة','Choose a country')}</h2><p>${T('إحصاءات التجارة الخارجية لدول مجلس التعاون لدول الخليج العربية','Foreign trade statistics of the GCC countries')}</p>
   <div class="pgrid">${CO.map(([c,iso,n])=>`<a class="pc" href="${href(c)}"><img src="${FLAG(iso)}" alt="">${esc(n)}</a>`).join('')}</div>
   <a href="${EN?'en.html':'index.html'}" style="color:var(--mut)">${T('العودة إلى الصفحة الرئيسية','Back to home')}</a></div>`;
 } else start();
@@ -433,7 +451,7 @@ const TABS=[['ov',T('الإجمالي','Overview')],['pt',T('الشركاء ال
 function render(){unitFor();
  const nm=EN?D.en:D.ar;
  $('#app').innerHTML=`<header class="top"><a class="lang" href="gcc.html?c=${code}${EN?'':'&lang=en'}">${EN?'عربي':'EN'}</a>
- <div class="brand" onclick="location.href='${EN?'en.html':'index.html'}?home=1'" style="cursor:pointer"><img src="globe.png" alt="Tradelexity" width="54" height="54"><div><div class="min" dir="ltr" style="font-family:Montserrat,Almarai,sans-serif;font-size:15px"><span style="color:#fff">Trade</span>lexity</div><h1>${T('إحصاءات التجارة الخارجية','Foreign trade statistics')} – ${esc(nm)}</h1></div></div>
+ <div class="brand" onclick="location.href='${EN?'en.html':'index.html'}?home=1'" style="cursor:pointer"><canvas class="spin bglobe" aria-label="Tradelexity"></canvas><div><div class="min" dir="ltr" style="font-family:Montserrat,Almarai,sans-serif;font-size:15px"><span style="color:#fff">Trade</span>lexity</div><h1>${T('إحصاءات التجارة الخارجية','Foreign trade statistics')} – ${esc(nm)}</h1></div><img class="cemb" src="${EMB(CO.find(c=>c[0]===code)[1])}" alt=""></div>
  <div class="tgl"><button id="cL" aria-pressed="${CUR==='loc'}">${esc(EN?D.cen:D.curs)}</button><button id="cU" aria-pressed="${CUR==='usd'}">${T('دولار','USD')}</button><button id="uM" aria-pressed="${UNIT==='m'}">${T('مليون','Million')}</button><button id="uK" aria-pressed="${UNIT==='k'}">${T('ألف','Thousand')}</button></div>
  <div class="bar"><div class="tabs">${TABS.map(([k,l])=>`<button data-v="${k}" aria-pressed="${VIEW===k}">${l}</button>`).join('')}</div></div></header><main><a class="back" href="${EN?'en.html':'index.html'}?home=1" style="text-decoration:none"><span>${EN?'←':'→'}</span> ${T('العودة إلى الصفحة الرئيسية','Back to the main page')}</a><div id="mn"></div></main><nav class="bnav" aria-label="${T('التنقل','Navigation')}">${[['pt',T('الشركاء التجاريون','Partners')],['gr',T('المجموعات الاقتصادية','Groups')],['gcc',T('التجارة البينية الخليجية','Intra-GCC')],['ov',T('الرئيسية','Home'),1],['pr',T('السلع','Products')],['fd',T('الأمن الغذائي','Food')],['oil',T('الصادرات النفطية','Oil exports')]].map(([k,l,c])=>c?`<button data-go="${k}" class="ctr${VIEW===k?' on':''}"><b>${l}</b></button>`:`<button data-go="${k}" class="${VIEW===k?'on':''}"><span>${l}</span></button>`).join('')}</nav>
  <div class="srcl">${D.src?T('المصدر: '+D.src.ar+'. ','Source: '+D.src.en+'. ')+T('التحويل إلى الدولار بسعر ثابت: 1 دولار = '+D.rate+' '+D.cur+'.','USD at a fixed rate: 1 USD = '+D.rate+' '+D.cen+'.'):`${T('المصدر: قاعدة بيانات الأمم المتحدة لإحصاءات تجارة السلع (UN Comtrade)، البيانات كما أبلغت عنها '+D.ars+'. آخر سنة متاحة: '+D.ly+'. التحويل بسعر صرف ثابت: 1 دولار = '+D.rate+' '+D.cur+'.','Source: UN Comtrade, as reported by '+D.en+'. Latest available year: '+D.ly+'. Converted at a fixed rate: 1 USD = '+D.rate+' '+D.cen+'.')}`}</div>`;
