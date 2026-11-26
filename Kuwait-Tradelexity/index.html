@@ -318,7 +318,7 @@ table td.n,table th.n{text-align:center!important}table th.n{direction:rtl;unico
 </style>
 </head>
 <body>
-<div id="intro" data-w="1" role="dialog" aria-label="الصفحة الافتتاحية"><div class="tsp" aria-hidden="true"><canvas id="tspG"></canvas><div class="tspN"><span style="--d:0.90s" class="">t</span><span style="--d:0.99s" class="">r</span><span style="--d:1.08s" class="">a</span><span style="--d:1.17s" class="">d</span><span style="--d:1.26s" class="">e</span><span style="--d:1.35s" class="g">l</span><span style="--d:1.44s" class="g">e</span><span style="--d:1.53s" class="g">x</span><span style="--d:1.62s" class="g">i</span><span style="--d:1.71s" class="g">t</span><span style="--d:1.80s" class="g">y</span></div><div class="tspT">KUWAIT FOREIGN TRADE INTELLIGENCE</div></div>
+<div id="intro" data-w="1" role="dialog" aria-label="الصفحة الافتتاحية"><div class="tsp" aria-hidden="true"><canvas id="tspG"></canvas><div class="tspN"><span style="--d:0.90s" class="">t</span><span style="--d:0.99s" class="">r</span><span style="--d:1.08s" class="">a</span><span style="--d:1.17s" class="">d</span><span style="--d:1.26s" class="">e</span><span style="--d:1.35s" class="g">l</span><span style="--d:1.44s" class="g">e</span><span style="--d:1.53s" class="g">x</span><span style="--d:1.62s" class="g">i</span><span style="--d:1.71s" class="g">t</span><span style="--d:1.80s" class="g">y</span></div><div class="tspT">GLOBAL TRADE INTELLIGENCE</div></div>
   <div class="istars"></div>
   <div class="iin">
     <img src="emblem.png" alt="شعار دولة الكويت" class="iemb">
@@ -753,7 +753,7 @@ function armCounts(root){if(!cntIO||matchMedia('(prefers-reduced-motion: reduce)
 new MutationObserver(ms=>{const set=new Set();ms.forEach(m=>{const t=m.target.nodeType===1?m.target:m.target.parentElement;if(t&&!t.closest('b'))set.add(t);});set.forEach(armCounts);}).observe(document.querySelector('main'),{childList:true,subtree:true});
 
 // ---------- auto-update (bypass stale phone cache) ----------
-const BUILD='1795693624';
+const BUILD='1795694040';
 try{fetch(location.pathname+'?b='+Date.now(),{cache:'no-store'}).then(r=>r.text()).then(h=>{const m=h.match(/const BUILD='(\d+)'/);if(m&&m[1]>BUILD&&!sessionStorage.getItem('rl'+m[1])){sessionStorage.setItem('rl'+m[1],'1');location.replace(location.pathname+'?v='+m[1]+location.hash);}}).catch(()=>{});}catch(_){}
 
 // ---------- products: commodity search & selection ----------
