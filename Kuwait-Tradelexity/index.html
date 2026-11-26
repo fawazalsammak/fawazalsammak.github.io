@@ -287,6 +287,9 @@ table td.n,table th.n{text-align:center!important}table th.n{direction:rtl;unico
 .csch{position:relative;margin:0 0 14px}.csch input{width:100%;box-sizing:border-box;font:16px Almarai,sans-serif;padding:11px 14px;border-radius:12px;min-height:46px;background:#ffffff12;color:#fff;border:1px solid #D4B85A66}.csch input::placeholder,#pQ::placeholder{color:#a9b6cf}
 #pSug{margin-top:-4px}#pSel .kpis{grid-template-columns:repeat(2,minmax(0,1fr))}
 .ppt th,.ppt td{padding:8px 4px;font-size:13px}.ppt td:nth-child(2){white-space:normal}
+@media(min-width:1100px){html{zoom:1.2}}@media(min-width:1500px){html{zoom:1.32}}@media(min-width:1900px){html{zoom:1.45}}
+@media(min-width:820px){#pK .k[style*="grid-column"]{grid-column:span 2!important}#pK .k:not(.h1k):not(.oilk2){grid-column:span 2}}
+@media(min-width:820px){#kpis,#gcK{grid-template-columns:repeat(4,minmax(0,1fr))!important}}
 </style>
 </head>
 <body>
@@ -724,7 +727,7 @@ function armCounts(root){if(!cntIO||matchMedia('(prefers-reduced-motion: reduce)
 new MutationObserver(ms=>{const set=new Set();ms.forEach(m=>{const t=m.target.nodeType===1?m.target:m.target.parentElement;if(t&&!t.closest('b'))set.add(t);});set.forEach(armCounts);}).observe(document.querySelector('main'),{childList:true,subtree:true});
 
 // ---------- auto-update (bypass stale phone cache) ----------
-const BUILD='1795649238';
+const BUILD='1795671177';
 try{fetch(location.pathname+'?b='+Date.now(),{cache:'no-store'}).then(r=>r.text()).then(h=>{const m=h.match(/const BUILD='(\d+)'/);if(m&&m[1]>BUILD&&!sessionStorage.getItem('rl'+m[1])){sessionStorage.setItem('rl'+m[1],'1');location.replace(location.pathname+'?v='+m[1]+location.hash);}}).catch(()=>{});}catch(_){}
 
 // ---------- products: commodity search & selection ----------
