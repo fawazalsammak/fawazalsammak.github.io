@@ -733,7 +733,7 @@ function armCounts(root){if(!cntIO||matchMedia('(prefers-reduced-motion: reduce)
 new MutationObserver(ms=>{const set=new Set();ms.forEach(m=>{const t=m.target.nodeType===1?m.target:m.target.parentElement;if(t&&!t.closest('b'))set.add(t);});set.forEach(armCounts);}).observe(document.querySelector('main'),{childList:true,subtree:true});
 
 // ---------- auto-update (bypass stale phone cache) ----------
-const BUILD='1795672440';
+const BUILD='1795674224';
 try{fetch(location.pathname+'?b='+Date.now(),{cache:'no-store'}).then(r=>r.text()).then(h=>{const m=h.match(/const BUILD='(\d+)'/);if(m&&m[1]>BUILD&&!sessionStorage.getItem('rl'+m[1])){sessionStorage.setItem('rl'+m[1],'1');location.replace(location.pathname+'?v='+m[1]+location.hash);}}).catch(()=>{});}catch(_){}
 
 // ---------- products: commodity search & selection ----------
@@ -764,34 +764,40 @@ function pPartners(cs){const agg=f=>{const m={};let tot=0;cs.forEach(c=>{const z
   const tbl=(t,f)=>{const {tot,L}=agg(f);if(!L.length)return '';const mx=L[0][1];return `<div class="card" style="margin-top:16px"><h3>${t}</h3><div class="note" style="margin-top:0">الإجمالي ${uv(tot)} ${UNIT==='m'?'مليون':'ألف'} ${CUR==='usd'?'دولار':'د.ك'} · 2025</div><div class="scroll"><table class="ppt"><thead><tr><th>#</th><th>الدولة</th><th class="n">القيمة</th><th class="n">الحصة</th><th style="width:22%"></th></tr></thead><tbody>${L.map(([id,v],i)=>`<tr><td>${i+1}</td><td><a href="#c${esc(id)}">${esc(BY[id].ar)}</a></td><td class="n">${uv(v)}</td><td class="n">${tot?fmtN(v/tot*100,1)+'%':'–'}</td><td><span class="trk" style="display:flex"><i style="width:${v/mx*100}%;background:${f==='M'?'var(--mint)':'#9fb3d9'}"></i></span></td></tr>`).join('')}</tbody></table></div></div>`;};
   return tbl('أهم الدول المورّدة إلى دولة الكويت – 2025','M')+tbl('أهم وجهات صادرات دولة الكويت – 2025','X')+'<div class="note">بيانات الدول لسنة 2025 حسب الفصل (أهم الدول لكل فصل)؛ لا تتوفر بيانات 2026 موزعة حسب الدولة بعد.</div>';}
 
-// ---------- glass-shatter exit for the opening page ----------
+// ---------- glass-shatter exit for the opening page (canvas, iPhone-safe) ----------
 async function shatter(el,cx,cy,ready){
-  const W=innerWidth,H=innerHeight;
-  const tpl=el.cloneNode(true);const sv=el.querySelector('#imap'),sv2=tpl.querySelector('#imap');tpl.removeAttribute('id');tpl.classList.add('frz');tpl.querySelectorAll('[id]').forEach(n=>n.removeAttribute('id'));
-  if(sv&&sv2){const r=sv.getBoundingClientRect();const c=sv.cloneNode(true);c.querySelectorAll('.ct,.kwp').forEach(n=>{n.style.opacity='1';n.style.animation='none';n.style.transform='none';});c.querySelectorAll('.iarc').forEach(n=>{n.setAttribute('fill','none');n.setAttribute('stroke','#D4B85A');n.setAttribute('stroke-width','1.4');n.setAttribute('stroke-dasharray','4 4');n.style.opacity='.85';n.style.animation='none';});c.querySelectorAll('path:not(.iarc)').forEach(n=>{if(!n.getAttribute('fill'))n.setAttribute('fill','none');});
-    const url='data:image/svg+xml;charset=utf-8,'+encodeURIComponent(new XMLSerializer().serializeToString(c));
-    const im=new Image();im.src=url;im.style.cssText=`width:${r.width}px;height:${r.height}px;display:block;margin:auto`;try{await im.decode();}catch(_){}sv2.replaceWith(im);}
-  const st=el.scrollTop;if(st){const ii=tpl.querySelector('.iin');if(ii)ii.style.transform=`translateY(${-st}px)`;}
-  el.dataset.sh='1';
-  const L=document.createElement('div');L.className='shl';document.body.appendChild(L);
-  // jittered grid → triangles, denser around the click point
+  const W=innerWidth,H=innerHeight,dpr=Math.min(devicePixelRatio||1,2);
+  const snap=document.createElement('canvas');snap.width=W*dpr;snap.height=H*dpr;const g=snap.getContext('2d');g.scale(dpr,dpr);
+  const bg=g.createRadialGradient(W/2,H*.38,0,W/2,H*.38,Math.max(W,H)*.7);bg.addColorStop(0,'#2a4a8f');bg.addColorStop(.45,'#14285a');bg.addColorStop(1,'#0B193A');g.fillStyle=bg;g.fillRect(0,0,W,H);
+  const R=n=>n.getBoundingClientRect();
+  const em=el.querySelector('.iemb');if(em&&em.complete){const r=R(em);try{g.drawImage(em,r.left,r.top,r.width,r.height);}catch(_){}}
+  const sv=el.querySelector('#imap');
+  if(sv){const r=R(sv);const c=sv.cloneNode(true);c.setAttribute('width',r.width);c.setAttribute('height',r.height);if(!c.getAttribute('xmlns'))c.setAttribute('xmlns','http://www.w3.org/2000/svg');
+    c.querySelectorAll('.ct,.kwp').forEach(n=>{n.setAttribute('style','opacity:1');});c.querySelectorAll('.iarc').forEach(n=>{n.setAttribute('style','opacity:.85');n.setAttribute('fill','none');n.setAttribute('stroke','#D4B85A');n.setAttribute('stroke-width','1.4');n.setAttribute('stroke-dasharray','4 4');});
+    c.querySelectorAll('path:not(.iarc)').forEach(n=>{if(!n.getAttribute('fill'))n.setAttribute('fill','none');});
+    const im=new Image();im.src='data:image/svg+xml;charset=utf-8,'+encodeURIComponent(new XMLSerializer().serializeToString(c));
+    try{await im.decode();g.drawImage(im,r.left,r.top,r.width,r.height);}catch(_){}}
+  const txt=n=>{if(!n)return;const r=R(n),cs=getComputedStyle(n);g.font=`${cs.fontWeight} ${cs.fontSize} ${cs.fontFamily}`;g.fillStyle=cs.color;g.textAlign='center';g.textBaseline='middle';g.direction=cs.direction||'rtl';
+    const words=n.textContent.trim();const lh=parseFloat(cs.lineHeight)||parseFloat(cs.fontSize)*1.3;const lines=Math.max(1,Math.round(r.height/lh));
+    if(lines===1){g.fillText(words,r.left+r.width/2,r.top+r.height/2);return;}const ws=words.split(' '),per=Math.ceil(ws.length/lines);for(let i=0;i<lines;i++)g.fillText(ws.slice(i*per,(i+1)*per).join(' '),r.left+r.width/2,r.top+lh*(i+.5));};
+  ['.imin','.ien','.ititle'].forEach(k=>txt(el.querySelector(k)));
+  const ln=el.querySelector('.iline');if(ln){const r=R(ln);g.fillStyle='#D4B85A';g.fillRect(r.left,r.top,r.width,Math.max(2,r.height));}
+  const bt=el.querySelector('#iGo');if(bt){const r=R(bt),rad=r.height/2;g.fillStyle='#D4B85A';g.beginPath();g.moveTo(r.left+rad,r.top);g.arcTo(r.right,r.top,r.right,r.bottom,rad);g.arcTo(r.right,r.bottom,r.left,r.bottom,rad);g.arcTo(r.left,r.bottom,r.left,r.top,rad);g.arcTo(r.left,r.top,r.right,r.top,rad);g.fill();txt(bt);}
+  // shards
   const cols=6,rows=9,P=[];for(let j=0;j<=rows;j++){P[j]=[];for(let i=0;i<=cols;i++){const ed=i===0||j===0||i===cols||j===rows;P[j][i]=[i/cols*W+(ed?0:(Math.random()-.5)*W/cols*.8),j/rows*H+(ed?0:(Math.random()-.5)*H/rows*.8)];}}
-  const tris=[];for(let j=0;j<rows;j++)for(let i=0;i<cols;i++){const a=P[j][i],b=P[j][i+1],c=P[j+1][i+1],d=P[j+1][i];if(Math.random()<.5){tris.push([a,b,c],[a,c,d]);}else{tris.push([a,b,d],[b,c,d]);}}
-  const crack=document.createElementNS('http://www.w3.org/2000/svg','svg');crack.setAttribute('class','shc');crack.setAttribute('viewBox',`0 0 ${W} ${H}`);
-  crack.innerHTML=tris.map(t=>`<polygon points="${t.map(p=>p.join(',')).join(' ')}"/>`).join('')+`<circle cx="${cx}" cy="${cy}" r="6"/>`;
-  const anims=[];
-  tris.forEach(t=>{const d=document.createElement('div');d.className='shd';d.style.clipPath='polygon('+t.map(p=>p[0]+'px '+p[1]+'px').join(',')+')';
-    const k=tpl.cloneNode(true);d.appendChild(k);L.appendChild(d);
-    const mx=(t[0][0]+t[1][0]+t[2][0])/3,my=(t[0][1]+t[1][1]+t[2][1])/3,dx=mx-cx,dy=my-cy,dist=Math.hypot(dx,dy)||1;
-    d.style.transformOrigin=mx+'px '+my+'px';
-    const f=260+Math.random()*420,tx=dx/dist*f,ty=dy/dist*f+H*.55,rx=(Math.random()-.5)*160,ry=(Math.random()-.5)*160,rz=(Math.random()-.5)*120,delay=120+dist/Math.hypot(W,H)*260;
-    anims.push(d.animate([{transform:'translate3d(0,0,0)',opacity:1},{transform:`translate3d(${tx*.15}px,${ty*.05}px,40px) rotateX(${rx*.15}deg) rotateY(${ry*.15}deg)`,opacity:1,offset:.12},{transform:`translate3d(${tx*.6}px,${ty*.45}px,${(Math.random()-.3)*180}px) rotateX(${rx*.6}deg) rotateY(${ry*.6}deg) rotateZ(${rz*.6}deg)`,opacity:.95,offset:.6},{transform:`translate3d(${tx}px,${ty}px,${(Math.random()-.3)*300}px) rotateX(${rx}deg) rotateY(${ry}deg) rotateZ(${rz}deg)`,opacity:0}],{duration:1150+Math.random()*450,delay,easing:'cubic-bezier(.25,.6,.35,1)',fill:'forwards'}).finished);});
-  L.appendChild(crack);
-  crack.animate([{opacity:0},{opacity:1,offset:.15},{opacity:.9,offset:.35},{opacity:0}],{duration:620,fill:'forwards'});
-  const fl=document.createElement('div');fl.className='shf';fl.style.background=`radial-gradient(circle at ${cx}px ${cy}px,#ffffffcc,#ffffff00 40%)`;L.appendChild(fl);
-  fl.animate([{opacity:0},{opacity:1,offset:.2},{opacity:0}],{duration:420,fill:'forwards'});
+  const T=[];for(let j=0;j<rows;j++)for(let i=0;i<cols;i++){const a=P[j][i],b=P[j][i+1],c=P[j+1][i+1],d=P[j+1][i];(Math.random()<.5?[[a,b,c],[a,c,d]]:[[a,b,d],[b,c,d]]).forEach(t=>{const mx=(t[0][0]+t[1][0]+t[2][0])/3,my=(t[0][1]+t[1][1]+t[2][1])/3,dx=mx-cx,dy=my-cy,ds=Math.hypot(dx,dy)||1,f=260+Math.random()*420;
+    T.push({t,mx,my,tx:dx/ds*f,ty:dy/ds*f+H*.55,rz:(Math.random()-.5)*2.2,sx:.3+Math.random()*.7,delay:120+ds/Math.hypot(W,H)*260,dur:1150+Math.random()*450});});}
+  const cv=document.createElement('canvas');cv.width=W*dpr;cv.height=H*dpr;cv.style.cssText='position:fixed;inset:0;width:100vw;height:100vh;z-index:200;pointer-events:none';document.body.appendChild(cv);const x=cv.getContext('2d');
   if(ready)ready();
-  await Promise.all(anims).catch(()=>{});L.remove();
+  const t0=performance.now(),end=Math.max(...T.map(z=>z.delay+z.dur));const ease=k=>1-Math.pow(1-k,2.2);
+  await new Promise(res=>{const fr=now=>{const el2=now-t0;x.setTransform(1,0,0,1,0,0);x.clearRect(0,0,cv.width,cv.height);x.setTransform(dpr,0,0,dpr,0,0);
+    T.forEach(z=>{const k=Math.min(1,Math.max(0,(el2-z.delay)/z.dur)),e=ease(k),op=k<.6?1:1-(k-.6)/.4;if(op<=0)return;
+      x.save();x.globalAlpha=op;x.translate(z.mx+z.tx*e,z.my+z.ty*e*e);x.rotate(z.rz*e);x.scale(1-(1-z.sx)*Math.sin(e*Math.PI/2),1);x.translate(-z.mx,-z.my);
+      x.beginPath();x.moveTo(...z.t[0]);x.lineTo(...z.t[1]);x.lineTo(...z.t[2]);x.closePath();x.save();x.clip();x.drawImage(snap,0,0,W,H);x.restore();
+      if(k<.35){x.strokeStyle=`rgba(255,255,255,${.85*(1-k/.35)})`;x.lineWidth=1;x.stroke();}x.restore();});
+    if(el2<260){x.setTransform(dpr,0,0,dpr,0,0);const fl=x.createRadialGradient(cx,cy,0,cx,cy,Math.max(W,H)*.45);fl.addColorStop(0,`rgba(255,255,255,${.8*(1-el2/260)})`);fl.addColorStop(1,'rgba(255,255,255,0)');x.fillStyle=fl;x.fillRect(0,0,W,H);}
+    if(el2<end)requestAnimationFrame(fr);else res();};requestAnimationFrame(fr);});
+  cv.remove();
 }
 // ---------- intro ----------
 let INTRO_HTML='';
