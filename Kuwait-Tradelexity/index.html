@@ -341,6 +341,7 @@ canvas.iemb{width:clamp(70px,14vh,130px)!important;height:clamp(70px,14vh,130px)
 .cemb{width:52px;height:52px;flex:none;border-radius:50%;background:#fff;padding:3px;object-fit:contain;box-shadow:0 3px 10px #0006}
 @media(max-width:760px){.cemb{width:42px;height:42px}}
 .ititle2{direction:ltr;font:600 clamp(13px,3vw,16px) Montserrat,Almarai,sans-serif;color:#9fb3d9;letter-spacing:.3px;margin-top:-2px;animation:iup 2.2s 3.2s cubic-bezier(.16,1,.3,1) both}
+.lang{position:static!important;display:flex!important;width:max-content;margin:0 auto 10px;justify-content:center}
 </style>
 </head>
 <body>
@@ -371,7 +372,7 @@ requestAnimationFrame(loop);})();
     <div class="ibtns"><button id="iGo" class="ibtn main">الدخول إلى المنصة</button></div>
   </div>
 </div>
-<header class="top"><a class="lang" href="en.html" onclick="this.href='en.html'+location.hash" lang="en">EN</a>
+<header class="top"><a class="lang" href="en.html" onclick="this.href='en.html'+location.hash" lang="en">English</a>
   <div class="brand"><canvas class="spin bglobe" aria-label="Tradelexity"></canvas><div><div class="min" dir="ltr" style="font-family:Montserrat,Almarai,sans-serif;font-size:15px"><span style="color:#fff">Trade</span>lexity</div><h1>إحصاءات التجارة الخارجية الكويتية</h1></div><img class="cemb" src="emblems/kw.png" alt="شعار دولة الكويت"></div>
   <div class="bar">
     <div class="tabs" role="group" aria-label="العرض">
@@ -792,7 +793,7 @@ function armCounts(root){if(!cntIO||matchMedia('(prefers-reduced-motion: reduce)
 new MutationObserver(ms=>{const set=new Set();ms.forEach(m=>{const t=m.target.nodeType===1?m.target:m.target.parentElement;if(t&&!t.closest('b'))set.add(t);});set.forEach(armCounts);}).observe(document.querySelector('main'),{childList:true,subtree:true});
 
 // ---------- auto-update (bypass stale phone cache) ----------
-const BUILD='1795705509';
+const BUILD='1795705814';
 try{fetch(location.pathname+'?b='+Date.now(),{cache:'no-store'}).then(r=>r.text()).then(h=>{const m=h.match(/const BUILD='(\d+)'/);if(m&&m[1]>BUILD&&!sessionStorage.getItem('rl'+m[1])){sessionStorage.setItem('rl'+m[1],'1');location.replace(location.pathname+'?v='+m[1]+location.hash);}}).catch(()=>{});}catch(_){}
 
 // ---------- products: commodity search & selection ----------
