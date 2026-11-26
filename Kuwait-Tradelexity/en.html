@@ -344,6 +344,8 @@ canvas.iemb{width:clamp(70px,14vh,130px)!important;height:clamp(70px,14vh,130px)
 .lang{position:static!important;display:flex!important;width:max-content;margin:0 auto 10px;justify-content:center}
 .bento .lnk .go{left:auto;right:14px}table th.n{direction:ltr}
 </style>
+<style>/* sources hidden on request – remove this rule to restore */ .srcl{display:none!important}.bento .lnk .go{left:auto;right:14px}table th.n{direction:ltr}
+</style>
 </head>
 <body>
 <script>
@@ -414,7 +416,7 @@ requestAnimationFrame(loop);})();
     <div style="margin-top:14px;display:flex;gap:10px;align-items:center;flex-wrap:wrap"><button class="copy" id="cp">Copy data summary</button><span class="note" id="cpMsg"></span></div>
   </section>
   <section id="vTop" class="hide">
-    <div class="head"><h2>Kuwait's Main Trading Partners</h2><div class="unit">Values in KD million · Ranking excludes goods of unspecified destination (oil and oil-product exports)</div></div>
+    <div class="head"><h2>Main Trading Partners</h2><div class="unit">Values in KD million · Ranking excludes goods of unspecified destination (oil and oil-product exports)</div></div>
     <div class="csch"><input id="q" type="search" placeholder="Search a country or group…" autocomplete="off" aria-label="Search"><div id="sugg" role="listbox"></div></div>
     <div class="ctl">
       <select id="sP" aria-label="Period"></select>
@@ -437,7 +439,7 @@ requestAnimationFrame(loop);})();
     <div class="note">Kuwait's reported imports for 2025 at HS4 level, chapters 01–24. Values in millions (USD 1 = KD 0.3075). Select several tariff lines (products) to see combined suppliers.</div>
   </section>
   <section id="vOil" class="hide">
-    <div class="head"><div><h2>Kuwait's Oil Exports</h2><div class="en">Crude oil, refined products and gas</div></div><div class="unit">Values in KD million</div></div>
+    <div class="head"><div><h2>Oil Exports</h2><div class="en">Crude oil, refined products and gas</div></div><div class="unit">Values in KD million</div></div>
     <div class="kpis" id="oK"></div>
     <div class="grid"><div class="card"><h3>Oil and Non-oil Exports 2015–2025</h3><div class="fig" id="oY"></div><div class="lg"><span style="--c:var(--navy)">Oil and oil products</span><span style="--c:var(--mint)">Non-oil</span></div></div>
       <div class="card"><h3>Oil Exports – Quarterly Data</h3><div class="fig sm" id="oQ"></div></div></div>
@@ -458,7 +460,7 @@ requestAnimationFrame(loop);})();
     <div class="note">Exports are non-oil and include re-exports.</div>
   </section>
   <section id="vPr" class="hide">
-    <div class="head"><h2>Kuwait's Exports and Imports by Product</h2><div class="unit">Values in KD million · Harmonized System (HS) chapters</div></div>
+    <div class="head"><h2>Exports and Imports by Product</h2><div class="unit">Values in KD million · Harmonized System (HS) chapters</div></div>
     <div class="psch"><input id="pQ" type="search" autocomplete="off" placeholder="Search by HS code or product name and pick one or more (cars, medicines, gold, 87…)" aria-label="Product search"></div>
     <div id="pSug" class="fsug" role="listbox"></div>
     <div id="pChips" class="chips"></div>
@@ -474,7 +476,7 @@ requestAnimationFrame(loop);})();
     <div class="card" style="margin-top:16px"><h3 id="sT">Top products</h3><div class="scroll"><table id="sTb"></table></div></div>
     </div>
   </section>
-  <div class="fbrand"><img src="brand.png" alt="Tradelexity"></div><footer id="ft"></footer>
+  <div class="fbrand"><img src="brand.png" alt="Tradelexity"></div><footer id="ft" class="srcl"></footer>
 <nav class="bnav" aria-label="Navigation"><button data-go="top"><span>Trading partners</span></button><button data-go="groups"><span>Economic groups</span></button><button data-go="gcc"><span>Intra-GCC trade</span></button><button data-go="kw" class="ctr"><b>Home</b></button><button data-go="products"><span>Products</span></button><button data-go="food"><span>Food security</span></button><button data-go="oil"><span>Oil exports</span></button></nav>
 </main>
 <script>
@@ -533,7 +535,7 @@ function rankOf(e,key,L){const list=C.filter(c=>(key==='m'||c.id!=='603')&&g(c[k
 function render(e){cur=e;show('vEnt');
   const all=[...Y,...quarters()];let mx=0;all.forEach(p=>{mx=Math.max(mx,g(e.x,p),g(e.m,p));});unitFor(mx);
   const isC=!e.kw&&!e.id.startsWith('g');
-  $('#nm').textContent=e.en||e.ar;$('#nmEn').textContent=e.en?e.ar:'';$('#unit').textContent='Values in '+U.lab;
+  $('#nm').textContent=e.en||e.ar;$('#nmEn').textContent=e.en?e.ar:'';$('#nm').style.display=$('#nmEn').style.display=e.kw?'none':'';$('#unit').textContent='Values in '+U.lab;
   $('#cKd').setAttribute('aria-pressed',CUR==='kd');$('#cUsd').setAttribute('aria-pressed',CUR==='usd');$('#uM').setAttribute('aria-pressed',UNIT==='m');$('#uK').setAttribute('aria-pressed',UNIT==='k');
   const L='2025',x=g(e.x,L),m=g(e.m,L),x0=g(e.x,'2024'),m0=g(e.m,'2024'),Q=ytd(),sx=Q.cur.reduce((a,p)=>a+g(e.x,p),0),sm=Q.cur.reduce((a,p)=>a+g(e.m,p),0),px=Q.prev.reduce((a,p)=>a+g(e.x,p),0),pm=Q.prev.reduce((a,p)=>a+g(e.m,p),0);
   const ch=(a,b,lab)=>{const c=pct(a,b);return c==null||!isFinite(c)?'':`<i class="${c>=0?'up':'dn'}">${c>=0?'▲':'▼'} ${fmtN(Math.abs(c),1)}% ${lab}</i>`;};
@@ -567,7 +569,7 @@ ${(o5||o4)?`<div class="k oilk"><small>Oil exports to ${esc(e.en)} 2025</small><
   // ITC supply / export capacity
   const it=$('#itc');if(isC){it.classList.remove('hide');
     const blk=(t,ttl,sub)=>`<div class="ib"><h4>${ttl}</h4><small>${sub}</small>`+(t?`<dl><div><dt>Potential</dt><dd>${fmtN(mv(t.pot),2)}</dd></div><div><dt>Untapped potential</dt><dd>${fmtN(mv(t.gap),2)}</dd></div><div><dt>Realised</dt><dd>${t.real}%</dd></div></dl><div class="bar2"><i style="width:${Math.min(t.real,100)}%"></i></div><div class="pr"><b>Top products:</b> ${esc(t.prod)}</div>`:'<div class="note">No ITC estimates are published for this direction.</div>')+'</div>';
-    let h=`<h3>Supply and Export Potential – International Trade Centre (ITC)</h3><div class="note" style="margin-top:0">All products · 2031 estimates · ${MU()}</div><div class="ibs">`;
+    let h=`<h3>Supply and Export Potential<span class="srcl"> – International Trade Centre (ITC)</span></h3><div class="note" style="margin-top:0">All products · 2031 estimates · ${MU()}</div><div class="ibs">`;
     h+=blk(e.itc&&e.itc.inn,'Supply potential from '+esc(e.en)+' to the State of Kuwait','What '+esc(e.en)+' could supply to the State of Kuwait')+blk(e.itc&&e.itc.out,'Export potential from the State of Kuwait to '+esc(e.en),'What the State of Kuwait could export to this market')+'</div>';
     const fd=(e.rep&&e.rep.food)||e.itcFood;if(fd){h+=`<div class="ib food"><h4>Food sectors – supply potential from ${esc(e.en)} to the State of Kuwait</h4><small>Food security report estimates (2030)</small><dl><div><dt>Potential</dt><dd>${fmtN(mv(fd.pot),2)}</dd></div><div><dt>Untapped potential</dt><dd>${fmtN(mv(fd.gap),2)}</dd></div><div><dt>Realised</dt><dd>${fd.real}%</dd></div><div><dt>Level</dt><dd>${esc(fd.lvl)}</dd></div></dl>${e.itcFood?`<div class="pr"><b>Top opportunities:</b> ${esc(e.itcFood.prod)}</div>`:''}</div>`;}
     h+='<div class="note">Potential: trade achievable given supply capacity, projected demand and ease of trade; untapped: the gap between potential and actual trade. Covers national exports only and is not directly comparable with Central Statistical Bureau figures.</div>';
@@ -656,7 +658,7 @@ let WORLD=null,ISO={},CSB2ISO={};const MAPM={v:'Trade',x:'Exports',m:'Imports',b
 function loadWorld(){return WORLD?Promise.resolve(WORLD):fetch('world.json').then(r=>r.json()).then(w=>(WORLD=w));}
 const GOLD=['#f5ecd2','#e8d59c','#d9bd6a','#c4a03f','#9c7c22'],BLUE=['#dde4f2','#b3c3e3','#7d96c8','#4a6aa8','#244176'];
 function mapCard(){const el=$('#mapc');el.classList.remove('hide');
-  el.innerHTML=`<div class="mh"><h3>Map of Kuwait's Trading Partners – 2025</h3><div class="cur" role="group" aria-label="Indicator">${Object.entries(MAPM).map(([k,l])=>`<button data-k="${k}" aria-pressed="${k===MAPK}">${l}</button>`).join('')}</div></div>
+  el.innerHTML=`<div class="mh"><h3>Map of Trading Partners – 2025</h3><div class="cur" role="group" aria-label="Indicator">${Object.entries(MAPM).map(([k,l])=>`<button data-k="${k}" aria-pressed="${k===MAPK}">${l}</button>`).join('')}</div></div>
   <div class="mapw"><svg id="wsvg" viewBox="0 0 1000 520" role="img" aria-label="World map"></svg><div id="mtip" class="mtip"></div></div><div class="lg" id="mlg"></div><div class="note">Tap any country to open its trade profile. Exports are non-oil.</div>`;
   el.querySelectorAll('.mh button').forEach(b=>b.onclick=()=>{MAPK=b.dataset.k;mapCard();});
   loadWorld().then(w=>{const L='2025',val=id=>{const c=BY[id];if(!c)return null;const x=g(c.x,L),m=g(c.m,L);return MAPK==='v'?x+m:MAPK==='x'?x:MAPK==='m'?m:x-m;};
@@ -712,7 +714,7 @@ function layout(e,isC){const V=$('#vEnt');V.classList.toggle('isC',isC);V.classL
   const bt=$('#bento'),b2=$('#bento2');
   if(e.kw){bt.classList.remove('hide');b2.classList.remove('hide');const T=TOT[L]||{x:0,m:0,oil:0,nonoil:0,rex:0,nat:0},x0=g(e.x,'2024'),m0=g(e.m,'2024'),Q=ytd(),sx=Q.cur.reduce((a,p)=>a+g(e.x,p),0),sm=Q.cur.reduce((a,p)=>a+g(e.m,p),0),px=Q.prev.reduce((a,p)=>a+g(e.x,p),0),pm=Q.prev.reduce((a,p)=>a+g(e.m,p),0);
     const ys=Y.slice(-7),vmx=Math.max(...ys.map(y=>g(e.x,y)+g(e.m,y)));const pc2=(a,b)=>{const c=pct(a,b);return `<span class="${c>=0?'up':'dn'}" dir="ltr">${c>=0?'▲':'▼'} ${fmtN(Math.abs(c),1)}%</span>`;};
-    const HL=META.hl;bt.innerHTML=(!Q.cur.length&&HL)?`<div class="t h1t w2"><small>Non‌-oil foreign trade, H1 2026</small><b>${f(HL.tot)}</b><small>${pc2(HL.tot,HL.tot0)} year on year</small><div class="h1s"><span>National non‌-oil exports <b>${f(HL.x)}</b></span><span>${pc2(HL.x,HL.x0)}</span></div><small style="opacity:.7">Source: UAE Government Media Office – July 2026</small></div>`:`<div class="t h1t w2"><small>Total trade, ${Q.lab} 2026</small><b>${f(sx+sm)}</b><small>${pc2(sx+sm,px+pm)} year on year</small><div class="h1s"><span>Exports <b>${f(sx)}</b></span><span>Imports <b>${f(sm)}</b></span><span>Trade balance <b class="dn">${f(sx-sm)}</b></span></div></div>
+    const HL=META.hl;bt.innerHTML=(!Q.cur.length&&HL)?`<div class="t h1t w2"><small>Non‌-oil foreign trade, H1 2026</small><b>${f(HL.tot)}</b><small>${pc2(HL.tot,HL.tot0)} year on year</small><div class="h1s"><span>National non‌-oil exports <b>${f(HL.x)}</b></span><span>${pc2(HL.x,HL.x0)}</span></div><small class="srcl" style="opacity:.7">Source: UAE Government Media Office – July 2026</small></div>`:`<div class="t h1t w2"><small>Total trade, ${Q.lab} 2026</small><b>${f(sx+sm)}</b><small>${pc2(sx+sm,px+pm)} year on year</small><div class="h1s"><span>Exports <b>${f(sx)}</b></span><span>Imports <b>${f(sm)}</b></span><span>Trade balance <b class="dn">${f(sx-sm)}</b></span></div></div>
      <div class="t dark w2"><small>Total non-oil trade 2025</small><b>${f(x+m)}</b><small>${U.lab} · ${pc2(x+m,x0+m0)} vs 2024 · excluding oil and oil products</small></div>
      <div class="t xp w2"><div class="xpt"><div><small>Non-oil exports 2025</small><b>${f(x)}</b><small class="gch">${pc2(x,x0)} vs 2024</small></div>${(()=>{const sh=T.nonoil/(T.nonoil+T.rex),C=2*Math.PI*40,a=C*sh;return `<svg class="xpr" viewBox="0 0 100 100" aria-hidden="true"><circle cx="50" cy="50" r="40" class="tk"/><circle cx="50" cy="50" r="40" class="rx" style="stroke-dasharray:${C-a-3} ${C};stroke-dashoffset:${-a-1.5}"/><circle cx="50" cy="50" r="40" class="na" style="stroke-dasharray:${a-3} ${C};stroke-dashoffset:-1.5"/><text x="50" y="49" class="p">${fmtN(sh*100,0)}%</text><text x="50" y="64" class="l">national</text></svg>`;})()}</div>
       <div class="xpl"><div><i class="na"></i><span>National origin</span><b>${f(T.nonoil)}</b><em>${fmtN(T.nonoil/x*100,0)}%</em></div><div><i class="rx"></i><span>Re-exports</span><b>${f(T.rex)}</b><em>${fmtN(T.rex/x*100,0)}%</em></div></div></div>
@@ -806,7 +808,7 @@ function armCounts(root){if(!cntIO||matchMedia('(prefers-reduced-motion: reduce)
 new MutationObserver(ms=>{const set=new Set();ms.forEach(m=>{const t=m.target.nodeType===1?m.target:m.target.parentElement;if(t&&!t.closest('b'))set.add(t);});set.forEach(armCounts);}).observe(document.querySelector('main'),{childList:true,subtree:true});
 
 // ---------- auto-update (bypass stale phone cache) ----------
-const BUILD='1795709653';
+const BUILD='1795715852';
 try{fetch(location.pathname+'?b='+Date.now(),{cache:'no-store'}).then(r=>r.text()).then(h=>{const m=h.match(/const BUILD='(\d+)'/);if(m&&m[1]>BUILD&&!sessionStorage.getItem('rl'+m[1])){sessionStorage.setItem('rl'+m[1],'1');location.replace(location.pathname+'?v='+m[1]+location.hash);}}).catch(()=>{});}catch(_){}
 
 // ---------- products: commodity search & selection ----------
