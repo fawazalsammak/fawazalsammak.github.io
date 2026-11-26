@@ -579,7 +579,7 @@ document.querySelectorAll('.bnav button,.ftabs button').forEach(b=>b.onclick=()=
 $('#cLoc').onclick=()=>{CUR='loc';$('#cLoc').setAttribute('aria-pressed','true');$('#cUsd').setAttribute('aria-pressed','false');route();};
 $('#cUsd').onclick=()=>{CUR='usd';$('#cUsd').setAttribute('aria-pressed','true');$('#cLoc').setAttribute('aria-pressed','false');route();};
 window.addEventListener('hashchange',route);
-Promise.all([fetch('fin.json').then(r=>r.json()),GCC6.includes(CTRY)?fetch(CTRY==='KW'?'data.json':'data_'+CTRY+'.json').then(r=>r.json()).catch(()=>[]):Promise.resolve([])]).then(([fj,td])=>{
+Promise.all([fetch('fin.json').then(r=>r.json()),['KW','SA','AE','QA','BH','OM','CN','IN','US','JP','KR','DE'].includes(CTRY)?fetch(CTRY==='KW'?'data.json':'data_'+CTRY+'.json').then(r=>r.json()).catch(()=>[]):Promise.resolve([])]).then(([fj,td])=>{
   ALL=fj.c;if(!ALL[CTRY]){location.replace(location.pathname+'?c=KW');return;}F=ALL[CTRY];RG=F.rg;
   Object.entries(ALL).forEach(([c,d])=>{if(!CF[c])CF[c]={ar:d.ar,en:d.en,iso:d.iso,cs:d.cs,csE:d.cur,adj:'',adjE:d.en};});C=CF[CTRY];
   ORDER=Object.keys(ALL).filter(c=>ALL[c].rg===RG);setHead();
