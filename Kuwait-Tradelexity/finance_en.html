@@ -435,14 +435,14 @@ $('#swT').href=$('#swT').dataset.h+(CTRY==='KW'?'#kw':'?c='+CTRY);
 $('#backIntro').onclick=()=>{location.href=$('#backIntro').dataset.h;};
 let CUR='loc';const PJ=2026;
 const fmt=(v,d=1)=>v==null||!isFinite(v)?'–':(+v).toLocaleString('en-US',{minimumFractionDigits:d,maximumFractionDigits:d});
-const sg=(v,d=1)=>v==null?'–':'\u2066'+(v>0?'+':v<0?'−':'')+fmt(Math.abs(v),d)+'\u2069';
+const sg=(v,d=1)=>v==null?'–':(v>0?'+':v<0?'−':'')+fmt(Math.abs(v),d);
 const last=(o,maxY='2025')=>{const ks=Object.keys(o||{}).filter(y=>y<=maxY).sort();return ks.length?[ks[ks.length-1],o[ks[ks.length-1]]]:[null,null];};
 const csym=()=>CUR==='usd'?L('دولار','USD'):(EN?C.csE:C.cs);
 const toC=usdBn=>usdBn==null?null:(CUR==='usd'?usdBn:usdBn*F.FX.v);
 let F,ALL,TB={};
 // ---------- charts ----------
 function bars(ser,{years,neg=true,unit='',dec=1,pj=PJ,color='#D4B85A',h=190,label=true}={}){
-  const ys=years||Object.keys(ser).sort(),vals=ys.map(y=>ser[y]),W=Math.max(320,ys.length*46),pad=26,top=18,bot=22;
+  const ys=years||Object.keys(ser).filter(y=>y>='2015'&&y<='2026').sort(),vals=ys.map(y=>ser[y]),W=Math.max(320,ys.length*44),pad=26,top=18,bot=22;
   const fin=vals.filter(v=>v!=null);if(!fin.length)return `<div class="note">${L('لا تتوفر بيانات.','No data available.')}</div>`;
   const mx=Math.max(0,...fin),mn=neg?Math.min(0,...fin):0,rg=(mx-mn)||1,ch=h-top-bot,y0=top+ch*mx/rg,bw=(W-pad*2)/ys.length;
   let o=`<svg viewBox="0 0 ${W} ${h}" role="img"><line x1="${pad}" x2="${W-pad}" y1="${y0}" y2="${y0}" stroke="currentColor" stroke-opacity=".25"/>`;
@@ -479,7 +479,7 @@ function home(){const g=F.NGDPD,gr=F.NGDP_RPCH;
    ${card(L('النمو الاقتصادي الحقيقي (%)','Real GDP growth (%)'),'',bars(F.NGDP_RPCH)+legend())}`;}
 function output(){const ser={};Object.entries(F.NGDPD).forEach(([y,v])=>ser[y]=toC(v));
   $('#vOut').innerHTML=`<div class="fh"><h2>${T_NAV[0]}</h2><span class="sub">${L('مليار','billion')} ${csym()}</span></div>
-   <div class="fgrid">${k(L('الناتج المحلي 2025','GDP 2025'),fmt(toC(F.NGDPD['2025'])),L('مليار ','billion ')+csym())}${k(L('النمو الحقيقي 2025','Real growth 2025'),`<span class="${tone(F.NGDP_RPCH['2025'])}" dir="ltr">${sg(F.NGDP_RPCH['2025'])}%</span>`,L('تقدير 2026: ','2026 proj.: ')+'\u2066'+sg(F.NGDP_RPCH['2026'])+'%\u2069')}
+   <div class="fgrid">${k(L('الناتج المحلي 2025','GDP 2025'),fmt(toC(F.NGDPD['2025'])),L('مليار ','billion ')+csym())}${k(L('النمو الحقيقي 2025','Real growth 2025'),`<span class="${tone(F.NGDP_RPCH['2025'])}" dir="ltr">${sg(F.NGDP_RPCH['2025'])}%</span>`,L('تقدير 2026: ','2026 proj.: ')+'<span dir="ltr">'+sg(F.NGDP_RPCH['2026'])+'%</span>')}
    ${k(L('نصيب الفرد 2025','GDP per capita 2025'),'$'+fmt(F.NGDPDPC['2025'],0),L('بالدولار','US dollars'))}${k(L('عدد السكان 2025','Population 2025'),fmt(F.LP['2025'],2),L('مليون نسمة','million'))}</div>
    ${card(L('الناتج المحلي الإجمالي الاسمي','Nominal GDP'),L('مليار ','billion ')+csym(),bars(ser,{neg:false})+legend())}
    <div class="two">${card(L('النمو الحقيقي – دول مجلس التعاون 2025','Real growth – GCC 2025'),'',cmp('NGDP_RPCH','2025'))}${card(L('نصيب الفرد من الناتج – دول المجلس 2025','GDP per capita – GCC 2025'),L('ألف دولار','US$ thousand'),cmp('PCK','2025',{suf:''}))}</div>
@@ -487,7 +487,7 @@ function output(){const ser={};Object.entries(F.NGDPD).forEach(([y,v])=>ser[y]=t
 function monetary(){const rs={};Object.entries(F.RES).forEach(([y,v])=>rs[y]=toC(v));
   $('#vMon').innerHTML=`<div class="fh"><h2>${T_NAV[1]}</h2></div>
    <div class="fgrid">${k(L(F.POL.ar,F.POL.en),fmt(F.POL.v,2)+'%',L('آخر تعديل ','Last change ')+F.POL.d)}${F.POL.v2?k(L(F.POL.ar2,F.POL.en2),fmt(F.POL.v2,2)+'%',''):''}
-   ${k(L('سعر الصرف','Exchange rate'),fmt(F.FX.v,4),L(F.FX.peg+' · '+C.cs+' لكل دولار',F.FX.pegE+' · '+C.csE+' per USD'))}${k(L('التضخم 2025','Inflation 2025'),fmt(F.PCPIPCH['2025'])+'%',L('تقدير 2026: ','2026 proj.: ')+'\u2066'+fmt(F.PCPIPCH['2026'])+'%\u2069')}
+   ${k(L('سعر الصرف','Exchange rate'),fmt(F.FX.v,4),L(F.FX.peg+' · '+C.cs+' لكل دولار',F.FX.pegE+' · '+C.csE+' per USD'))}${k(L('التضخم 2025','Inflation 2025'),fmt(F.PCPIPCH['2025'])+'%',L('تقدير 2026: ','2026 proj.: ')+'<span dir="ltr">'+fmt(F.PCPIPCH['2026'])+'%</span>')}
    ${(()=>{const [y,v]=last(F.M2G);return y?k(L('نمو عرض النقد (M2) ','Broad money growth ')+y,`<span dir="ltr">${sg(v)}%</span>`,''):'';})()}
    ${(()=>{const [y,v]=last(F.LEND);return y?k(L('متوسط سعر الإقراض ','Avg. lending rate ')+y,fmt(v,2)+'%',''):'';})()}
    ${(()=>{const [y,v]=last(F.RESM);return y?k(L('تغطية الاحتياطيات ','Reserve cover ')+y,fmt(v)+' '+L('أشهر','months'),L('من الواردات','of imports')):'';})()}</div>
@@ -498,7 +498,7 @@ function monetary(){const rs={};Object.entries(F.RES).forEach(([y,v])=>rs[y]=toC
 function fiscal(){$('#vFis').innerHTML=`<div class="fh"><h2>${T_NAV[3]}</h2><span class="sub">${L('% من الناتج المحلي الإجمالي','% of GDP')}</span></div>
    <div class="fgrid">${k(L('رصيد المالية العامة 2025','Fiscal balance 2025'),`<span class="${tone(F.GGXCNL_NGDP['2025'])}" dir="ltr">${sg(F.GGXCNL_NGDP['2025'])}%</span>`,F.GGXCNL_NGDP['2025']>=0?L('فائض','Surplus'):L('عجز','Deficit'))}
    ${k(L('تقدير 2026','2026 projection'),`<span class="${tone(F.GGXCNL_NGDP['2026'])}" dir="ltr">${sg(F.GGXCNL_NGDP['2026'])}%</span>`,'')}
-   ${k(L('الدين الحكومي الإجمالي 2025','Gross government debt 2025'),fmt(F.GGXWDG_NGDP['2025'])+'%',L('تقدير 2026: ','2026 proj.: ')+'\u2066'+fmt(F.GGXWDG_NGDP['2026'])+'%\u2069')}
+   ${k(L('الدين الحكومي الإجمالي 2025','Gross government debt 2025'),fmt(F.GGXWDG_NGDP['2025'])+'%',L('تقدير 2026: ','2026 proj.: ')+'<span dir="ltr">'+fmt(F.GGXWDG_NGDP['2026'])+'%</span>')}
    ${k(L('الدين الحكومي بالقيمة 2025','Government debt value 2025'),fmt(toC(F.GGXWDG_NGDP['2025']*F.NGDPD['2025']/100)),L('مليار ','billion ')+csym())}</div>
    ${card(L('رصيد المالية العامة (صافي الإقراض/الاقتراض)','Fiscal balance (net lending/borrowing)'),L('% من الناتج المحلي','% of GDP'),bars(F.GGXCNL_NGDP)+legend())}
    ${card(L('إجمالي الدين الحكومي','Gross government debt'),L('% من الناتج المحلي','% of GDP'),bars(F.GGXWDG_NGDP,{neg:false})+legend())}
@@ -507,7 +507,7 @@ function external(){const ca={};Object.entries(F.BCA).forEach(([y,v])=>ca[y]=toC
   const tb={};Object.entries(TB).forEach(([y,v])=>tb[y]=CUR==='usd'?v/F.FX.v:v);
   const [ty,tv]=last(tb),[fy,fv]=last(F.FDI);
   $('#vExt').innerHTML=`<div class="fh"><h2>${T_NAV[4]}</h2><span class="sub">${L('مليار','billion')} ${csym()}</span></div>
-   <div class="fgrid">${k(L('الحساب الجاري 2025','Current account 2025'),`<span class="${tone(F.BCA['2025'])}" dir="ltr">${sg(toC(F.BCA['2025']))}</span>`,L('مليار ','billion ')+csym()+' · '+sg(F.BCA_NGDPD['2025'])+'% '+L('من الناتج','of GDP'))}
+   <div class="fgrid">${k(L('الحساب الجاري 2025','Current account 2025'),`<span class="${tone(F.BCA['2025'])}" dir="ltr">${sg(toC(F.BCA['2025']))}</span>`,L('مليار ','billion ')+csym()+' · <span dir="ltr">'+sg(F.BCA_NGDPD['2025'])+'%</span> '+L('من الناتج','of GDP'))}
    ${ty?k(L('الميزان التجاري السلعي ','Goods trade balance ')+ty,`<span class="${tone(tv)}" dir="ltr">${sg(tv)}</span>`,L('مليار ','billion ')+csym(),'trade'):''}
    ${(()=>{const [y,v]=last(F.EXPGDP);return y?k(L('صادرات السلع والخدمات ','Exports of goods & services ')+y,fmt(v)+'%',L('من الناتج','of GDP')):'';})()}
    ${(()=>{const [y,v]=last(F.IMPGDP);return y?k(L('واردات السلع والخدمات ','Imports of goods & services ')+y,fmt(v)+'%',L('من الناتج','of GDP')):'';})()}
