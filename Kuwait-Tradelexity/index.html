@@ -590,7 +590,7 @@ ${(o5||o4)?`<div class="k oilk"><small>الصادرات النفطية إلى ${
   const QN={'Q1':'الربع الأول','Q2':'الربع الثاني','Q3':'الربع الثالث','Q4':'الربع الرابع'},ql=p=>QN[p.slice(5)]+' '+p.slice(0,4);
   const q25=qs.filter(p=>p.startsWith('2025')),q26=qs.filter(p=>p.startsWith('2026'));
   const sep=t=>`<tr class="sep"><td colspan="5">${t}</td></tr>`;
-  const hp=q26.length?`<tr class="hl"><td>${Q.lab} 2026 (المجموع)</td><td class="n">${f(sx)}</td><td class="n">${f(sm)}</td><td class="n ${sx-sm>=0?'up':'dn'}">${f(sx-sm)}</td><td class="n">${f(sx+sm)}</td></tr>`:'';
+  const hp=q26.length&&(sx||sm)?`<tr class="hl"><td>${Q.lab} 2026 (المجموع)</td><td class="n">${f(sx)}</td><td class="n">${f(sm)}</td><td class="n ${sx-sm>=0?'up':'dn'}">${f(sx-sm)}</td><td class="n">${f(sx+sm)}</td></tr>`:'';
   $('#tbl').innerHTML=`<thead><tr><th>الفترة</th><th class="n">الصادرات</th><th class="n">الواردات</th><th class="n">الميزان التجاري</th><th class="n">حجم التبادل التجاري</th></tr></thead><tbody>${q26.length?sep('البيانات الفصلية 2026'):''}${hp}${[...q26].reverse().map(p=>row(ql(p),p)).join('')}${sep('البيانات الفصلية 2025')}${row('2025 (العام كاملاً)','2025','hl')}${[...q25].reverse().map(p=>row(ql(p),p)).join('')}${sep('البيانات السنوية')}${[...Y].reverse().map(p=>row(p,p)).join('')}</tbody>`;
   foodCountry(e);flowCard(e);if(e.kw)mapCard();else $('#mapc').classList.add('hide');
   layout(e,isC);
@@ -805,7 +805,7 @@ function armCounts(root){if(!cntIO||matchMedia('(prefers-reduced-motion: reduce)
 new MutationObserver(ms=>{const set=new Set();ms.forEach(m=>{const t=m.target.nodeType===1?m.target:m.target.parentElement;if(t&&!t.closest('b'))set.add(t);});set.forEach(armCounts);}).observe(document.querySelector('main'),{childList:true,subtree:true});
 
 // ---------- auto-update (bypass stale phone cache) ----------
-const BUILD='1795707341';
+const BUILD='1795709653';
 try{fetch(location.pathname+'?b='+Date.now(),{cache:'no-store'}).then(r=>r.text()).then(h=>{const m=h.match(/const BUILD='(\d+)'/);if(m&&m[1]>BUILD&&!sessionStorage.getItem('rl'+m[1])){sessionStorage.setItem('rl'+m[1],'1');location.replace(location.pathname+'?v='+m[1]+location.hash);}}).catch(()=>{});}catch(_){}
 
 // ---------- products: commodity search & selection ----------
@@ -887,7 +887,7 @@ function intro(force){const el=$('#intro');if(!ISKW){if(el)el.remove();return;}i
   if(el.classList.contains('fast'))setTimeout(()=>{const b=el.querySelector('#iGo');if(b)b.click();},30);
 }
 
-function rank(){const p=$('#sP').value,mk=$('#sM').value,n=+$('#sN').value;
+function rank(){if(!ISKW&&!rank._f){rank._f=1;const sp=$('#sP'),pv=sp.value,has=C.some(c=>g(c.x,pv)||g(c.m,pv));if(!has&&[...sp.options].some(o=>o.value==='2025')){sp.value='2025';const pp=$('#pP');if(pp&&pp.value===pv)pp.value='2025';}}const p=$('#sP').value,mk=$('#sM').value,n=+$('#sN').value;
   const val=c=>{const x=g(c.x,p),m=g(c.m,p);return mk==='v'?x+m:mk==='x'?x:mk==='m'?m:mk==='b'?x-m:m-x;};
   const list=C.filter(c=>c.id!=='603').map(c=>({c,v:val(c),x:g(c.x,p),m:g(c.m,p)})).filter(r=>r.v>0).sort((a,b)=>b.v-a.v).slice(0,n);const mx=list.length?list[0].v:1;
   $('#rk').innerHTML=list.map((r,i)=>{const w=r.v/mx*100;const seg=mk==='v'?`<i style="width:${r.x/mx*100}%;background:var(--mint)"></i><i style="width:${r.m/mx*100}%;background:var(--navy)"></i>`:`<i style="width:${w}%;background:${mk==='x'||mk==='b'?'var(--mint)':'var(--navy)'}"></i>`;return `<button class="row" data-id="${esc(r.c.id)}"><span class="v">${i+1}</span><span class="nm">${esc(r.c.ar)}</span><span class="trk">${seg}</span><span class="v">${fmtN(r.v/1000,2)}</span></button>`;}).join('')+(mk==='v'?'<div class="lg"><span style="--c:var(--mint)">الصادرات</span><span style="--c:var(--navy)">الواردات</span></div>':'');}
@@ -895,7 +895,7 @@ function groups(){const p='2025',list=G.map(c=>({c,x:g(c.x,p),m:g(c.m,p)})).sort
   $('#gr').innerHTML=list.map((r,i)=>`<button class="row" data-g="${esc(r.c.id)}"><span class="v">${i+1}</span><span class="nm">${esc(r.c.ar)}</span><span class="trk"><i style="width:${r.x/mx*100}%;background:var(--mint)"></i><i style="width:${r.m/mx*100}%;background:var(--navy)"></i></span><span class="v">${fmtN((r.x+r.m)/1000,1)}</span></button>`).join('');}
 const nrm=t=>String(t||'').toLowerCase().replace(/[أإآ]/g,'ا').replace(/ة/g,'ه').replace(/ى/g,'ي').replace(/[ًٌٍَُِّْ]/g,'');
 let PSEL=[],CHP={};
-function prods(){const fl=$('#pF').value,p=$('#pP').value,n=+$('#pN').value,q='';
+function prods(){if(!ISKW&&!prods._f){prods._f=1;const sp=$('#pP'),pv=sp.value;if(!HS.some(h=>g(h.x,pv)||g(h.m,pv))&&[...sp.options].some(o=>o.value==='2025'))sp.value='2025';}const fl=$('#pF').value,p=$('#pP').value,n=+$('#pN').value,q='';
   pChipsR();$('#pAll').classList.toggle('hide',!!PSEL.length);if(PSEL.length){$('#pSel').innerHTML=pSelR();return;}$('#pSel').innerHTML='';
   const prev=p.includes('-')?p.replace(/^(\d{4})/,y=>String(+y-1)):String(+p-1);
   const BH=HS.filter(h=>!(fl==='x'&&h.id==='27')),tot=BH.reduce((a,h)=>a+g(h[fl],p),0);
@@ -953,15 +953,17 @@ $('#cKd').onclick=()=>{CUR='kd';render(cur);};$('#cUsd').onclick=()=>{CUR='usd';
 if(!ISKW){
  document.title='Tradelexity – '+CC.shortE;
  const cimg=document.querySelector('.cemb');if(cimg)cimg.src='emblems/'+CC.iso+'.png';
- const AR=[[/التجارة غير النفطية/g,'التجارة'],[/ non-oil trade/g,' trade'],[/ · لا يشمل الترتيب البضائع غير محددة الوجهة \(صادرات النفط ومشتقاته\)| ?الصادرات غير نفطية وتشمل إعادة التصدير\.| ?الصادرات غير نفطية\./g,''],[/ · Ranking excludes goods of unspecified destination \(oil and oil-product exports\)| ?Exports are non-oil and include re-exports\.| ?Exports are non-oil\./g,''],[/ \(دون النفط ومشتقاته\)| · دون النفط ومشتقاته/g,''],[/ \(excluding oil and oil products\)| · excluding oil and oil products/g,''],[/الصادرات غير النفطية/g,'الصادرات'],[/Non-oil exports/g,'Exports'],[/Total non-oil trade/g,'Total trade'],[/التجارة الخارجية غير النفطية/g,'التجارة الخارجية'],[/التبادل التجاري غير النفطي/g,'التبادل التجاري'],[/دولة الكويت(?!‌)/g,CC.full],[/دينار كويتي/g,CC.cw],[/الكويتية(?!‌)/g,CC.aF],[/الكويتي(?!‌)/g,CC.aM],[/الكويت(?!‌)/g,CC.short],[/د\.ك/g,CC.cs],
+ const AR=[[/الميزان التجاري غير النفطي/g,'الميزان التجاري'],[/[Nn]on-oil trade balance/g,'Trade balance'],[/التجارة غير النفطية/g,'التجارة'],[/ non-oil trade/g,' trade'],[/ · لا يشمل الترتيب البضائع غير محددة الوجهة \(صادرات النفط ومشتقاته\)| ?الصادرات غير نفطية وتشمل إعادة التصدير\.| ?الصادرات غير نفطية\./g,''],[/ · Ranking excludes goods of unspecified destination \(oil and oil-product exports\)| ?Exports are non-oil and include re-exports\.| ?Exports are non-oil\./g,''],[/ \(دون النفط ومشتقاته\)| · دون النفط ومشتقاته/g,''],[/ \(excluding oil and oil products\)| · excluding oil and oil products/g,''],[/الصادرات غير النفطية/g,'الصادرات'],[/Non-oil exports/g,'Exports'],[/Total non-oil trade/g,'Total trade'],[/التجارة الخارجية غير النفطية/g,'التجارة الخارجية'],[/التبادل التجاري غير النفطي/g,'التبادل التجاري'],[/دولة الكويت(?!‌)/g,CC.full],[/دينار كويتي/g,CC.cw],[/الكويتية(?!‌)/g,CC.aF],[/الكويتي(?!‌)/g,CC.aM],[/الكويت(?!‌)/g,CC.short],[/د\.ك/g,CC.cs],
   [/Non-oil Foreign Trade/g,'Foreign Trade'],[/non-oil trade exchange/gi,'trade exchange'],[/State of Kuwait(?!‌)/g,CC.fullE],[/Kuwaiti dinars?/g,CC.cwE],[/Kuwaiti(?!‌)/g,CC.aE],[/Kuwait(?!‌)/g,CC.shortE],[/\bKD\b/g,CC.csE],[/^(\s*)the UAE/,'$1The UAE']];
  const HIDE=/هيكل الصادرات|ذات المنشأ الوطني|Export structure|National-origin/;
  const fix=root=>{const w=document.createTreeWalker(root,NodeFilter.SHOW_TEXT,{acceptNode:n=>n.parentElement&&(/^(SCRIPT|STYLE)$/.test(n.parentElement.tagName)||n.parentElement.id==='ft')?2:1});let n;const hide=[];
   while(n=w.nextNode()){let t=n.nodeValue,o=t;for(const [re,v] of AR)t=t.replace(re,v);if(t!==o)n.nodeValue=t;if(HIDE.test(t)){const b=n.parentElement.closest('.t,.card');if(b)hide.push(b);}}
   hide.forEach(b=>b.style.display='none');
+  const N26='بيانات 2026 غير متاحة بعد – تُعرض الأرقام النهائية لعام 2025 لحين صدورها.';
+  const addN=e=>{const pr=e.parentElement;if(!pr||pr.querySelector(':scope>.n26'))return;const d=document.createElement('div');d.className='note n26';d.style.cssText='grid-column:1/-1;margin:4px 0 8px;opacity:.85';d.textContent=N26;pr.insertBefore(d,e);};
   const z=e=>{const bs=[...e.querySelectorAll('b')];return bs.length&&bs.every(b=>!parseFloat(String(b._cnt||b.textContent).replace(/[^\d.]/g,'')));};
-  document.querySelectorAll('.kgh').forEach(h=>{if(!/2026/.test(h.textContent))return;const sib=[];let n=h.nextElementSibling;while(n&&!n.classList.contains('kgh')){sib.push(n);n=n.nextElementSibling;}if(sib.length&&sib.every(z))[h,...sib].forEach(e=>e.style.display='none');});
-  document.querySelectorAll('.k,.t').forEach(e=>{const lb=[...e.querySelectorAll('small')].map(x=>x.textContent).join(' ');if((/2026/.test(lb)||e.closest('#oK'))&&z(e))e.style.display='none';});};
+  document.querySelectorAll('.kgh').forEach(h=>{if(!/2026/.test(h.textContent))return;const sib=[];let n=h.nextElementSibling;while(n&&!n.classList.contains('kgh')){sib.push(n);n=n.nextElementSibling;}if(sib.length&&sib.every(z)){[h,...sib].forEach(e=>e.style.display='none');addN(h);}});
+  document.querySelectorAll('.k,.t').forEach(e=>{const lb=[...e.querySelectorAll('small')].map(x=>x.textContent).join(' ');if((/2026/.test(lb)||e.closest('#oK'))&&z(e)){e.style.display='none';addN(e);}});};
  let pend=false;new MutationObserver(ms=>{if(!ms.some(m=>{const t=m.target.nodeType===1?m.target:m.target.parentElement;return t&&!t.closest('b');}))return;if(pend)return;pend=true;queueMicrotask(()=>{pend=false;fix(document.body);});}).observe(document.body,{childList:true,subtree:true});
  fix(document.body);
 }
