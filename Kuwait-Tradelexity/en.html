@@ -321,10 +321,10 @@ table td.n,table th.n{text-align:center!important}table th.n{direction:rtl;unico
 @keyframes ipk{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:none}}
 .ipc{display:flex;flex-direction:column;align-items:center;gap:6px;padding:10px 12px;border-radius:14px;background:#ffffff10;border:1px solid #ffffff26;color:#fff;font:inherit;font-weight:700;cursor:pointer;min-width:84px}
 .ipc:hover{border-color:#D4B85A;background:#d4b85a22}
-.ipc img{width:54px;height:36px;object-fit:cover;border-radius:4px;box-shadow:0 3px 10px #0007}
+.ipc img{width:56px;height:56px;object-fit:contain;border-radius:50%;background:#fff;padding:4px;box-shadow:0 3px 10px #0007}
 .csw{display:flex;gap:6px;flex-wrap:wrap;justify-content:center;margin:6px 0 2px}
 .csw a{display:flex;align-items:center;gap:6px;padding:5px 10px;border-radius:999px;border:1px solid var(--line);color:var(--ink);text-decoration:none;font-size:.9rem}
-.csw a img{width:22px;height:15px;object-fit:cover;border-radius:2px}
+.csw a img{width:24px;height:24px;object-fit:contain;border-radius:50%;background:#fff;padding:1px}
 .csw a[aria-current="true"]{border-color:var(--mint);background:#d4b85a22;font-weight:700}
 .bento .lnk .go{left:auto;right:14px}table th.n{direction:ltr}
 </style>
@@ -345,7 +345,7 @@ table td.n,table th.n{text-align:center!important}table th.n{direction:rtl;unico
 </div>
 <header class="top"><a class="lang" href="./" onclick="this.href='./'+location.hash" lang="ar">عربي</a>
   <div class="brand"><img src="emblem.png" alt="State of Kuwait emblem" width="54" height="56"><div><div class="min">Ministry of Commerce and Industry</div><h1>Kuwait Foreign Trade Statistics</h1></div></div>
-  <div class="csw"><a href="en.html" aria-current="true"><img src="flags/kw.svg" alt="">Kuwait</a><a href="gcc.html?lang=en&c=SA"><img src="flags/sa.svg" alt="">Saudi Arabia</a><a href="gcc.html?lang=en&c=AE"><img src="flags/ae.svg" alt="">UAE</a><a href="gcc.html?lang=en&c=QA"><img src="flags/qa.svg" alt="">Qatar</a><a href="gcc.html?lang=en&c=BH"><img src="flags/bh.svg" alt="">Bahrain</a><a href="gcc.html?lang=en&c=OM"><img src="flags/om.svg" alt="">Oman</a></div>
+  <div class="csw"><a href="en.html" aria-current="true"><img src="emblems/kw.png" alt="">Kuwait</a><a href="gcc.html?lang=en&c=SA"><img src="emblems/sa.png" alt="">Saudi Arabia</a><a href="gcc.html?lang=en&c=AE"><img src="emblems/ae.png" alt="">UAE</a><a href="gcc.html?lang=en&c=QA"><img src="emblems/qa.png" alt="">Qatar</a><a href="gcc.html?lang=en&c=BH"><img src="emblems/bh.png" alt="">Bahrain</a><a href="gcc.html?lang=en&c=OM"><img src="emblems/om.png" alt="">Oman</a></div>
   <p id="sub">Foreign trade statistics by country and group</p>
   <div class="bar">
     <div class="tabs" role="group" aria-label="View">
@@ -766,7 +766,7 @@ function armCounts(root){if(!cntIO||matchMedia('(prefers-reduced-motion: reduce)
 new MutationObserver(ms=>{const set=new Set();ms.forEach(m=>{const t=m.target.nodeType===1?m.target:m.target.parentElement;if(t&&!t.closest('b'))set.add(t);});set.forEach(armCounts);}).observe(document.querySelector('main'),{childList:true,subtree:true});
 
 // ---------- auto-update (bypass stale phone cache) ----------
-const BUILD='1795701681';
+const BUILD='1795702195';
 try{fetch(location.pathname+'?b='+Date.now(),{cache:'no-store'}).then(r=>r.text()).then(h=>{const m=h.match(/const BUILD='(\d+)'/);if(m&&m[1]>BUILD&&!sessionStorage.getItem('rl'+m[1])){sessionStorage.setItem('rl'+m[1],'1');location.replace(location.pathname+'?v='+m[1]+location.hash);}}).catch(()=>{});}catch(_){}
 
 // ---------- products: commodity search & selection ----------
@@ -841,7 +841,7 @@ function intro(force){const el=$('#intro');if(!el)return;if(!INTRO_HTML)INTRO_HT
   const goKw=ev=>{if(el.dataset.go)return;el.dataset.go='1';if(matchMedia('(prefers-reduced-motion: reduce)').matches){close();return;}const r=ev.currentTarget.getBoundingClientRect();introExit(el,r.left+r.width/2,r.top+r.height/2).then(()=>close()).catch(e=>{console.error('exit',e);delete el.dataset.sh;close();});};
   $('#iGo').onclick=ev=>{const bx=el.querySelector('.ibtns');if(!bx||bx.dataset.pk)return;bx.dataset.pk='1';
     const CO=[['KW','kw','Kuwait'],['SA','sa','Saudi Arabia'],['AE','ae','UAE'],['QA','qa','Qatar'],['BH','bh','Bahrain'],['OM','om','Oman']];
-    bx.innerHTML='<div class="ipk-t">Choose a country</div><div class="ipk">'+CO.map(([c,i,n])=>`<button class="ipc" data-c="${c}"><img src="flags/${i}.svg" alt="">${n}</button>`).join('')+'</div>';
+    bx.innerHTML='<div class="ipk-t">Choose a country</div><div class="ipk">'+CO.map(([c,i,n])=>`<button class="ipc" data-c="${c}"><img src="emblems/${i}.png" alt="">${n}</button>`).join('')+'</div>';
     bx.querySelectorAll('.ipc').forEach(b=>b.onclick=e=>{const c=b.dataset.c;if(c==='KW')goKw(e);else location.href='gcc.html?lang=en&c='+c;});};
 }
 

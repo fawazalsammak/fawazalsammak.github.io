@@ -321,10 +321,10 @@ table td.n,table th.n{text-align:center!important}table th.n{direction:rtl;unico
 @keyframes ipk{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:none}}
 .ipc{display:flex;flex-direction:column;align-items:center;gap:6px;padding:10px 12px;border-radius:14px;background:#ffffff10;border:1px solid #ffffff26;color:#fff;font:inherit;font-weight:700;cursor:pointer;min-width:84px}
 .ipc:hover{border-color:#D4B85A;background:#d4b85a22}
-.ipc img{width:54px;height:36px;object-fit:cover;border-radius:4px;box-shadow:0 3px 10px #0007}
+.ipc img{width:56px;height:56px;object-fit:contain;border-radius:50%;background:#fff;padding:4px;box-shadow:0 3px 10px #0007}
 .csw{display:flex;gap:6px;flex-wrap:wrap;justify-content:center;margin:6px 0 2px}
 .csw a{display:flex;align-items:center;gap:6px;padding:5px 10px;border-radius:999px;border:1px solid var(--line);color:var(--ink);text-decoration:none;font-size:.9rem}
-.csw a img{width:22px;height:15px;object-fit:cover;border-radius:2px}
+.csw a img{width:24px;height:24px;object-fit:contain;border-radius:50%;background:#fff;padding:1px}
 .csw a[aria-current="true"]{border-color:var(--mint);background:#d4b85a22;font-weight:700}
 </style>
 <style>
@@ -334,10 +334,10 @@ table td.n,table th.n{text-align:center!important}table th.n{direction:rtl;unico
 @media(max-width:560px){.pgrid{grid-template-columns:repeat(2,minmax(120px,1fr))}}
 .pc{display:flex;flex-direction:column;align-items:center;gap:10px;padding:18px 10px;border-radius:18px;background:var(--panel);border:1px solid var(--line);color:var(--ink);text-decoration:none;font-weight:700;transition:transform .2s,border-color .2s}
 .pc:hover{transform:translateY(-3px);border-color:var(--mint)}
-.pc img{width:84px;height:56px;object-fit:cover;border-radius:6px;box-shadow:0 4px 14px #0006}
+.pc img{width:86px;height:86px;object-fit:contain;border-radius:50%;background:#fff;padding:6px;box-shadow:0 4px 14px #0006}
 .csw{display:flex;gap:6px;flex-wrap:wrap;justify-content:center;margin:6px 0 2px}
 .csw a{display:flex;align-items:center;gap:6px;padding:5px 10px;border-radius:999px;border:1px solid var(--line);color:var(--ink);text-decoration:none;font-size:.9rem}
-.csw a img{width:22px;height:15px;object-fit:cover;border-radius:2px}
+.csw a img{width:24px;height:24px;object-fit:contain;border-radius:50%;background:#fff;padding:1px}
 .csw a[aria-current="true"]{border-color:var(--mint);background:#d4b85a22;font-weight:700}
 .tgl{display:flex;gap:6px;justify-content:center;flex-wrap:wrap;margin:8px 0}
 .tgl button{padding:5px 12px;border-radius:999px;border:1px solid var(--line);background:transparent;color:var(--ink);font:inherit;cursor:pointer}
@@ -360,6 +360,8 @@ table td.n,table th.n{text-align:center!important}table th.n{direction:rtl;unico
 {
 const $=s=>document.querySelector(s);
 const esc=s=>String(s==null?'':s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const BUILD='1795702195';
+try{fetch(location.pathname+'?b='+Date.now(),{cache:'no-store'}).then(r=>r.text()).then(h=>{const m=h.match(/const BUILD='(\d+)'/);if(m&&m[1]>BUILD&&!sessionStorage.getItem('grl'+m[1])){sessionStorage.setItem('grl'+m[1],'1');const u=new URLSearchParams(location.search);u.set('v',m[1]);location.replace(location.pathname+'?'+u.toString()+location.hash);}}).catch(()=>{});}catch(_){}
 const QP=new URLSearchParams(location.search);
 const EN=QP.get('lang')==='en';
 if(EN){document.documentElement.lang='en';document.documentElement.dir='ltr';document.body.style.fontFamily="'Times New Roman',Times,serif";}
@@ -367,21 +369,21 @@ const T=(a,e)=>EN?e:a;
 const fmtN=(v,d)=>v.toLocaleString('en-US',{minimumFractionDigits:d,maximumFractionDigits:d});
 const pct=(a,b)=>b?((a-b)/Math.abs(b))*100:null;
 const CO=[['KW','kw',T('الكويت','Kuwait')],['SA','sa',T('السعودية','Saudi Arabia')],['AE','ae',T('الإمارات','UAE')],['QA','qa',T('قطر','Qatar')],['BH','bh',T('البحرين','Bahrain')],['OM','om',T('عُمان','Oman')]];
-const FLAG=iso=>`flags/${iso}.svg`;
+const FLAG=iso=>`emblems/${iso}.png`;
 const href=c=>c==='KW'?(EN?'en.html':'index.html'):`gcc.html?c=${c}${EN?'&lang=en':''}`;
 let D=null,N=null,CUR='loc',UNIT='m',VIEW='ov',SEL=null;
 let U={div:1000,lab:'',d:2,k:1};
 // ---- picker ----
 const code=(QP.get('c')||'').toUpperCase();
 if(!['SA','AE','QA','BH','OM'].includes(code)){
-  $('#app').innerHTML=`<div class="pick"><img src="emblem.png" alt="" width="70"><h2>${T('اختر الدولة','Choose a country')}</h2><p>${T('إحصاءات التجارة الخارجية لدول مجلس التعاون لدول الخليج العربية','Foreign trade statistics of the GCC countries')}</p>
+  $('#app').innerHTML=`<div class="pick"><img src="brand.png" alt="Tradelexity" style="height:64px;width:auto"><h2>${T('اختر الدولة','Choose a country')}</h2><p>${T('إحصاءات التجارة الخارجية لدول مجلس التعاون لدول الخليج العربية','Foreign trade statistics of the GCC countries')}</p>
   <div class="pgrid">${CO.map(([c,iso,n])=>`<a class="pc" href="${href(c)}"><img src="${FLAG(iso)}" alt="">${esc(n)}</a>`).join('')}</div>
   <a href="${EN?'en.html':'index.html'}" style="color:var(--mut)">${T('العودة إلى الصفحة الرئيسية','Back to home')}</a></div>`;
 } else start();
 window.addEventListener('hashchange',()=>{if(!D)return;const h=location.hash.slice(1);if(h&&h!==VIEW){VIEW=h;SEL=null;render();}});
 async function start(){
   $('#app').innerHTML=`<div class="pick"><p>${T('جارٍ تحميل البيانات…','Loading data…')}</p></div>`;
-  [D,N]=await Promise.all([fetch('gcc/'+code+'.json').then(r=>r.json()),fetch('gcc/names.json').then(r=>r.json())]);
+  [D,N]=await Promise.all([fetch('gcc/'+code+'.json?v='+BUILD).then(r=>r.json()),fetch('gcc/names.json?v='+BUILD).then(r=>r.json())]);
   document.title='Tradelexity – '+(EN?D.en:D.ars);
   try{const h=location.hash.slice(1);if(h)VIEW=h;}catch(_){}
   render();
@@ -422,7 +424,7 @@ const TABS=[['ov',T('الإجمالي','Overview')],['pt',T('الشركاء ال
 function render(){unitFor();
  const nm=EN?D.en:D.ar;
  $('#app').innerHTML=`<header class="top"><a class="lang" href="gcc.html?c=${code}${EN?'':'&lang=en'}">${EN?'عربي':'EN'}</a>
- <div class="brand"><img src="emblem.png" alt="" width="54" height="56"><div><div class="min">${T('وزارة التجارة والصناعة','Ministry of Commerce & Industry')}</div><h1>${T('إحصاءات التجارة الخارجية','Foreign trade statistics')} – ${esc(nm)}</h1></div></div>
+ <div class="brand"><img src="brand.png" alt="Tradelexity" style="height:46px;width:auto;max-width:42vw"><div><h1>${T('إحصاءات التجارة الخارجية','Foreign trade statistics')} – ${esc(nm)}</h1></div></div>
  <div class="csw">${CO.map(([c,iso,n])=>`<a href="${href(c)}" aria-current="${c===code}"><img src="${FLAG(iso)}" alt="">${esc(n)}</a>`).join('')}</div>
  <div class="tgl"><button id="cL" aria-pressed="${CUR==='loc'}">${esc(EN?D.cen:D.curs)}</button><button id="cU" aria-pressed="${CUR==='usd'}">${T('دولار','USD')}</button><button id="uM" aria-pressed="${UNIT==='m'}">${T('مليون','Million')}</button><button id="uK" aria-pressed="${UNIT==='k'}">${T('ألف','Thousand')}</button></div>
  <div class="bar"><div class="tabs">${TABS.map(([k,l])=>`<button data-v="${k}" aria-pressed="${VIEW===k}">${l}</button>`).join('')}</div></div></header><main id="mn"></main><nav class="bnav" aria-label="${T('التنقل','Navigation')}">${[['pt',T('الشركاء التجاريون','Partners')],['gr',T('المجموعات الاقتصادية','Groups')],['gcc',T('التجارة البينية الخليجية','Intra-GCC')],['ov',T('الرئيسية','Home'),1],['pr',T('السلع','Products')],['fd',T('الأمن الغذائي','Food')],['oil',T('الصادرات النفطية','Oil exports')]].map(([k,l,c])=>c?`<button data-go="${k}" class="ctr${VIEW===k?' on':''}"><b>${l}</b></button>`:`<button data-go="${k}" class="${VIEW===k?'on':''}"><span>${l}</span></button>`).join('')}</nav>

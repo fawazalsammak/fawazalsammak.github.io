@@ -321,10 +321,10 @@ table td.n,table th.n{text-align:center!important}table th.n{direction:rtl;unico
 @keyframes ipk{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:none}}
 .ipc{display:flex;flex-direction:column;align-items:center;gap:6px;padding:10px 12px;border-radius:14px;background:#ffffff10;border:1px solid #ffffff26;color:#fff;font:inherit;font-weight:700;cursor:pointer;min-width:84px}
 .ipc:hover{border-color:#D4B85A;background:#d4b85a22}
-.ipc img{width:54px;height:36px;object-fit:cover;border-radius:4px;box-shadow:0 3px 10px #0007}
+.ipc img{width:56px;height:56px;object-fit:contain;border-radius:50%;background:#fff;padding:4px;box-shadow:0 3px 10px #0007}
 .csw{display:flex;gap:6px;flex-wrap:wrap;justify-content:center;margin:6px 0 2px}
 .csw a{display:flex;align-items:center;gap:6px;padding:5px 10px;border-radius:999px;border:1px solid var(--line);color:var(--ink);text-decoration:none;font-size:.9rem}
-.csw a img{width:22px;height:15px;object-fit:cover;border-radius:2px}
+.csw a img{width:24px;height:24px;object-fit:contain;border-radius:50%;background:#fff;padding:1px}
 .csw a[aria-current="true"]{border-color:var(--mint);background:#d4b85a22;font-weight:700}
 </style>
 </head>
@@ -344,7 +344,7 @@ table td.n,table th.n{text-align:center!important}table th.n{direction:rtl;unico
 </div>
 <header class="top"><a class="lang" href="en.html" onclick="this.href='en.html'+location.hash" lang="en">EN</a>
   <div class="brand"><img src="emblem.png" alt="شعار دولة الكويت" width="54" height="56"><div><div class="min">وزارة التجارة والصناعة</div><h1>إحصاءات التجارة الخارجية الكويتية</h1></div></div>
-  <div class="csw"><a href="index.html" aria-current="true"><img src="flags/kw.svg" alt="">الكويت</a><a href="gcc.html?c=SA"><img src="flags/sa.svg" alt="">السعودية</a><a href="gcc.html?c=AE"><img src="flags/ae.svg" alt="">الإمارات</a><a href="gcc.html?c=QA"><img src="flags/qa.svg" alt="">قطر</a><a href="gcc.html?c=BH"><img src="flags/bh.svg" alt="">البحرين</a><a href="gcc.html?c=OM"><img src="flags/om.svg" alt="">عُمان</a></div>
+  <div class="csw"><a href="index.html" aria-current="true"><img src="emblems/kw.png" alt="">الكويت</a><a href="gcc.html?c=SA"><img src="emblems/sa.png" alt="">السعودية</a><a href="gcc.html?c=AE"><img src="emblems/ae.png" alt="">الإمارات</a><a href="gcc.html?c=QA"><img src="emblems/qa.png" alt="">قطر</a><a href="gcc.html?c=BH"><img src="emblems/bh.png" alt="">البحرين</a><a href="gcc.html?c=OM"><img src="emblems/om.png" alt="">عُمان</a></div>
   <p id="sub">إحصاءات التجارة الخارجية حسب الدولة والمجموعة</p>
   <div class="bar">
     <div class="tabs" role="group" aria-label="العرض">
@@ -765,7 +765,7 @@ function armCounts(root){if(!cntIO||matchMedia('(prefers-reduced-motion: reduce)
 new MutationObserver(ms=>{const set=new Set();ms.forEach(m=>{const t=m.target.nodeType===1?m.target:m.target.parentElement;if(t&&!t.closest('b'))set.add(t);});set.forEach(armCounts);}).observe(document.querySelector('main'),{childList:true,subtree:true});
 
 // ---------- auto-update (bypass stale phone cache) ----------
-const BUILD='1795701681';
+const BUILD='1795702195';
 try{fetch(location.pathname+'?b='+Date.now(),{cache:'no-store'}).then(r=>r.text()).then(h=>{const m=h.match(/const BUILD='(\d+)'/);if(m&&m[1]>BUILD&&!sessionStorage.getItem('rl'+m[1])){sessionStorage.setItem('rl'+m[1],'1');location.replace(location.pathname+'?v='+m[1]+location.hash);}}).catch(()=>{});}catch(_){}
 
 // ---------- products: commodity search & selection ----------
@@ -840,7 +840,7 @@ function intro(force){const el=$('#intro');if(!el)return;if(!INTRO_HTML)INTRO_HT
   const goKw=ev=>{if(el.dataset.go)return;el.dataset.go='1';if(matchMedia('(prefers-reduced-motion: reduce)').matches){close();return;}const r=ev.currentTarget.getBoundingClientRect();introExit(el,r.left+r.width/2,r.top+r.height/2).then(()=>close()).catch(e=>{console.error('exit',e);delete el.dataset.sh;close();});};
   $('#iGo').onclick=ev=>{const bx=el.querySelector('.ibtns');if(!bx||bx.dataset.pk)return;bx.dataset.pk='1';
     const CO=[['KW','kw','الكويت'],['SA','sa','السعودية'],['AE','ae','الإمارات'],['QA','qa','قطر'],['BH','bh','البحرين'],['OM','om','عُمان']];
-    bx.innerHTML='<div class="ipk-t">اختر الدولة</div><div class="ipk">'+CO.map(([c,i,n])=>`<button class="ipc" data-c="${c}"><img src="flags/${i}.svg" alt="">${n}</button>`).join('')+'</div>';
+    bx.innerHTML='<div class="ipk-t">اختر الدولة</div><div class="ipk">'+CO.map(([c,i,n])=>`<button class="ipc" data-c="${c}"><img src="emblems/${i}.png" alt="">${n}</button>`).join('')+'</div>';
     bx.querySelectorAll('.ipc').forEach(b=>b.onclick=e=>{const c=b.dataset.c;if(c==='KW')goKw(e);else location.href='gcc.html?c='+c;});};
 }
 
