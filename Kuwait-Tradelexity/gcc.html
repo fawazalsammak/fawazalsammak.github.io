@@ -376,12 +376,12 @@ canvas.iemb{width:clamp(70px,14vh,130px)!important;height:clamp(70px,14vh,130px)
 (()=>{const G=[];const pts=[];for(let la=-81;la<=81;la+=9)for(let lo=-180;lo<180;lo+=9)pts.push([la*Math.PI/180,lo*Math.PI/180]);
 const tilt=18*Math.PI/180,KW=[29.3*Math.PI/180,47.9*Math.PI/180],t0=performance.now(),RM=matchMedia('(prefers-reduced-motion: reduce)').matches;
 function draw(cv,now){const r=cv.getBoundingClientRect();if(!r.width)return;const dpr=Math.min(devicePixelRatio||1,2),S=r.width;if(cv.width!==Math.round(S*dpr)){cv.width=Math.round(S*dpr);cv.height=Math.round(S*dpr);}
- const x=cv.getContext('2d');x.setTransform(dpr,0,0,dpr,0,0);x.clearRect(0,0,S,S);const R=S*.46,C=S/2,t=RM?2:(now-t0)/1000,l0=(-110+t*40)*Math.PI/180;
+ const x=cv.getContext('2d');x.setTransform(dpr,0,0,dpr,0,0);x.clearRect(0,0,S,S);const R=S*.46,C=S/2,t=RM?2:now,l0=(-110+t*40)*Math.PI/180;
  const P=(phi,lam)=>{const L=lam-l0,X=Math.cos(phi)*Math.sin(L),Y=Math.cos(tilt)*Math.sin(phi)-Math.sin(tilt)*Math.cos(phi)*Math.cos(L),Z=Math.sin(tilt)*Math.sin(phi)+Math.cos(tilt)*Math.cos(phi)*Math.cos(L);return [C+R*X,C-R*Y,Z];};
  for(const [p,l] of pts){const [px,py,z]=P(p,l);if(z<=0.02)continue;x.globalAlpha=.25+.75*z;x.fillStyle='#D4B85A';x.beginPath();x.arc(px,py,(R/95)*(1.1+1.9*z),0,7);x.fill();}
  const [kx,ky,kz]=P(KW[0],KW[1]);if(kz>0){x.globalAlpha=Math.min(1,kz*1.6);const g=x.createRadialGradient(kx,ky,0,kx,ky,R*.22);g.addColorStop(0,'rgba(255,255,255,.7)');g.addColorStop(1,'rgba(255,255,255,0)');x.fillStyle=g;x.beginPath();x.arc(kx,ky,R*.22,0,7);x.fill();x.fillStyle='#fff';x.beginPath();x.arc(kx,ky,R*.07,0,7);x.fill();}
  x.globalAlpha=1;}
-function loop(now){document.querySelectorAll('canvas.spin').forEach(cv=>draw(cv,now));if(!RM)requestAnimationFrame(loop);}
+let last=0,tt=2;function loop(now){const dt=last?Math.min((now-last)/1000,1/30):0;last=now;tt+=dt;if(!document.querySelector('.tsp'))document.querySelectorAll('canvas.spin').forEach(cv=>{if(cv.offsetParent!==null)draw(cv,tt);});if(!RM)requestAnimationFrame(loop);}
 requestAnimationFrame(loop);})();
 </script>
 <div id="app"></div>
@@ -389,7 +389,7 @@ requestAnimationFrame(loop);})();
 {
 const $=s=>document.querySelector(s);
 const esc=s=>String(s==null?'':s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
-const BUILD='1795705814';
+const BUILD='1795705912';
 try{fetch(location.pathname+'?b='+Date.now(),{cache:'no-store'}).then(r=>r.text()).then(h=>{const m=h.match(/const BUILD='(\d+)'/);if(m&&m[1]>BUILD&&!sessionStorage.getItem('grl'+m[1])){sessionStorage.setItem('grl'+m[1],'1');const u=new URLSearchParams(location.search);u.set('v',m[1]);location.replace(location.pathname+'?'+u.toString()+location.hash);}}).catch(()=>{});}catch(_){}
 const QP=new URLSearchParams(location.search);
 const EN=QP.get('lang')==='en';
