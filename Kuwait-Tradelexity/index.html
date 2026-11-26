@@ -361,6 +361,14 @@ canvas.iemb{width:clamp(70px,14vh,130px)!important;height:clamp(70px,14vh,130px)
 .fbn{font:700 26px Montserrat,Almarai,sans-serif;color:#fff;line-height:1}.fbn span{color:#D4B85A}.fbt{font:600 9.5px Montserrat,sans-serif;letter-spacing:2.4px;color:#9fb3d9;margin-top:5px}
 .ien{letter-spacing:2.2px!important;font-size:clamp(11px,2.6vw,16px)!important}
 .tspT{letter-spacing:2px!important;white-space:nowrap;font-size:clamp(10px,2.9vw,14px)!important}
+#intro.pk .ititle,#intro.pk #imap{display:none}#intro.pk .iemb{width:64px!important;height:64px!important}#intro.pk .imin{font-size:30px;margin-top:4px}
+.isrch{display:block;width:min(520px,90vw);margin:4px auto 10px;font:15px Almarai,sans-serif;padding:11px 16px;border-radius:999px;border:1px solid #D4B85A88;background:#ffffff12;color:#fff;outline:none}.isrch::placeholder{color:#9fb3d9}
+.irg{display:flex;gap:6px;overflow-x:auto;padding:2px 4px 10px;justify-content:center;flex-wrap:wrap}.irg button{flex:none;font:700 12.5px Almarai,sans-serif;padding:7px 12px;border-radius:999px;border:1px solid #ffffff30;background:#ffffff0d;color:#dfe7f5;cursor:pointer}.irg button.on{background:#D4B85A;color:#0B193A;border-color:#D4B85A}
+#intro.pk .ipk{display:grid!important;grid-template-columns:repeat(auto-fill,minmax(84px,1fr));gap:8px;width:min(620px,92vw);margin:0 auto;max-height:none}
+#intro.pk .ipc{min-width:0;padding:8px 4px;font-size:12.5px}#intro.pk .ipc img{width:46px;height:46px}
+.inone{grid-column:1/-1;color:#9fb3d9;padding:20px;text-align:center}
+.isc.off{opacity:.45;cursor:not-allowed}.isc.off::after{content:"قريباً";font:800 11px Almarai,sans-serif;color:#0B193A;background:#D4B85A;border-radius:999px;padding:2px 10px}
+html[lang=en] .isc.off::after{content:"Coming soon"}
 </style>
 <style>/* sources hidden on request – remove this rule to restore */ .srcl{display:none!important}</style>
 </head>
@@ -823,7 +831,7 @@ function armCounts(root){if(!cntIO||matchMedia('(prefers-reduced-motion: reduce)
 new MutationObserver(ms=>{const set=new Set();ms.forEach(m=>{const t=m.target.nodeType===1?m.target:m.target.parentElement;if(t&&!t.closest('b'))set.add(t);});set.forEach(armCounts);}).observe(document.querySelector('main'),{childList:true,subtree:true});
 
 // ---------- auto-update (bypass stale phone cache) ----------
-const BUILD='1795721001';
+const BUILD='1795722160';
 try{fetch(location.pathname+'?b='+Date.now(),{cache:'no-store'}).then(r=>r.text()).then(h=>{const m=h.match(/const BUILD='(\d+)'/);if(m&&m[1]>BUILD&&!sessionStorage.getItem('rl'+m[1])){sessionStorage.setItem('rl'+m[1],'1');location.replace(location.pathname+'?v='+m[1]+location.hash);}}).catch(()=>{});}catch(_){}
 
 // ---------- products: commodity search & selection ----------
@@ -899,18 +907,26 @@ function intro(force){const el=$('#intro');if(!ISKW){if(el)el.remove();return;}i
   const close=h=>{try{sessionStorage.setItem('kwIntro','1');}catch(_){}if(!el.dataset.sh)el.classList.add('out');document.body.classList.remove('noscroll');setTimeout(()=>el.remove(),el.dataset.sh?0:700);if(h)location.hash=h;else setTimeout(route,250);};
   const goKw=ev=>{if(el.dataset.go)return;el.dataset.go='1';if(matchMedia('(prefers-reduced-motion: reduce)').matches){close();return;}const r=ev.currentTarget.getBoundingClientRect();introExit(el,r.left+r.width/2,r.top+r.height/2).then(()=>close()).catch(e=>{console.error('exit',e);delete el.dataset.sh;close();});};
   $('#iGo').onclick=ev=>{const bx=el.querySelector('.ibtns');if(!bx||bx.dataset.pk)return;bx.dataset.pk='1';
-    const CO=[['KW','kw','الكويت'],['SA','sa','السعودية'],['AE','ae','الإمارات'],['QA','qa','قطر'],['BH','bh','البحرين'],['OM','om','عُمان']];
-    bx.innerHTML='<div class="ipk-t">اختر الدولة</div><div class="ipk">'+CO.map(([c,i,n])=>`<button class="ipc" data-c="${c}"><img src="cflags/${i}.svg" alt="">${n}</button>`).join('')+'</div>';
-    const pick=()=>{el.classList.remove('sel');bx.innerHTML='<div class="ipk-t">اختر الدولة</div><div class="ipk">'+CO.map(([c,i,n])=>`<button class="ipc" data-c="${c}"><img src="cflags/${i}.svg" alt="">${n}</button>`).join('')+'</div>';
-     bx.querySelectorAll('.ipc').forEach(b=>b.onclick=()=>sector(b.dataset.c));};
-    const sector=c=>{const z=CO.find(r=>r[0]===c),EN=document.documentElement.lang==='en';el.classList.add('sel');
+    const EN=document.documentElement.lang==='en',TR=['KW','SA','AE','QA','BH','OM'];
+    const CO=[["KW", "kw", "الكويت", "Kuwait", "gcc"], ["SA", "sa", "السعودية", "Saudi Arabia", "gcc"], ["AE", "ae", "الإمارات", "UAE", "gcc"], ["QA", "qa", "قطر", "Qatar", "gcc"], ["BH", "bh", "البحرين", "Bahrain", "gcc"], ["OM", "om", "عُمان", "Oman", "gcc"], ["US", "us", "الولايات المتحدة", "United States", "am"], ["CA", "ca", "كندا", "Canada", "am"], ["BR", "br", "البرازيل", "Brazil", "am"], ["MX", "mx", "المكسيك", "Mexico", "am"], ["AR", "ar", "الأرجنتين", "Argentina", "am"], ["CO", "co", "كولومبيا", "Colombia", "am"], ["CL", "cl", "تشيلي", "Chile", "am"], ["PE", "pe", "بيرو", "Peru", "am"], ["DE", "de", "ألمانيا", "Germany", "eu"], ["GB", "gb", "المملكة المتحدة", "United Kingdom", "eu"], ["FR", "fr", "فرنسا", "France", "eu"], ["RU", "ru", "روسيا", "Russia", "eu"], ["IT", "it", "إيطاليا", "Italy", "eu"], ["ES", "es", "إسبانيا", "Spain", "eu"], ["NL", "nl", "هولندا", "Netherlands", "eu"], ["CH", "ch", "سويسرا", "Switzerland", "eu"], ["PL", "pl", "بولندا", "Poland", "eu"], ["BE", "be", "بلجيكا", "Belgium", "eu"], ["IE", "ie", "أيرلندا", "Ireland", "eu"], ["SE", "se", "السويد", "Sweden", "eu"], ["AT", "at", "النمسا", "Austria", "eu"], ["NO", "no", "النرويج", "Norway", "eu"], ["DK", "dk", "الدنمارك", "Denmark", "eu"], ["RO", "ro", "رومانيا", "Romania", "eu"], ["CZ", "cz", "التشيك", "Czechia", "eu"], ["PT", "pt", "البرتغال", "Portugal", "eu"], ["FI", "fi", "فنلندا", "Finland", "eu"], ["CN", "cn", "الصين", "China", "as"], ["JP", "jp", "اليابان", "Japan", "as"], ["IN", "in", "الهند", "India", "as"], ["KR", "kr", "كوريا الجنوبية", "South Korea", "as"], ["AU", "au", "أستراليا", "Australia", "as"], ["ID", "id", "إندونيسيا", "Indonesia", "as"], ["TW", "tw", "تايوان", "Taiwan", "as"], ["SG", "sg", "سنغافورة", "Singapore", "as"], ["TH", "th", "تايلند", "Thailand", "as"], ["VN", "vn", "فيتنام", "Vietnam", "as"], ["PH", "ph", "الفلبين", "Philippines", "as"], ["MY", "my", "ماليزيا", "Malaysia", "as"], ["BD", "bd", "بنغلاديش", "Bangladesh", "as"], ["HK", "hk", "هونغ كونغ", "Hong Kong", "as"], ["PK", "pk", "باكستان", "Pakistan", "as"], ["KZ", "kz", "كازاخستان", "Kazakhstan", "as"], ["TR", "tr", "تركيا", "Türkiye", "me"], ["IL", "il", "إسرائيل", "Israel", "me"], ["IR", "ir", "إيران", "Iran", "me"], ["EG", "eg", "مصر", "Egypt", "me"], ["ZA", "za", "جنوب أفريقيا", "South Africa", "me"]].map(r=>[r[0],r[1],EN?r[3]:r[2],r[4],r[2]+' '+r[3]]);
+    const RGS=[['gcc','مجلس التعاون','GCC'],['me','الشرق الأوسط وأفريقيا','Middle East & Africa'],['eu','أوروبا','Europe'],['as','آسيا والمحيط الهادئ','Asia-Pacific'],['am','الأمريكتان','Americas']];
+    let RGc='gcc';
+    const tiles=list=>list.map(([c,i,n])=>`<button class="ipc" data-c="${c}"><img src="cflags/${i}.svg" alt="" loading="lazy">${n}</button>`).join('')||`<div class="inone">${EN?'No match':'لا توجد نتائج'}</div>`;
+    const pick=()=>{el.classList.remove('sel');el.classList.add('pk');
+     bx.innerHTML=`<div class="ipk-t">${EN?'Choose a country':'اختر الدولة'}</div><input class="isrch" type="search" placeholder="${EN?'Search 54 economies…':'ابحث بين 54 اقتصاداً…'}" aria-label="search"><div class="irg">${RGS.map(([k,a,e])=>`<button data-r="${k}" class="${k===RGc?'on':''}">${EN?e:a}</button>`).join('')}</div><div class="ipk">${tiles(CO.filter(r=>r[3]===RGc))}</div>`;
+     const g=bx.querySelector('.ipk'),q=bx.querySelector('.isrch');
+     const bind=()=>g.querySelectorAll('.ipc').forEach(b=>b.onclick=()=>sector(b.dataset.c));
+     bx.querySelectorAll('.irg button').forEach(b=>b.onclick=()=>{RGc=b.dataset.r;q.value='';bx.querySelectorAll('.irg button').forEach(x=>x.classList.toggle('on',x===b));g.innerHTML=tiles(CO.filter(r=>r[3]===RGc));bind();});
+     q.oninput=()=>{const t=q.value.trim().toLowerCase();bx.querySelectorAll('.irg button').forEach(x=>x.classList.toggle('on',!t&&x.dataset.r===RGc));g.innerHTML=tiles(t?CO.filter(r=>r[4].toLowerCase().includes(t)):CO.filter(r=>r[3]===RGc));bind();};
+     bind();};
+    const sector=c=>{const z=CO.find(r=>r[0]===c),hasT=TR.includes(c);el.classList.add('sel');el.classList.remove('pk');
      bx.innerHTML=`<div class="isel"><img src="cflags/${z[1]}.svg" alt=""><b>${z[2]}</b></div><div class="ipk-t">اختر القطاع</div><div class="isec">
-      <button class="isc" data-s="t"><svg viewBox="0 0 24 24"><path d="M3 17l5-5 4 4 8-8"/><path d="M14 8h6v6"/></svg><b>التجارة الخارجية</b><small>الصادرات والواردات والشركاء التجاريون</small></button>
+      <button class="isc${hasT?'':' off'}" data-s="t"${hasT?'':' disabled'}><svg viewBox="0 0 24 24"><path d="M3 17l5-5 4 4 8-8"/><path d="M14 8h6v6"/></svg><b>التجارة الخارجية</b><small>الصادرات والواردات والشركاء التجاريون</small></button>
       <button class="isc" data-s="f"><svg viewBox="0 0 24 24"><path d="M4 20V10M10 20V4M16 20v-7M22 20H2"/></svg><b>الاقتصاد والمالية</b><small>الناتج الاقتصادي والمؤشرات النقدية والمالية العامة والحساب الخارجي</small></button></div>
       <button class="ichg">تغيير الدولة</button>`;
      bx.querySelector('.ichg').onclick=pick;
-     bx.querySelectorAll('.isc').forEach(b=>b.onclick=e=>{if(b.dataset.s==='f'){location.href=(EN?'finance_en.html':'finance.html')+'?c='+c;return;}if(c==='KW')goKw(e);else location.href=location.pathname+'?c='+c;});};
-    bx.querySelectorAll('.ipc').forEach(b=>b.onclick=()=>sector(b.dataset.c));};
+     bx.querySelectorAll('.isc').forEach(b=>b.onclick=e=>{if(b.disabled)return;if(b.dataset.s==='f'){location.href=(EN?'finance_en.html':'finance.html')+'?c='+c;return;}if(c==='KW')goKw(e);else location.href=location.pathname+'?c='+c;});};
+    pick();};
   if(el.classList.contains('fast'))setTimeout(()=>{const b=el.querySelector('#iGo');if(b)b.click();},30);
 }
 
