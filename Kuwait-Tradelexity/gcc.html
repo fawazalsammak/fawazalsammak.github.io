@@ -360,7 +360,7 @@ table td.n,table th.n{text-align:center!important}table th.n{direction:rtl;unico
 {
 const $=s=>document.querySelector(s);
 const esc=s=>String(s==null?'':s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
-const BUILD='1795702563';
+const BUILD='1795702678';
 try{fetch(location.pathname+'?b='+Date.now(),{cache:'no-store'}).then(r=>r.text()).then(h=>{const m=h.match(/const BUILD='(\d+)'/);if(m&&m[1]>BUILD&&!sessionStorage.getItem('grl'+m[1])){sessionStorage.setItem('grl'+m[1],'1');const u=new URLSearchParams(location.search);u.set('v',m[1]);location.replace(location.pathname+'?'+u.toString()+location.hash);}}).catch(()=>{});}catch(_){}
 const QP=new URLSearchParams(location.search);
 const EN=QP.get('lang')==='en';
@@ -376,7 +376,7 @@ let U={div:1000,lab:'',d:2,k:1};
 // ---- picker ----
 const code=(QP.get('c')||'').toUpperCase();
 if(!['SA','AE','QA','BH','OM'].includes(code)){
-  $('#app').innerHTML=`<div class="pick"><img src="brand.png" alt="Tradelexity" style="height:80px;width:auto"><h2>${T('اختر الدولة','Choose a country')}</h2><p>${T('إحصاءات التجارة الخارجية لدول مجلس التعاون لدول الخليج العربية','Foreign trade statistics of the GCC countries')}</p>
+  $('#app').innerHTML=`<div class="pick"><img src="globe.png" alt="" style="height:72px;width:auto"><div dir="ltr" style="font:800 30px Montserrat,Almarai,sans-serif;margin-top:-6px">Trade<span style="color:#D4B85A">lexity</span></div><h2>${T('اختر الدولة','Choose a country')}</h2><p>${T('إحصاءات التجارة الخارجية لدول مجلس التعاون لدول الخليج العربية','Foreign trade statistics of the GCC countries')}</p>
   <div class="pgrid">${CO.map(([c,iso,n])=>`<a class="pc" href="${href(c)}"><img src="${FLAG(iso)}" alt="">${esc(n)}</a>`).join('')}</div>
   <a href="${EN?'en.html':'index.html'}" style="color:var(--mut)">${T('العودة إلى الصفحة الرئيسية','Back to home')}</a></div>`;
 } else start();
@@ -424,7 +424,7 @@ const TABS=[['ov',T('الإجمالي','Overview')],['pt',T('الشركاء ال
 function render(){unitFor();
  const nm=EN?D.en:D.ar;
  $('#app').innerHTML=`<header class="top"><a class="lang" href="gcc.html?c=${code}${EN?'':'&lang=en'}">${EN?'عربي':'EN'}</a>
- <div class="brand"><img src="globe.png" alt="Tradelexity" width="54" height="54"><div><div class="min" dir="ltr" style="font-family:Montserrat,Almarai,sans-serif;font-size:15px"><span style="color:#fff">trade</span>lexity</div><h1>${T('إحصاءات التجارة الخارجية','Foreign trade statistics')} – ${esc(nm)}</h1></div></div>
+ <div class="brand"><img src="globe.png" alt="Tradelexity" width="54" height="54"><div><div class="min" dir="ltr" style="font-family:Montserrat,Almarai,sans-serif;font-size:15px"><span style="color:#fff">Trade</span>lexity</div><h1>${T('إحصاءات التجارة الخارجية','Foreign trade statistics')} – ${esc(nm)}</h1></div></div>
  <div class="csw">${CO.map(([c,iso,n])=>`<a href="${href(c)}" aria-current="${c===code}"><img src="${FLAG(iso)}" alt="">${esc(n)}</a>`).join('')}</div>
  <div class="tgl"><button id="cL" aria-pressed="${CUR==='loc'}">${esc(EN?D.cen:D.curs)}</button><button id="cU" aria-pressed="${CUR==='usd'}">${T('دولار','USD')}</button><button id="uM" aria-pressed="${UNIT==='m'}">${T('مليون','Million')}</button><button id="uK" aria-pressed="${UNIT==='k'}">${T('ألف','Thousand')}</button></div>
  <div class="bar"><div class="tabs">${TABS.map(([k,l])=>`<button data-v="${k}" aria-pressed="${VIEW===k}">${l}</button>`).join('')}</div></div></header><main id="mn"></main><nav class="bnav" aria-label="${T('التنقل','Navigation')}">${[['pt',T('الشركاء التجاريون','Partners')],['gr',T('المجموعات الاقتصادية','Groups')],['gcc',T('التجارة البينية الخليجية','Intra-GCC')],['ov',T('الرئيسية','Home'),1],['pr',T('السلع','Products')],['fd',T('الأمن الغذائي','Food')],['oil',T('الصادرات النفطية','Oil exports')]].map(([k,l,c])=>c?`<button data-go="${k}" class="ctr${VIEW===k?' on':''}"><b>${l}</b></button>`:`<button data-go="${k}" class="${VIEW===k?'on':''}"><span>${l}</span></button>`).join('')}</nav>
