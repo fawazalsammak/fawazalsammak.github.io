@@ -363,6 +363,10 @@ canvas.iemb{width:clamp(70px,14vh,130px)!important;height:clamp(70px,14vh,130px)
 .inone{grid-column:1/-1;color:#9fb3d9;padding:20px;text-align:center}
 .isc.off{opacity:.45;cursor:not-allowed}.isc.off::after{content:"قريباً";font:800 11px Almarai,sans-serif;color:#0B193A;background:#D4B85A;border-radius:999px;padding:2px 10px}
 html[lang=en] .isc.off::after{content:"Coming soon"}
+img.of{border-radius:5px!important;object-fit:contain!important;box-shadow:0 0 0 1px #ffffff40,0 4px 12px #0008!important;background:transparent}
+#intro .ipc img.of,#intro.pk .ipc img.of{width:auto!important;height:34px!important;max-width:64px}
+#intro .isel img.of,#intro.sel .isel img.of{width:auto!important;height:44px!important;max-width:84px;border-radius:6px!important}
+img.cemb.ofh{width:auto!important;height:38px!important;max-width:70px;border-radius:6px!important;padding:0!important;background:transparent!important;object-fit:contain}
 
 .fsw{display:inline-flex;border:1px solid #D4B85A88;border-radius:999px;overflow:hidden;margin:4px 0 6px}
 .fsw a,.fsw span{font:800 13px Almarai,sans-serif;padding:8px 16px;color:#e6ebf3;text-decoration:none}
@@ -406,6 +410,8 @@ html[lang=en] .isc.off::after{content:"Coming soon"}
 .srcl{display:none!important}
 .fk b,.fhero>b,.fcard td b{direction:ltr;unicode-bidi:isolate}[dir=rtl] .fk b{text-align:right}
 .soon{font:800 13px Almarai,sans-serif;padding:8px 16px;color:#9fb3d9}
+img.cemb.ofh{width:auto!important;height:38px!important;max-width:70px;border-radius:6px!important;padding:0!important;background:transparent!important;object-fit:contain;box-shadow:0 0 0 1px #ffffff40,0 4px 12px #0008}
+.cmp img.ofs{width:auto!important;height:14px!important;border-radius:2px!important}
 .pill{display:inline-block;font-size:11px;font-weight:800;padding:2px 8px;border-radius:999px;background:#D4B85A22;color:#D4B85A;margin-inline-start:6px}
 </style>
 </head>
@@ -453,7 +459,7 @@ let C=CF[CTRY],ORDER=[],RG='gcc';const RGN={gcc:['دول مجلس التعاون
 const $=s=>document.querySelector(s);
 function setHead(){document.title='Tradelexity – '+(EN?C.en:C.ar);
 $('#h1').textContent=EN?C.adjE+' '+$('#h1').dataset.t:$('#h1').dataset.t+(C.adj?' '+C.adj:' – '+C.ar);
-$('#emb').src=GCC6.includes(CTRY)?'emblems/'+C.iso+'.png':'cflags/'+C.iso+'.svg';
+$('#emb').src=GCC6.includes(CTRY)?'emblems/'+C.iso+'.png':'oflags/'+C.iso+'.svg';if(!GCC6.includes(CTRY))$('#emb').classList.add('ofh');
 $('.lang').href=$('.lang').dataset.h+'?c='+CTRY+location.hash;
 $('#swT').href=$('#swT').dataset.h+(CTRY==='KW'?'#kw':'?c='+CTRY);
 }
@@ -481,7 +487,7 @@ function legend(){return `<div class="leg"><span><i style="background:#D4B85A"><
 function cmp(key,year,{dec=1,suf='%'}={}){const rows=ORDER.map(c=>({c,v:(ALL[c][key]||{})[year]})).filter(r=>r.v!=null).sort((a,b)=>b.v-a.v);
   const mx=Math.max(...rows.map(r=>Math.abs(r.v)))||1,hasNeg=rows.some(r=>r.v<0);
   return `<div class="cmp">`+rows.map(r=>{const w=Math.abs(r.v)/mx*(hasNeg?50:100),l=hasNeg?(r.v>=0?50:50-w):0;
-    return `<div class="r ${r.c===CTRY?'me':''}"><span><img src="cflags/${CF[r.c].iso}.svg" alt="">${EN?CF[r.c].en:CF[r.c].ar}</span><span class="tr"><i style="inset-inline-start:${l}%;width:${w}%;${r.v<0?'background:#e07a7a':''}"></i></span><span class="v">${sg(r.v,dec).replace('+','')}${suf}</span></div>`;}).join('')+`</div>`;}
+    return `<div class="r ${r.c===CTRY?'me':''}"><span><img class="ofs" src="oflags/${CF[r.c].iso}.svg" alt="">${EN?CF[r.c].en:CF[r.c].ar}</span><span class="tr"><i style="inset-inline-start:${l}%;width:${w}%;${r.v<0?'background:#e07a7a':''}"></i></span><span class="v">${sg(r.v,dec).replace('+','')}${suf}</span></div>`;}).join('')+`</div>`;}
 const card=(t,cap,body)=>`<div class="fcard"><h3>${t}</h3>${cap?`<div class="cap">${cap}</div>`:''}<div class="fch">${body}</div></div>`;
 const k=(lbl,val,sub,go)=>`<div class="fk"${go?` data-go="${go}"`:''}><small>${lbl}</small><b>${val}</b>${sub?`<em>${sub}</em>`:''}</div>`;
 const tone=(v,good=true)=>v==null?'':((v>=0)===good?'up':'dn');
@@ -554,7 +560,7 @@ function rating(){const R=F.RAT;
    <div class="fgrid">${AGH.length?'':`<div class="note">${L('لا يوجد تصنيف سيادي منشور.','No published sovereign rating.')}</div>`}${AGH.map(([a,ar,en])=>{const [r,o]=R[a],ot=OUT[o];return `<div class="fk"><small>${L(ar,en)}</small><b style="font-size:34px">${r}</b><em>${L('النظرة المستقبلية: ','Outlook: ')}<span style="color:${ot[2]};font-weight:800">${L(ot[0],ot[1])}</span> · ${grade(NOTCH[r])}</em>${meter(r)}</div>`;}).join('')}</div>
    ${R.note?`<div class="note">${L('تصنيفا ستاندرد آند بورز وفيتش لحكومة أبوظبي؛ وتصنيف موديز لحكومة دولة الإمارات.','S&P and Fitch ratings are for the Abu Dhabi government; Moody\'s rating is for the UAE federal government.')}</div>`:''}
    ${card(L('مقارنة التصنيفات – '+RL(),'Ratings comparison – '+RL()),L('مرتبة من الأعلى تصنيفاً','Ranked from highest rated'),
-    `<div class="scroll"><table style="width:100%;border-collapse:collapse;font-size:14px"><thead><tr><th style="text-align:start;padding:6px">${L('الدولة','Country')}</th>${AGT.map(([a,ar,en])=>`<th style="padding:6px">${L(ar,en)}</th>`).join('')}</tr></thead><tbody>${ORDER.slice().sort((x,y)=>((NOTCH[((ALL[y].RAT||{}).sp||[])[0]]||0))-((NOTCH[((ALL[x].RAT||{}).sp||[])[0]]||0))).map(c=>`<tr style="border-top:1px solid var(--line);${c===CTRY?'background:#D4B85A1f;font-weight:800':''}"><td style="padding:8px 6px"><img src="cflags/${CF[c].iso}.svg" alt="" style="width:18px;height:18px;border-radius:50%;vertical-align:-4px;margin-inline-end:6px">${EN?CF[c].en:CF[c].ar}</td>${AGT.map(([a])=>{const [r,o]=(ALL[c].RAT||{})[a]||['–','S'];return `<td style="text-align:center;padding:8px 4px"><b>${r}</b>${o!=='S'?` <span style="color:${OUT[o][2]};font-size:11px">${L(OUT[o][0],OUT[o][1])}</span>`:''}</td>`;}).join('')}</tr>`).join('')}</tbody></table></div>`)}
+    `<div class="scroll"><table style="width:100%;border-collapse:collapse;font-size:14px"><thead><tr><th style="text-align:start;padding:6px">${L('الدولة','Country')}</th>${AGT.map(([a,ar,en])=>`<th style="padding:6px">${L(ar,en)}</th>`).join('')}</tr></thead><tbody>${ORDER.slice().sort((x,y)=>((NOTCH[((ALL[y].RAT||{}).sp||[])[0]]||0))-((NOTCH[((ALL[x].RAT||{}).sp||[])[0]]||0))).map(c=>`<tr style="border-top:1px solid var(--line);${c===CTRY?'background:#D4B85A1f;font-weight:800':''}"><td style="padding:8px 6px"><img src="oflags/${CF[c].iso}.svg" alt="" style="width:auto;height:14px;border-radius:2px;vertical-align:-2px;margin-inline-end:6px">${EN?CF[c].en:CF[c].ar}</td>${AGT.map(([a])=>{const [r,o]=(ALL[c].RAT||{})[a]||['–','S'];return `<td style="text-align:center;padding:8px 4px"><b>${r}</b>${o!=='S'?` <span style="color:${OUT[o][2]};font-size:11px">${L(OUT[o][0],OUT[o][1])}</span>`:''}</td>`;}).join('')}</tr>`).join('')}</tbody></table></div>`)}
    <div class="note">${L('الخط الأبيض في المؤشر يمثل الحد الأدنى للدرجة الاستثمارية (BBB- / Baa3). التصنيفات كما في نوفمبر 2026.','The white line on the scale marks the investment-grade threshold (BBB- / Baa3). Ratings as of November 2026.')}</div>`;}
 function fdi(){const inn={},out={};Object.entries(F.FDIIN).forEach(([y,v])=>inn[y]=toC(v));Object.entries(F.FDIOUT).forEach(([y,v])=>out[y]=toC(v));
   const [y,vi]=last(inn),vo=out[y],[gy,gv]=last(F.FDI),cum=Object.entries(inn).filter(([k])=>k>='2021').reduce((a,[,v])=>a+v,0);
