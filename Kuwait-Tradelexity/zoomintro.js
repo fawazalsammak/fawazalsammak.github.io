@@ -1,0 +1,59 @@
+/* Tradelexity country zoom intro: dotted golden continents fly in, snap into a world map, camera zooms into the chosen country */
+(()=>{
+const ZN={"KW": ["الكويت", "Kuwait"], "SA": ["السعودية", "Saudi Arabia"], "AE": ["الإمارات", "UAE"], "QA": ["قطر", "Qatar"], "BH": ["البحرين", "Bahrain"], "OM": ["عُمان", "Oman"], "US": ["الولايات المتحدة", "United States"], "CA": ["كندا", "Canada"], "BR": ["البرازيل", "Brazil"], "MX": ["المكسيك", "Mexico"], "AR": ["الأرجنتين", "Argentina"], "CO": ["كولومبيا", "Colombia"], "CL": ["تشيلي", "Chile"], "PE": ["بيرو", "Peru"], "DE": ["ألمانيا", "Germany"], "GB": ["المملكة المتحدة", "United Kingdom"], "FR": ["فرنسا", "France"], "RU": ["روسيا", "Russia"], "IT": ["إيطاليا", "Italy"], "ES": ["إسبانيا", "Spain"], "NL": ["هولندا", "Netherlands"], "CH": ["سويسرا", "Switzerland"], "PL": ["بولندا", "Poland"], "BE": ["بلجيكا", "Belgium"], "IE": ["أيرلندا", "Ireland"], "SE": ["السويد", "Sweden"], "AT": ["النمسا", "Austria"], "NO": ["النرويج", "Norway"], "DK": ["الدنمارك", "Denmark"], "RO": ["رومانيا", "Romania"], "CZ": ["التشيك", "Czechia"], "PT": ["البرتغال", "Portugal"], "FI": ["فنلندا", "Finland"], "CN": ["الصين", "China"], "JP": ["اليابان", "Japan"], "IN": ["الهند", "India"], "KR": ["كوريا الجنوبية", "South Korea"], "AU": ["أستراليا", "Australia"], "ID": ["إندونيسيا", "Indonesia"], "TW": ["تايوان", "Taiwan"], "SG": ["سنغافورة", "Singapore"], "TH": ["تايلند", "Thailand"], "VN": ["فيتنام", "Vietnam"], "PH": ["الفلبين", "Philippines"], "MY": ["ماليزيا", "Malaysia"], "BD": ["بنغلاديش", "Bangladesh"], "HK": ["هونغ كونغ", "Hong Kong"], "PK": ["باكستان", "Pakistan"], "KZ": ["كازاخستان", "Kazakhstan"], "TR": ["تركيا", "Türkiye"], "IL": ["إسرائيل", "Israel"], "IR": ["إيران", "Iran"], "EG": ["مصر", "Egypt"], "ZA": ["جنوب أفريقيا", "South Africa"], "GR": ["اليونان", "Greece"], "NZ": ["نيوزيلندا", "New Zealand"], "SK": ["سلوفاكيا", "Slovakia"], "LU": ["لوكسمبورغ", "Luxembourg"], "SI": ["سلوفينيا", "Slovenia"], "LT": ["ليتوانيا", "Lithuania"], "LV": ["لاتفيا", "Latvia"], "EE": ["إستونيا", "Estonia"], "IS": ["آيسلندا", "Iceland"], "HR": ["كرواتيا", "Croatia"], "CY": ["قبرص", "Cyprus"], "MT": ["مالطا", "Malta"], "MO": ["ماكاو", "Macao"], "HU": ["المجر", "Hungary"], "BG": ["بلغاريا", "Bulgaria"], "RS": ["صربيا", "Serbia"], "NG": ["نيجيريا", "Nigeria"], "DZ": ["الجزائر", "Algeria"], "IQ": ["العراق", "Iraq"], "UA": ["أوكرانيا", "Ukraine"], "MA": ["المغرب", "Morocco"], "UZ": ["أوزبكستان", "Uzbekistan"], "KE": ["كينيا", "Kenya"], "EC": ["الإكوادور", "Ecuador"], "DO": ["الدومينيكان", "Dominican Republic"], "ET": ["إثيوبيا", "Ethiopia"], "GT": ["غواتيمالا", "Guatemala"], "GH": ["غانا", "Ghana"], "LK": ["سريلانكا", "Sri Lanka"], "CR": ["كوستاريكا", "Costa Rica"], "CI": ["ساحل العاج", "Côte d'Ivoire"], "PA": ["بنما", "Panama"], "UY": ["الأوروغواي", "Uruguay"], "AZ": ["أذربيجان", "Azerbaijan"], "JO": ["الأردن", "Jordan"], "TN": ["تونس", "Tunisia"], "KH": ["كمبوديا", "Cambodia"], "PY": ["باراغواي", "Paraguay"], "GE": ["جورجيا", "Georgia"], "AM": ["أرمينيا", "Armenia"], "AL": ["ألبانيا", "Albania"], "BA": ["البوسنة والهرسك", "Bosnia & Herzegovina"], "TT": ["ترينيداد وتوباغو", "Trinidad & Tobago"], "BW": ["بوتسوانا", "Botswana"], "AO": ["أنغولا", "Angola"], "TZ": ["تنزانيا", "Tanzania"], "BO": ["بوليفيا", "Bolivia"], "SN": ["السنغال", "Senegal"], "CM": ["الكاميرون", "Cameroon"], "MN": ["منغوليا", "Mongolia"]};const M49={"KW": "414", "SA": "682", "AE": "784", "QA": "634", "BH": "048", "OM": "512", "US": "840", "CA": "124", "BR": "076", "MX": "484", "AR": "032", "CO": "170", "CL": "152", "PE": "604", "DE": "276", "GB": "826", "FR": "250", "RU": "643", "IT": "380", "ES": "724", "NL": "528", "CH": "756", "PL": "616", "BE": "056", "IE": "372", "SE": "752", "AT": "040", "NO": "578", "DK": "208", "RO": "642", "CZ": "203", "PT": "620", "FI": "246", "CN": "156", "JP": "392", "IN": "356", "KR": "410", "AU": "036", "ID": "360", "TW": "158", "SG": "702", "TH": "764", "VN": "704", "PH": "608", "MY": "458", "BD": "050", "HK": "344", "PK": "586", "KZ": "398", "TR": "792", "IL": "376", "IR": "364", "EG": "818", "ZA": "710", "GR": "300", "NZ": "554", "SK": "703", "LU": "442", "SI": "705", "LT": "440", "LV": "428", "EE": "233", "IS": "352", "HR": "191", "CY": "196", "MT": "470", "MO": "446", "HU": "348", "BG": "100", "RS": "688", "NG": "566", "DZ": "012", "IQ": "368", "UA": "804", "MA": "504", "UZ": "860", "KE": "404", "EC": "218", "DO": "214", "ET": "231", "GT": "320", "GH": "288", "LK": "144", "CR": "188", "CI": "384", "PA": "591", "UY": "858", "AZ": "031", "JO": "400", "TN": "788", "KH": "116", "PY": "600", "GE": "268", "AM": "051", "AL": "008", "BA": "070", "TT": "780", "BW": "072", "AO": "024", "TZ": "834", "BO": "068", "SN": "686", "CM": "120", "MN": "496"};
+let c;try{c=sessionStorage.getItem('tzoom');}catch(_){}
+if(!c)return;try{sessionStorage.removeItem('tzoom');}catch(_){}
+const id=M49[c];if(!id)return;
+const RM=matchMedia('(prefers-reduced-motion: reduce)').matches;
+const ov=document.createElement('div');ov.id='tzoom';
+ov.style.cssText='position:fixed;inset:0;z-index:9999;background:radial-gradient(70% 55% at 50% 45%,#1d3a78 0%,#0f2350 45%,#071433 100%);transition:opacity .7s ease;cursor:pointer';
+const cv=document.createElement('canvas');cv.style.cssText='position:absolute;inset:0;width:100%;height:100%';ov.appendChild(cv);
+const nm=document.createElement('div');nm.style.cssText='position:absolute;left:0;right:0;bottom:12%;text-align:center;color:#fff;font:800 clamp(22px,5vw,34px) Almarai,Montserrat,sans-serif;letter-spacing:.5px;opacity:0;transform:translateY(12px);transition:opacity .6s,transform .6s;text-shadow:0 0 18px #D4B85A99';ov.appendChild(nm);
+const lg=document.createElement('div');lg.style.cssText='position:absolute;top:7%;left:0;right:0;text-align:center;font:700 15px Montserrat,sans-serif;color:#fff;letter-spacing:.5px;opacity:.9';lg.innerHTML='Trade<span style="color:#D4B85A">lexity</span>';ov.appendChild(lg);
+document.documentElement.appendChild(ov);
+const done=()=>{if(ov.dataset.d)return;ov.dataset.d=1;ov.style.opacity='0';setTimeout(()=>ov.remove(),750);};
+ov.onclick=done;
+fetch('world.json').then(r=>r.json()).then(w=>{
+ const ctx=cv.getContext('2d');let W,H,dpr;
+ const fit=()=>{dpr=Math.min(devicePixelRatio||1,2);W=innerWidth;H=innerHeight;cv.width=W*dpr;cv.height=H*dpr;ctx.setTransform(dpr,0,0,dpr,0,0);};fit();addEventListener('resize',fit);
+ const en=document.documentElement.lang==='en';
+ try{const f=(w.c[id]||{}).n||(w.dots[id]||{}).n;nm.textContent=(ZN[c]||[])[en?1:0]||f||'';}catch(_){}
+ // continents: rough regions on the 1000x520 projection
+ const reg=(x,y)=>x<350?(y<230?0:1):x<640?(y<150&&x<620?2:(y<410&&x<640&&y>=150?3:4)):(y>330&&x>780?5:4);
+ const D=w.dm.map(d=>({x:d[0],y:d[1],id:d[2],g:reg(d[0],d[1])}));
+ let tgt=D.filter(d=>d.id===id);let core=tgt;if(tgt.length>3){const md=a=>{const b=a.slice().sort((p,q)=>p-q);return b[b.length>>1];};const mx=md(tgt.map(d=>d.x)),my=md(tgt.map(d=>d.y));core=tgt.filter(d=>Math.hypot(d.x-mx,d.y-my)<45);if(core.length<3)core=tgt;}
+ let cx,cy,bw,bh;
+ if(tgt.length){const xs=core.map(d=>d.x),ys=core.map(d=>d.y);cx=(Math.min(...xs)+Math.max(...xs))/2;cy=(Math.min(...ys)+Math.max(...ys))/2;bw=Math.max(...xs)-Math.min(...xs)+6;bh=Math.max(...ys)-Math.min(...ys)+6;}
+ else{const p=w.c[id]||w.dots[id];cx=p.x;cy=p.y;bw=bh=6;}
+ const G=[0,1,2,3,4,5].map(i=>{const a=Math.random()*Math.PI*2,r=260+Math.random()*220;return{dx:Math.cos(a)*r,dy:Math.sin(a)*r,rot:(Math.random()-.5)*.6,dl:i*.12+Math.random()*.1};});
+ const stars=Array.from({length:140},()=>({x:Math.random(),y:Math.random(),r:Math.random()*1.3+.2,p:Math.random()*6.28}));
+ const eo=t=>1-Math.pow(1-t,3),eb=t=>{const s=1.70158;t-=1;return t*t*((s+1)*t+s)+1;},eio=t=>t<.5?4*t*t*t:1-Math.pow(-2*t+2,3)/2;
+ const T1=1.7,T2=2.1,T3=3.9,TE=4.6;let t0=null;
+ const draw=t=>{
+  ctx.clearRect(0,0,W,H);
+  stars.forEach(s=>{ctx.globalAlpha=.35+.35*Math.sin(s.p+t*2);ctx.fillStyle='#fff';ctx.beginPath();ctx.arc(s.x*W,s.y*H,s.r,0,6.28);ctx.fill();});ctx.globalAlpha=1;
+  const base=Math.min(W/(W<H?800:1060),H/600),z=t<T2?0:Math.min(1,Math.max(0,(t-T2)/(T3-T2)));
+  const ze=eio(z),zT=Math.max(base*1.5,Math.min(W*.55/bw,H*.32/bh,base*11));const sc=base*Math.pow(zT/base,ze);
+  const fx=500+(cx-500)*ze,fy=260+(cy-260)*ze;
+  const ox=W/2-fx*sc,oy=H/2-fy*sc+(-H*.04*ze);
+  const r=Math.max(.6,sc*.85);
+  // others
+  const paths=[new Path2D(),new Path2D()];
+  for(const d of D){const g=G[d.g],k=Math.min(1,Math.max(0,(t-g.dl)/(T1-.5)));const e=eb(k),m=1-e;
+   let x=d.x,y=d.y;if(m){const ca=Math.cos(g.rot*m),sa=Math.sin(g.rot*m),px=x-500,py=y-260;x=500+px*ca-py*sa+g.dx*m;y=260+px*sa+py*ca+g.dy*m;}
+   const X=ox+x*sc,Y=oy+y*sc;if(X<-10||X>W+10||Y<-10||Y>H+10)continue;
+   const p=paths[d.id===id?1:0];p.moveTo(X+r,Y);p.arc(X,Y,r,0,6.28);}
+  const fin=Math.min(1,Math.max(0,(t-.1)/.8));
+  ctx.globalAlpha=fin*(1-.55*ze);ctx.fillStyle='#E6C766';ctx.fill(paths[0]);
+  const gl=t<T1?0:Math.min(1,(t-T1)/.5),pulse=.75+.25*Math.sin(t*5);
+  ctx.globalAlpha=fin;ctx.fillStyle=gl?`rgb(255,${236+19*gl|0},${170+70*gl|0})`:'#D4B85A';
+  if(gl){ctx.shadowColor='#ffe9a8';ctx.shadowBlur=(10+22*ze)*gl*pulse;}ctx.fill(paths[1]);ctx.shadowBlur=0;
+  if(gl&&tgt.length<=3){const X=ox+cx*sc,Y=oy+cy*sc,rr=(14+10*Math.sin(t*4))*ze+6;ctx.strokeStyle='rgba(255,233,168,'+(.8*gl)+')';ctx.lineWidth=2;ctx.beginPath();ctx.arc(X,Y,rr,0,6.28);ctx.stroke();ctx.beginPath();ctx.arc(X,Y,rr*1.9,0,6.28);ctx.globalAlpha=.35*gl;ctx.stroke();ctx.globalAlpha=1;}
+  if(!tgt.length&&gl){const X=ox+cx*sc,Y=oy+cy*sc;ctx.fillStyle='#fff6d6';ctx.shadowColor='#ffe9a8';ctx.shadowBlur=30*pulse;ctx.beginPath();ctx.arc(X,Y,Math.max(4,r*1.8),0,6.28);ctx.fill();ctx.shadowBlur=0;}
+  ctx.globalAlpha=1;
+  if(t>T3-.6&&!nm.dataset.s){nm.dataset.s=1;nm.style.opacity='1';nm.style.transform='none';}
+};window.__ZDRAW=draw;
+ const fr=now=>{if(t0===null)t0=now;const t=RM?T3:(now-t0)/1000;if(window.__ZT==null){draw(t);if(t>=TE)done();}if(ov.isConnected)requestAnimationFrame(fr);};
+ requestAnimationFrame(fr);
+}).catch(done);
+})();

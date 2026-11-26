@@ -935,7 +935,7 @@ function armCounts(root){if(!cntIO||matchMedia('(prefers-reduced-motion: reduce)
 new MutationObserver(ms=>{const set=new Set();ms.forEach(m=>{const t=m.target.nodeType===1?m.target:m.target.parentElement;if(t&&!t.closest('b'))set.add(t);});set.forEach(armCounts);}).observe(document.querySelector('main'),{childList:true,subtree:true});
 
 // ---------- auto-update (bypass stale phone cache) ----------
-const BUILD='1795730982';
+const BUILD='1795731572';
 try{fetch(location.pathname+'?b='+Date.now(),{cache:'no-store'}).then(r=>r.text()).then(h=>{const m=h.match(/const BUILD='(\d+)'/);if(m&&m[1]>BUILD&&!sessionStorage.getItem('rl'+m[1])){sessionStorage.setItem('rl'+m[1],'1');location.replace(location.pathname+'?v='+m[1]+location.hash);}}).catch(()=>{});}catch(_){}
 
 // ---------- products: commodity search & selection ----------
@@ -1029,7 +1029,7 @@ function intro(force){const el=$('#intro');if(!ISKW){if(el)el.remove();return;}i
       <button class="isc" data-s="f"><svg viewBox="0 0 24 24"><path d="M4 20V10M10 20V4M16 20v-7M22 20H2"/></svg><b>Economy &amp; Finance</b><small>Economic output, monetary indicators, fiscal health and external balance</small></button></div>
       <button class="ichg">Change country</button>`;
      bx.querySelector('.ichg').onclick=pick;
-     bx.querySelectorAll('.isc').forEach(b=>b.onclick=e=>{if(b.disabled)return;if(b.dataset.s==='f'){location.href=(EN?'finance_en.html':'finance.html')+'?c='+c;return;}if(c==='KW')goKw(e);else location.href=location.pathname+'?c='+c;});};
+     bx.querySelectorAll('.isc').forEach(b=>b.onclick=e=>{if(b.disabled)return;try{sessionStorage.setItem('tzoom',c);sessionStorage.setItem('kwIntro','1');}catch(_){}if(b.dataset.s==='f'){location.href=(EN?'finance_en.html':'finance.html')+'?c='+c;return;}location.href=location.pathname+'?c='+c+(c==='KW'?'#kw':'');});};
     pick();};
   if(el.classList.contains('fast'))setTimeout(()=>{const b=el.querySelector('#iGo');if(b)b.click();},30);
 }
@@ -1128,5 +1128,6 @@ fetch(ISKW?'data.json':'data_'+CTRY+'.json').then(r=>r.json()).then(arr=>window.
   [...C,...G].forEach(c=>{if(c.en)c.en=c.en.replace(/ (Of|And|The|In|For|De|Da|Du) /g,m=>m.toLowerCase());});fetch('data_en.json').then(r=>r.json()).then(E=>{H4N=E.hs4e;[...C,...G,...HS].forEach(c=>{if(c.en)c.en=c.en.replace(/ (Of|And|The|In|For|De|Da|Du) /g,m=>m.toLowerCase());});const tr=p=>String(p||'').split('، ').map(x=>E.itc[x]||x).join(', ');C.forEach(c=>{if(c.itc){['inn','out'].forEach(k=>{if(c.itc[k])c.itc[k].prod=tr(c.itc[k].prod);});}if(c.itcFood){c.itcFood.prod=tr(c.itcFood.prod);c.itcFood.lvl=E.itc[c.itcFood.lvl]||c.itcFood.lvl;}if(c.rep&&c.rep.food){c.rep.food.lvl=E.itc[c.rep.food.lvl]||c.rep.food.lvl;}c.rep=c.rep?{food:c.rep.food}:null;});route();intro();}).catch(()=>{route();intro();});}).catch(e=>{console.error('LOADERR',e&&e.stack||e);$('#nm').textContent='Data could not be loaded';});
 }
 </script>
+<script src="zoomintro.js"></script>
 </body>
 </html>
