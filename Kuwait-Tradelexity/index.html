@@ -290,6 +290,12 @@ table td.n,table th.n{text-align:center!important}table th.n{direction:rtl;unico
 @media(min-width:1100px){html{zoom:1.2}}@media(min-width:1500px){html{zoom:1.32}}@media(min-width:1900px){html{zoom:1.45}}
 @media(min-width:820px){#pK .k[style*="grid-column"]{grid-column:span 2!important}#pK .k:not(.h1k):not(.oilk2){grid-column:span 2}}
 @media(min-width:820px){#kpis,#gcK{grid-template-columns:repeat(4,minmax(0,1fr))!important}}
+.shl{position:fixed;inset:0;z-index:200;pointer-events:none;perspective:1100px;overflow:hidden}
+.shd{position:absolute;inset:0;will-change:transform,opacity;backface-visibility:visible}
+.shd>div{position:absolute!important;inset:0;overflow:hidden;color:#fff;background:radial-gradient(60% 45% at 50% 38%,#2a4a8f 0%,#14285a 45%,#0B193A 100%)}
+.frz,.frz *{animation:none!important;transition:none!important}.frz .ibtn.main{box-shadow:none}
+.shc{position:absolute;inset:0;width:100%;height:100%;z-index:2}.shc polygon{fill:none;stroke:#ffffffd0;stroke-width:1.1}.shc circle{fill:#fff}
+.shf{position:absolute;inset:0;z-index:3}
 </style>
 </head>
 <body>
@@ -727,7 +733,7 @@ function armCounts(root){if(!cntIO||matchMedia('(prefers-reduced-motion: reduce)
 new MutationObserver(ms=>{const set=new Set();ms.forEach(m=>{const t=m.target.nodeType===1?m.target:m.target.parentElement;if(t&&!t.closest('b'))set.add(t);});set.forEach(armCounts);}).observe(document.querySelector('main'),{childList:true,subtree:true});
 
 // ---------- auto-update (bypass stale phone cache) ----------
-const BUILD='1795671559';
+const BUILD='1795672440';
 try{fetch(location.pathname+'?b='+Date.now(),{cache:'no-store'}).then(r=>r.text()).then(h=>{const m=h.match(/const BUILD='(\d+)'/);if(m&&m[1]>BUILD&&!sessionStorage.getItem('rl'+m[1])){sessionStorage.setItem('rl'+m[1],'1');location.replace(location.pathname+'?v='+m[1]+location.hash);}}).catch(()=>{});}catch(_){}
 
 // ---------- products: commodity search & selection ----------
@@ -757,6 +763,36 @@ function pPartners(cs){const agg=f=>{const m={};let tot=0;cs.forEach(c=>{const z
   const uv=u=>{const z=(CUR==='usd'?u:u*UK)/(UNIT==='m'?1e6:1e3);return z<0.005?'<0.01':fmtN(z,UNIT==='m'?2:1);};
   const tbl=(t,f)=>{const {tot,L}=agg(f);if(!L.length)return '';const mx=L[0][1];return `<div class="card" style="margin-top:16px"><h3>${t}</h3><div class="note" style="margin-top:0">الإجمالي ${uv(tot)} ${UNIT==='m'?'مليون':'ألف'} ${CUR==='usd'?'دولار':'د.ك'} · 2025</div><div class="scroll"><table class="ppt"><thead><tr><th>#</th><th>الدولة</th><th class="n">القيمة</th><th class="n">الحصة</th><th style="width:22%"></th></tr></thead><tbody>${L.map(([id,v],i)=>`<tr><td>${i+1}</td><td><a href="#c${esc(id)}">${esc(BY[id].ar)}</a></td><td class="n">${uv(v)}</td><td class="n">${tot?fmtN(v/tot*100,1)+'%':'–'}</td><td><span class="trk" style="display:flex"><i style="width:${v/mx*100}%;background:${f==='M'?'var(--mint)':'#9fb3d9'}"></i></span></td></tr>`).join('')}</tbody></table></div></div>`;};
   return tbl('أهم الدول المورّدة إلى دولة الكويت – 2025','M')+tbl('أهم وجهات صادرات دولة الكويت – 2025','X')+'<div class="note">بيانات الدول لسنة 2025 حسب الفصل (أهم الدول لكل فصل)؛ لا تتوفر بيانات 2026 موزعة حسب الدولة بعد.</div>';}
+
+// ---------- glass-shatter exit for the opening page ----------
+async function shatter(el,cx,cy,ready){
+  const W=innerWidth,H=innerHeight;
+  const tpl=el.cloneNode(true);const sv=el.querySelector('#imap'),sv2=tpl.querySelector('#imap');tpl.removeAttribute('id');tpl.classList.add('frz');tpl.querySelectorAll('[id]').forEach(n=>n.removeAttribute('id'));
+  if(sv&&sv2){const r=sv.getBoundingClientRect();const c=sv.cloneNode(true);c.querySelectorAll('.ct,.kwp').forEach(n=>{n.style.opacity='1';n.style.animation='none';n.style.transform='none';});c.querySelectorAll('.iarc').forEach(n=>{n.setAttribute('fill','none');n.setAttribute('stroke','#D4B85A');n.setAttribute('stroke-width','1.4');n.setAttribute('stroke-dasharray','4 4');n.style.opacity='.85';n.style.animation='none';});c.querySelectorAll('path:not(.iarc)').forEach(n=>{if(!n.getAttribute('fill'))n.setAttribute('fill','none');});
+    const url='data:image/svg+xml;charset=utf-8,'+encodeURIComponent(new XMLSerializer().serializeToString(c));
+    const im=new Image();im.src=url;im.style.cssText=`width:${r.width}px;height:${r.height}px;display:block;margin:auto`;try{await im.decode();}catch(_){}sv2.replaceWith(im);}
+  const st=el.scrollTop;if(st){const ii=tpl.querySelector('.iin');if(ii)ii.style.transform=`translateY(${-st}px)`;}
+  el.dataset.sh='1';
+  const L=document.createElement('div');L.className='shl';document.body.appendChild(L);
+  // jittered grid → triangles, denser around the click point
+  const cols=6,rows=9,P=[];for(let j=0;j<=rows;j++){P[j]=[];for(let i=0;i<=cols;i++){const ed=i===0||j===0||i===cols||j===rows;P[j][i]=[i/cols*W+(ed?0:(Math.random()-.5)*W/cols*.8),j/rows*H+(ed?0:(Math.random()-.5)*H/rows*.8)];}}
+  const tris=[];for(let j=0;j<rows;j++)for(let i=0;i<cols;i++){const a=P[j][i],b=P[j][i+1],c=P[j+1][i+1],d=P[j+1][i];if(Math.random()<.5){tris.push([a,b,c],[a,c,d]);}else{tris.push([a,b,d],[b,c,d]);}}
+  const crack=document.createElementNS('http://www.w3.org/2000/svg','svg');crack.setAttribute('class','shc');crack.setAttribute('viewBox',`0 0 ${W} ${H}`);
+  crack.innerHTML=tris.map(t=>`<polygon points="${t.map(p=>p.join(',')).join(' ')}"/>`).join('')+`<circle cx="${cx}" cy="${cy}" r="6"/>`;
+  const anims=[];
+  tris.forEach(t=>{const d=document.createElement('div');d.className='shd';d.style.clipPath='polygon('+t.map(p=>p[0]+'px '+p[1]+'px').join(',')+')';
+    const k=tpl.cloneNode(true);d.appendChild(k);L.appendChild(d);
+    const mx=(t[0][0]+t[1][0]+t[2][0])/3,my=(t[0][1]+t[1][1]+t[2][1])/3,dx=mx-cx,dy=my-cy,dist=Math.hypot(dx,dy)||1;
+    d.style.transformOrigin=mx+'px '+my+'px';
+    const f=260+Math.random()*420,tx=dx/dist*f,ty=dy/dist*f+H*.55,rx=(Math.random()-.5)*160,ry=(Math.random()-.5)*160,rz=(Math.random()-.5)*120,delay=120+dist/Math.hypot(W,H)*260;
+    anims.push(d.animate([{transform:'translate3d(0,0,0)',opacity:1},{transform:`translate3d(${tx*.15}px,${ty*.05}px,40px) rotateX(${rx*.15}deg) rotateY(${ry*.15}deg)`,opacity:1,offset:.12},{transform:`translate3d(${tx*.6}px,${ty*.45}px,${(Math.random()-.3)*180}px) rotateX(${rx*.6}deg) rotateY(${ry*.6}deg) rotateZ(${rz*.6}deg)`,opacity:.95,offset:.6},{transform:`translate3d(${tx}px,${ty}px,${(Math.random()-.3)*300}px) rotateX(${rx}deg) rotateY(${ry}deg) rotateZ(${rz}deg)`,opacity:0}],{duration:1150+Math.random()*450,delay,easing:'cubic-bezier(.25,.6,.35,1)',fill:'forwards'}).finished);});
+  L.appendChild(crack);
+  crack.animate([{opacity:0},{opacity:1,offset:.15},{opacity:.9,offset:.35},{opacity:0}],{duration:620,fill:'forwards'});
+  const fl=document.createElement('div');fl.className='shf';fl.style.background=`radial-gradient(circle at ${cx}px ${cy}px,#ffffffcc,#ffffff00 40%)`;L.appendChild(fl);
+  fl.animate([{opacity:0},{opacity:1,offset:.2},{opacity:0}],{duration:420,fill:'forwards'});
+  if(ready)ready();
+  await Promise.all(anims).catch(()=>{});L.remove();
+}
 // ---------- intro ----------
 let INTRO_HTML='';
 function showIntro(){if(!INTRO_HTML)return;if(!$('#intro'))document.body.insertAdjacentHTML('afterbegin',INTRO_HTML);window.scrollTo(0,0);intro(true);}
@@ -774,8 +810,8 @@ function intro(force){const el=$('#intro');if(!el)return;if(!INTRO_HTML)INTRO_HT
     o+=tops.map((c,i)=>{const k=w.kw,mx=(k.x+c.x)/2,my=Math.min(k.y,c.y)-Math.abs(k.x-c.x)*0.25-20;return `<path d="M${c.x},${c.y} Q${mx},${my} ${k.x},${k.y}" class="iarc" style="animation-delay:${5.8+i*0.15}s"/>`;}).join('');
     o+=`<g class="kwp"><circle cx="${w.kw.x}" cy="${w.kw.y}" r="4" fill="none" stroke="#D4B85A" stroke-width="1.5"><animate attributeName="r" values="3;14;3" dur="2.4s" repeatCount="indefinite"/><animate attributeName="opacity" values="1;0;1" dur="2.4s" repeatCount="indefinite"/></circle><circle cx="${w.kw.x}" cy="${w.kw.y}" r="3" fill="#fff"/></g>`;
     $('#imap').innerHTML=o;});
-  const close=h=>{try{sessionStorage.setItem('kwIntro','1');}catch(_){}el.classList.add('out');document.body.classList.remove('noscroll');setTimeout(()=>el.remove(),700);if(h)location.hash=h;else setTimeout(route,250);};
-  $('#iGo').onclick=()=>close();
+  const close=h=>{try{sessionStorage.setItem('kwIntro','1');}catch(_){}if(!el.dataset.sh)el.classList.add('out');document.body.classList.remove('noscroll');setTimeout(()=>el.remove(),el.dataset.sh?0:700);if(h)location.hash=h;else setTimeout(route,250);};
+  $('#iGo').onclick=ev=>{if(el.dataset.go)return;el.dataset.go='1';if(matchMedia('(prefers-reduced-motion: reduce)').matches){close();return;}const r=ev.currentTarget.getBoundingClientRect();shatter(el,r.left+r.width/2,r.top+r.height/2,()=>close()).catch(e=>{console.error('shatter',e);delete el.dataset.sh;close();});};
 }
 
 function rank(){const p=$('#sP').value,mk=$('#sM').value,n=+$('#sN').value;
