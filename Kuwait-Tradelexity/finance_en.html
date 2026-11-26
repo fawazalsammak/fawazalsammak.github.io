@@ -383,6 +383,7 @@ canvas.iemb{width:clamp(70px,14vh,130px)!important;height:clamp(70px,14vh,130px)
 .two{display:grid;grid-template-columns:1fr 1fr;gap:12px}@media(max-width:760px){.two{grid-template-columns:1fr}}
 .ftabs{display:none}@media(min-width:761px){.ftabs{display:flex;gap:8px;flex-wrap:wrap;margin:12px 0 4px}.ftabs button{font:700 15px Almarai,sans-serif;min-height:46px;padding:0 18px;border-radius:10px;border:1px solid #2d4677;background:#ffffff0d;color:#e6ebf3;cursor:pointer}.ftabs button.on{background:#D4B85A;color:#0B193A;border-color:#D4B85A}}
 .srcl{display:none!important}
+.fk b,.fhero>b,.fcard td b{direction:ltr;unicode-bidi:isolate}[dir=rtl] .fk b{text-align:right}
 .pill{display:inline-block;font-size:11px;font-weight:800;padding:2px 8px;border-radius:999px;background:#D4B85A22;color:#D4B85A;margin-inline-start:6px}
 </style>
 </head>
@@ -409,12 +410,12 @@ requestAnimationFrame(loop);})();
  <div class="fsw"><a id="swT" data-h="en.html" href="en.html">Foreign Trade</a><span>Economy & Finance</span></div>
  <span class="cur" role="group"><button id="cLoc" aria-pressed="true">د.ك</button><button id="cUsd" aria-pressed="false">USD</button></span>
 </div>
-<nav class="ftabs"><button data-go="output"><span>Economic Output</span></button><button data-go="monetary"><span>Monetary</span></button><button data-go="home" class=ctr><b>Home</b></button><button data-go="fiscal"><span>Fiscal Health</span></button><button data-go="external"><span>External Balance</span></button></nav>
-<section class="fsec" id="vHome"></section><section class="fsec" id="vOut"></section><section class="fsec" id="vMon"></section><section class="fsec" id="vFis"></section><section class="fsec" id="vExt"></section>
-<nav class="bnav" aria-label="nav"><button data-go="output"><span>Economic Output</span></button><button data-go="monetary"><span>Monetary</span></button><button data-go="home" class=ctr><b>Home</b></button><button data-go="fiscal"><span>Fiscal Health</span></button><button data-go="external"><span>External Balance</span></button></nav>
+<nav class="ftabs"><button data-go="output"><span>Output</span></button><button data-go="monetary"><span>Monetary</span></button><button data-go="fiscal"><span>Fiscal</span></button><button data-go="home" class=ctr><b>Home</b></button><button data-go="external"><span>External</span></button><button data-go="fdi"><span>FDI</span></button><button data-go="rating"><span>Ratings</span></button></nav>
+<section class="fsec" id="vHome"></section><section class="fsec" id="vOut"></section><section class="fsec" id="vMon"></section><section class="fsec" id="vFis"></section><section class="fsec" id="vExt"></section><section class="fsec" id="vFdi"></section><section class="fsec" id="vRat"></section>
+<nav class="bnav" aria-label="nav"><button data-go="output"><span>Output</span></button><button data-go="monetary"><span>Monetary</span></button><button data-go="fiscal"><span>Fiscal</span></button><button data-go="home" class=ctr><b>Home</b></button><button data-go="external"><span>External</span></button><button data-go="fdi"><span>FDI</span></button><button data-go="rating"><span>Ratings</span></button></nav>
 </main>
 <script>
-const T_NAV=['Economic Output', 'Monetary', 'Home', 'Fiscal Health', 'External Balance'];
+const T_NAV=['Output', 'Monetary', 'Fiscal', 'Home', 'External', 'FDI', 'Ratings'];
 
 const LANG=document.documentElement.lang,EN=LANG==='en';
 const L=(a,e)=>EN?e:a;
@@ -475,6 +476,8 @@ function home(){const g=F.NGDPD,gr=F.NGDP_RPCH;
     ${k(L('الاحتياطيات الأجنبية','Foreign reserves')+' '+(res[0]||''),fmt(toC(res[1]),1),L('مليار ','billion ')+csym(),'monetary')}
     ${k(L('سعر الصرف','Exchange rate'),fmt(F.FX.v,4),L(F.FX.peg+' · لكل دولار',F.FX.pegE+' · per USD'),'monetary')}
     ${k(L('عدد السكان 2025','Population 2025'),fmt(F.LP['2025'],2),L('مليون نسمة','million'),'output')}
+    ${k(L('التصنيف الائتماني (S&P / موديز / فيتش)','Credit rating (S&P / Moody\'s / Fitch)'),`<span dir="ltr" style="font-size:.8em">${F.RAT.sp[0]} · ${F.RAT.md[0]} · ${F.RAT.ft[0]}</span>`,'','rating')}
+    ${(()=>{const [y,v]=last(F.FDIIN);return y?k(L('الاستثمار الأجنبي المباشر الوارد ','Inward FDI ')+y,`<span dir="ltr">${sg(toC(v))}</span>`,L('مليار ','billion ')+csym(),'fdi'):'';})()}
    </div>
    ${card(L('النمو الاقتصادي الحقيقي (%)','Real GDP growth (%)'),'',bars(F.NGDP_RPCH)+legend())}`;}
 function output(){const ser={};Object.entries(F.NGDPD).forEach(([y,v])=>ser[y]=toC(v));
@@ -495,7 +498,7 @@ function monetary(){const rs={};Object.entries(F.RES).forEach(([y,v])=>rs[y]=toC
    ${card(L('الاحتياطيات الأجنبية الرسمية','Official foreign reserves'),L('مليار ','billion ')+csym()+L(' (تشمل الذهب)',' (incl. gold)'),bars(rs,{neg:false}))}
    ${Object.keys(F.M2G||{}).length?card(L('نمو عرض النقد بمفهومه الواسع (%)','Broad money growth (%)'),'',bars(F.M2G)):''}
    ${card(L('التضخم – دول مجلس التعاون 2025','Inflation – GCC 2025'),'',cmp('PCPIPCH','2025'))}`;}
-function fiscal(){$('#vFis').innerHTML=`<div class="fh"><h2>${T_NAV[3]}</h2><span class="sub">${L('% من الناتج المحلي الإجمالي','% of GDP')}</span></div>
+function fiscal(){$('#vFis').innerHTML=`<div class="fh"><h2>${T_NAV[2]}</h2><span class="sub">${L('% من الناتج المحلي الإجمالي','% of GDP')}</span></div>
    <div class="fgrid">${k(L('رصيد المالية العامة 2025','Fiscal balance 2025'),`<span class="${tone(F.GGXCNL_NGDP['2025'])}" dir="ltr">${sg(F.GGXCNL_NGDP['2025'])}%</span>`,F.GGXCNL_NGDP['2025']>=0?L('فائض','Surplus'):L('عجز','Deficit'))}
    ${k(L('تقدير 2026','2026 projection'),`<span class="${tone(F.GGXCNL_NGDP['2026'])}" dir="ltr">${sg(F.GGXCNL_NGDP['2026'])}%</span>`,'')}
    ${k(L('الدين الحكومي الإجمالي 2025','Gross government debt 2025'),fmt(F.GGXWDG_NGDP['2025'])+'%',L('تقدير 2026: ','2026 proj.: ')+'<span dir="ltr">'+fmt(F.GGXWDG_NGDP['2026'])+'%</span>')}
@@ -515,7 +518,30 @@ function external(){const ca={};Object.entries(F.BCA).forEach(([y,v])=>ca[y]=toC
    ${card(L('رصيد الحساب الجاري','Current account balance'),L('مليار ','billion ')+csym(),bars(ca)+legend())}
    ${Object.keys(tb).length?card(L('الميزان التجاري السلعي (الصادرات − الواردات)','Goods trade balance (exports − imports)'),L('مليار ','billion ')+csym()+'',bars(tb,{pj:9999})):''}
    ${card(L('الحساب الجاري – دول المجلس 2025','Current account – GCC 2025'),L('% من الناتج المحلي','% of GDP'),cmp('BCA_NGDPD','2025'))}`;}
-const V={home:['vHome',home],output:['vOut',output],monetary:['vMon',monetary],fiscal:['vFis',fiscal],external:['vExt',external]};
+const NOTCH={'AAA':22,'AA+':21,'AA':20,'AA-':19,'A+':18,'A':17,'A-':16,'BBB+':15,'BBB':14,'BBB-':13,'BB+':12,'BB':11,'BB-':10,'B+':9,'B':8,'B-':7,'CCC+':6,'CCC':5,
+ 'Aaa':22,'Aa1':21,'Aa2':20,'Aa3':19,'A1':18,'A2':17,'A3':16,'Baa1':15,'Baa2':14,'Baa3':13,'Ba1':12,'Ba2':11,'Ba3':10,'B1':9,'B2':8,'B3':7,'Caa1':6};
+const OUT={S:['مستقرة','Stable','#9fb3d9'],N:['سلبية','Negative','#e07a7a'],P:['إيجابية','Positive','#7fd3a5']};
+const AG=[['sp','ستاندرد آند بورز','S&P Global'],['md','موديز','Moody\'s'],['ft','فيتش','Fitch']];
+const grade=n=>n>=13?L('درجة استثمارية','Investment grade'):L('درجة مضاربية','Speculative grade');
+function rating(){const R=F.RAT;
+  const meter=(r)=>{const n=NOTCH[r]||0,pct=(n-6)/(22-6)*100;return `<div style="position:relative;height:10px;border-radius:6px;background:linear-gradient(90deg,#e07a7a,#D4B85A 45%,#7fd3a5);margin:10px 0 4px;direction:ltr"><i style="position:absolute;left:${(13-6)/16*100}%;top:-4px;bottom:-4px;width:2px;background:#fff8"></i><b style="position:absolute;left:calc(${pct}% - 7px);top:-4px;width:14px;height:18px;border-radius:5px;background:#fff;box-shadow:0 0 10px #D4B85A"></b></div>`;};
+  $('#vRat').innerHTML=`<div class="fh"><h2>${T_NAV[6]}</h2><span class="sub">${L('التصنيف السيادي طويل الأجل بالعملة الأجنبية','Long-term foreign-currency sovereign rating')}</span></div>
+   <div class="fgrid">${AG.map(([a,ar,en])=>{const [r,o]=R[a],ot=OUT[o];return `<div class="fk"><small>${L(ar,en)}</small><b style="font-size:34px">${r}</b><em>${L('النظرة المستقبلية: ','Outlook: ')}<span style="color:${ot[2]};font-weight:800">${L(ot[0],ot[1])}</span> · ${grade(NOTCH[r])}</em>${meter(r)}</div>`;}).join('')}</div>
+   ${R.note?`<div class="note">${L('تصنيفا ستاندرد آند بورز وفيتش لحكومة أبوظبي؛ وتصنيف موديز لحكومة دولة الإمارات.','S&P and Fitch ratings are for the Abu Dhabi government; Moody\'s rating is for the UAE federal government.')}</div>`:''}
+   ${card(L('مقارنة التصنيفات – دول مجلس التعاون','Ratings comparison – GCC'),L('مرتبة من الأعلى تصنيفاً','Ranked from highest rated'),
+    `<div class="scroll"><table style="width:100%;border-collapse:collapse;font-size:14px"><thead><tr><th style="text-align:start;padding:6px">${L('الدولة','Country')}</th>${AG.map(([a,ar,en])=>`<th style="padding:6px">${L(ar,en)}</th>`).join('')}</tr></thead><tbody>${ORDER.slice().sort((x,y)=>(NOTCH[ALL[y].RAT.sp[0]]+NOTCH[ALL[y].RAT.md[0]])-(NOTCH[ALL[x].RAT.sp[0]]+NOTCH[ALL[x].RAT.md[0]])).map(c=>`<tr style="border-top:1px solid var(--line);${c===CTRY?'background:#D4B85A1f;font-weight:800':''}"><td style="padding:8px 6px"><img src="cflags/${CF[c].iso}.svg" alt="" style="width:18px;height:18px;border-radius:50%;vertical-align:-4px;margin-inline-end:6px">${EN?CF[c].en:CF[c].ar}</td>${AG.map(([a])=>{const [r,o]=ALL[c].RAT[a];return `<td style="text-align:center;padding:8px 4px"><b>${r}</b>${o!=='S'?` <span style="color:${OUT[o][2]};font-size:11px">${L(OUT[o][0],OUT[o][1])}</span>`:''}</td>`;}).join('')}</tr>`).join('')}</tbody></table></div>`)}
+   <div class="note">${L('الخط الأبيض في المؤشر يمثل الحد الأدنى للدرجة الاستثمارية (BBB- / Baa3). التصنيفات كما في نوفمبر 2026.','The white line on the scale marks the investment-grade threshold (BBB- / Baa3). Ratings as of November 2026.')}</div>`;}
+function fdi(){const inn={},out={};Object.entries(F.FDIIN).forEach(([y,v])=>inn[y]=toC(v));Object.entries(F.FDIOUT).forEach(([y,v])=>out[y]=toC(v));
+  const [y,vi]=last(inn),vo=out[y],[gy,gv]=last(F.FDI),cum=Object.entries(inn).filter(([k])=>k>='2021').reduce((a,[,v])=>a+v,0);
+  ORDER.forEach(c=>{ALL[c].FDIG=ALL[c].FDIG||{};ALL[c].FDIG['2025']=ALL[c].FDIIN['2025'];});
+  $('#vFdi').innerHTML=`<div class="fh"><h2>${T_NAV[5]}</h2><span class="sub">${L('مليار','billion')} ${csym()}</span></div>
+   <div class="fgrid">${k(L('التدفقات الواردة ','Inward flows ')+y,`<span dir="ltr">${sg(vi)}</span>`,L('مليار ','billion ')+csym())}${k(L('التدفقات الصادرة ','Outward flows ')+y,`<span dir="ltr">${sg(vo)}</span>`,L('مليار ','billion ')+csym())}
+   ${k(L('صافي الاستثمار المباشر ','Net direct investment ')+y,`<span class="${tone(vi-vo)}" dir="ltr">${sg(vi-vo)}</span>`,L('الوارد − الصادر','Inward − outward'))}${gy?k(L('الوارد كنسبة من الناتج ','Inward as % of GDP ')+gy,`<span dir="ltr">${sg(gv,2)}%</span>`,''):''}
+   ${k(L('مجموع التدفقات الواردة 2021–'+y,'Cumulative inflows 2021–'+y),fmt(cum),L('مليار ','billion ')+csym())}</div>
+   ${card(L('تدفقات الاستثمار الأجنبي المباشر الواردة','Inward FDI flows'),L('مليار ','billion ')+csym(),bars(inn))}
+   ${card(L('تدفقات الاستثمار المباشر الصادرة','Outward FDI flows'),L('مليار ','billion ')+csym(),bars(out,{color:'#9fb3d9'}))}
+   ${card(L('التدفقات الواردة – دول المجلس 2025','Inward FDI – GCC 2025'),L('مليار دولار','US$ billion'),cmp('FDIG','2025',{suf:''}))}`;}
+const V={home:['vHome',home],fdi:['vFdi',fdi],rating:['vRat',rating],output:['vOut',output],monetary:['vMon',monetary],fiscal:['vFis',fiscal],external:['vExt',external]};
 function route(){const h=(location.hash||'#home').slice(1),v=V[h]?h:'home';document.querySelectorAll('.fsec').forEach(s=>s.classList.remove('on'));
   const [id,fn]=V[v];fn();$('#'+id).classList.add('on');
   document.querySelectorAll('.bnav button,.ftabs button').forEach(b=>b.classList.toggle('on',b.dataset.go===v));
