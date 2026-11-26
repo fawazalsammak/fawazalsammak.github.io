@@ -340,6 +340,7 @@ canvas.iemb{width:clamp(70px,14vh,130px)!important;height:clamp(70px,14vh,130px)
 @media(max-width:760px){.brand canvas.bglobe{width:44px;height:44px}}
 .cemb{width:52px;height:52px;flex:none;border-radius:50%;background:#fff;padding:3px;object-fit:contain;box-shadow:0 3px 10px #0006}
 @media(max-width:760px){.cemb{width:42px;height:42px}}
+.ititle2{direction:ltr;font:600 clamp(13px,3vw,16px) Montserrat,Almarai,sans-serif;color:#9fb3d9;letter-spacing:.3px;margin-top:-2px;animation:iup 2.2s 3.2s cubic-bezier(.16,1,.3,1) both}
 </style>
 <style>
 .pick{min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:22px;padding:30px 16px;text-align:center}
@@ -387,7 +388,7 @@ requestAnimationFrame(loop);})();
 {
 const $=s=>document.querySelector(s);
 const esc=s=>String(s==null?'':s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
-const BUILD='1795705348';
+const BUILD='1795705509';
 try{fetch(location.pathname+'?b='+Date.now(),{cache:'no-store'}).then(r=>r.text()).then(h=>{const m=h.match(/const BUILD='(\d+)'/);if(m&&m[1]>BUILD&&!sessionStorage.getItem('grl'+m[1])){sessionStorage.setItem('grl'+m[1],'1');const u=new URLSearchParams(location.search);u.set('v',m[1]);location.replace(location.pathname+'?'+u.toString()+location.hash);}}).catch(()=>{});}catch(_){}
 const QP=new URLSearchParams(location.search);
 const EN=QP.get('lang')==='en';
