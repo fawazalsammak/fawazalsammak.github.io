@@ -372,7 +372,6 @@ requestAnimationFrame(loop);})();
 </div>
 <header class="top"><a class="lang" href="./" onclick="this.href='./'+location.hash" lang="ar">عربي</a>
   <div class="brand"><canvas class="spin bglobe" aria-label="Tradelexity"></canvas><div><div class="min" dir="ltr" style="font-family:Montserrat,Almarai,sans-serif;font-size:15px"><span style="color:#fff">Trade</span>lexity</div><h1>Kuwait Foreign Trade Statistics</h1></div><img class="cemb" src="emblems/kw.png" alt="State of Kuwait emblem"></div>
-  <p id="sub">Foreign trade statistics by country and group</p>
   <div class="bar">
     <div class="tabs" role="group" aria-label="View">
       <button id="tKw" aria-pressed="true">Overview</button>
@@ -792,7 +791,7 @@ function armCounts(root){if(!cntIO||matchMedia('(prefers-reduced-motion: reduce)
 new MutationObserver(ms=>{const set=new Set();ms.forEach(m=>{const t=m.target.nodeType===1?m.target:m.target.parentElement;if(t&&!t.closest('b'))set.add(t);});set.forEach(armCounts);}).observe(document.querySelector('main'),{childList:true,subtree:true});
 
 // ---------- auto-update (bypass stale phone cache) ----------
-const BUILD='1795705077';
+const BUILD='1795705348';
 try{fetch(location.pathname+'?b='+Date.now(),{cache:'no-store'}).then(r=>r.text()).then(h=>{const m=h.match(/const BUILD='(\d+)'/);if(m&&m[1]>BUILD&&!sessionStorage.getItem('rl'+m[1])){sessionStorage.setItem('rl'+m[1],'1');location.replace(location.pathname+'?v='+m[1]+location.hash);}}).catch(()=>{});}catch(_){}
 
 // ---------- products: commodity search & selection ----------
@@ -937,7 +936,6 @@ $('#fOut').addEventListener('click',e=>{const fr=e.target.closest('.fr');if(fr){
 $('#cKd').onclick=()=>{CUR='kd';render(cur);};$('#cUsd').onclick=()=>{CUR='usd';render(cur);};$('#uM').onclick=()=>{UNIT='m';render(cur);};$('#fKd').onclick=()=>{CUR='kd';food();};$('#fUsd').onclick=()=>{CUR='usd';food();};$('#fM').onclick=()=>{UNIT='m';food();};$('#fK').onclick=()=>{UNIT='k';food();};$('#uK').onclick=()=>{UNIT='k';render(cur);};
 fetch('data.json').then(r=>r.json()).then(arr=>{D=arr;arr.forEach(r=>{if(r.t==='meta')META=r;else if(r.t==='total')TOT[r.p]=r;else if(r.t==='c'){C.push(r);BY[r.id]=r;}else if(r.t==='g'){G.push(r);BY[r.id]=r;}else if(r.t==='hs')HS.push(r);else if(r.t==='sitc')SITC=r;else if(r.t==='chp')CHP=r.d;else if(r.t==='hs4n')H4N=r.n;else if(r.t==='oil')OILD=r.d;else if(r.t==='iso'){ISO=r.m;Object.entries(r.m).forEach(([i,c])=>CSB2ISO[c]=i);}else if(r.t==='food'){FOOD.push(r);FBY[r.h]=r;}});
   $('#pP').innerHTML=$('#sP').innerHTML;
-  $('#sub').textContent='Data available through the end of '+(QL[META.latest]||META.latest)+' · covering '+C.length+' countries and '+G.length+' economic groups';
   const PER=(()=>{const qs=quarters(),out=[];const ly=qs.length?qs[qs.length-1].slice(0,4):null;
     if(ly&&!Y.includes(ly)){const lq=qs.filter(p=>p.startsWith(ly));if(lq.length>=2)out.push(ly+'-H1');lq.slice().reverse().forEach(p=>out.push(p));}
     [...Y].reverse().forEach(y=>{out.push(y);qs.filter(p=>p.startsWith(y)).reverse().forEach(p=>out.push(p));});return out;})();

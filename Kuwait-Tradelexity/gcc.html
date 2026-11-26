@@ -387,7 +387,7 @@ requestAnimationFrame(loop);})();
 {
 const $=s=>document.querySelector(s);
 const esc=s=>String(s==null?'':s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
-const BUILD='1795705077';
+const BUILD='1795705348';
 try{fetch(location.pathname+'?b='+Date.now(),{cache:'no-store'}).then(r=>r.text()).then(h=>{const m=h.match(/const BUILD='(\d+)'/);if(m&&m[1]>BUILD&&!sessionStorage.getItem('grl'+m[1])){sessionStorage.setItem('grl'+m[1],'1');const u=new URLSearchParams(location.search);u.set('v',m[1]);location.replace(location.pathname+'?'+u.toString()+location.hash);}}).catch(()=>{});}catch(_){}
 const QP=new URLSearchParams(location.search);
 const EN=QP.get('lang')==='en';
