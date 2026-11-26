@@ -430,7 +430,7 @@ let last=0,tt=2;function loop(now){const dt=last?Math.min((now-last)/1000,1/30):
 requestAnimationFrame(loop);})();
 </script>
 <header class="top"><a class="lang" data-h="finance.html" href="finance.html" lang="ar">عربي</a>
-  <div class="brand"><canvas class="spin bglobe" aria-label="Tradelexity"></canvas><div><div class="min" dir="ltr" style="font-family:Montserrat,Almarai,sans-serif;font-size:15px"><span style="color:#fff">Trade</span>lexity</div><h1 id="h1" data-t="Economic & Financial Indicators">Economic & Financial Indicators</h1></div><img class="cemb" id="emb" src="emblems/kw.png" alt=""></div>
+  <div class="brand"><canvas class="spin bglobe" aria-label="Tradelexity"></canvas><div><div class="min" dir="ltr" style="font-family:Montserrat,Almarai,sans-serif;font-size:15px"><span style="color:#fff">Trade</span>lexity</div><h1 id="h1" data-t="Economic & Financial Indicators">Economic & Financial Indicators</h1></div><img class="cemb" id="emb" src="oflags/kw.svg" alt=""></div>
 </header>
 <main>
 <button id="backIntro" class="back" type="button" data-h="en.html?home=1"><span>←</span> Back to the main page</button>
@@ -459,7 +459,7 @@ let C=CF[CTRY],ORDER=[],RG='gcc';const RGN={gcc:['دول مجلس التعاون
 const $=s=>document.querySelector(s);
 function setHead(){document.title='Tradelexity – '+(EN?C.en:C.ar);
 $('#h1').textContent=EN?C.adjE+' '+$('#h1').dataset.t:$('#h1').dataset.t+(C.adj?' '+C.adj:' – '+C.ar);
-$('#emb').src=GCC6.includes(CTRY)?'emblems/'+C.iso+'.png':'oflags/'+C.iso+'.svg';if(!GCC6.includes(CTRY))$('#emb').classList.add('ofh');
+$('#emb').src='oflags/'+C.iso+'.svg';$('#emb').classList.add('ofh');
 $('.lang').href=$('.lang').dataset.h+'?c='+CTRY+location.hash;
 $('#swT').href=$('#swT').dataset.h+(CTRY==='KW'?'#kw':'?c='+CTRY);
 }

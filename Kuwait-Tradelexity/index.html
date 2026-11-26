@@ -403,7 +403,7 @@ requestAnimationFrame(loop);})();
   </div>
 </div>
 <header class="top"><a class="lang" href="en.html" onclick="this.href='en.html'+location.search+location.hash" lang="en">English</a>
-  <div class="brand"><canvas class="spin bglobe" aria-label="Tradelexity"></canvas><div><div class="min" dir="ltr" style="font-family:Montserrat,Almarai,sans-serif;font-size:15px"><span style="color:#fff">Trade</span>lexity</div><h1>إحصاءات التجارة الخارجية الكويتية</h1></div><img class="cemb" src="emblems/kw.png" alt="شعار دولة الكويت"></div>
+  <div class="brand"><canvas class="spin bglobe" aria-label="Tradelexity"></canvas><div><div class="min" dir="ltr" style="font-family:Montserrat,Almarai,sans-serif;font-size:15px"><span style="color:#fff">Trade</span>lexity</div><h1>إحصاءات التجارة الخارجية الكويتية</h1></div><img class="cemb ofh" src="oflags/kw.svg" alt="شعار دولة الكويت"></div>
   <div class="bar">
     <div class="tabs" role="group" aria-label="العرض">
       <button id="tKw" aria-pressed="true">الإجمالي</button>
@@ -841,7 +841,7 @@ function armCounts(root){if(!cntIO||matchMedia('(prefers-reduced-motion: reduce)
 new MutationObserver(ms=>{const set=new Set();ms.forEach(m=>{const t=m.target.nodeType===1?m.target:m.target.parentElement;if(t&&!t.closest('b'))set.add(t);});set.forEach(armCounts);}).observe(document.querySelector('main'),{childList:true,subtree:true});
 
 // ---------- auto-update (bypass stale phone cache) ----------
-const BUILD='1795725104';
+const BUILD='1795725240';
 try{fetch(location.pathname+'?b='+Date.now(),{cache:'no-store'}).then(r=>r.text()).then(h=>{const m=h.match(/const BUILD='(\d+)'/);if(m&&m[1]>BUILD&&!sessionStorage.getItem('rl'+m[1])){sessionStorage.setItem('rl'+m[1],'1');location.replace(location.pathname+'?v='+m[1]+location.hash);}}).catch(()=>{});}catch(_){}
 
 // ---------- products: commodity search & selection ----------
@@ -1005,7 +1005,7 @@ $('#cKd').onclick=()=>{CUR='kd';render(cur);};$('#cUsd').onclick=()=>{CUR='usd';
 // ---------- country template: localise Kuwait wording for other GCC countries ----------
 if(!ISKW){
  document.title='Tradelexity – '+CC.shortE;if(CC.csE==='USD'){const k=document.getElementById('cKd');if(k)k.style.display='none';const f=document.getElementById('fKd');if(f)f.style.display='none';}
- const cimg=document.querySelector('.cemb');if(cimg)cimg.src=['sa','ae','qa','bh','om','kw'].includes(CC.iso)?'emblems/'+CC.iso+'.png':(cimg.classList.add('ofh'),'oflags/'+CC.iso+'.svg');
+ const cimg=document.querySelector('.cemb');if(cimg)cimg.classList.add('ofh');cimg.src='oflags/'+CC.iso+'.svg';
  const AR=[[/(عجز|فائض) غير نفطي/g,'$1'],[/Non-oil deficit/g,'Deficit'],[/Non-oil surplus/g,'Surplus'],[/non-oil (deficit|surplus)/g,'$1'],[/الميزان التجاري غير النفطي/g,'الميزان التجاري'],[/[Nn]on-oil trade balance/g,'Trade balance'],[/التجارة غير النفطية/g,'التجارة'],[/ non-oil trade/g,' trade'],[/ · لا يشمل الترتيب البضائع غير محددة الوجهة \(صادرات النفط ومشتقاته\)| ?الصادرات غير نفطية وتشمل إعادة التصدير\.| ?الصادرات غير نفطية\./g,''],[/ · Ranking excludes goods of unspecified destination \(oil and oil-product exports\)| ?Exports are non-oil and include re-exports\.| ?Exports are non-oil\./g,''],[/ \(دون النفط ومشتقاته\)| · دون النفط ومشتقاته/g,''],[/ \(excluding oil and oil products\)| · excluding oil and oil products/g,''],[/الصادرات غير النفطية/g,'الصادرات'],[/Non-oil exports/g,'Exports'],[/Total non-oil trade/g,'Total trade'],[/التجارة الخارجية غير النفطية/g,'التجارة الخارجية'],[/التبادل التجاري غير النفطي/g,'التبادل التجاري'],[/دولة الكويت(?!‌)/g,CC.full],[/دينار كويتي/g,CC.cw],[/الكويتية(?!‌)/g,CC.aF],[/الكويتي(?!‌)/g,CC.aM],[/الكويت(?!‌)/g,CC.short],[/د\.ك/g,CC.cs],
   [/Non-oil Foreign Trade/g,'Foreign Trade'],[/non-oil trade exchange/gi,'trade exchange'],[/State of Kuwait(?!‌)/g,CC.fullE],[/Kuwaiti dinars?/g,CC.cwE],[/Kuwaiti(?!‌)/g,CC.aE],[/Kuwait(?!‌)/g,CC.shortE],[/\bKD\b/g,CC.csE],[/^(\s*)the /,'$1The ']];
  const HIDE=/هيكل الصادرات|ذات المنشأ الوطني|Export structure|National-origin|National origin/;
