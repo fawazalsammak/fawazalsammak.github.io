@@ -734,7 +734,7 @@ function armCounts(root){if(!cntIO||matchMedia('(prefers-reduced-motion: reduce)
 new MutationObserver(ms=>{const set=new Set();ms.forEach(m=>{const t=m.target.nodeType===1?m.target:m.target.parentElement;if(t&&!t.closest('b'))set.add(t);});set.forEach(armCounts);}).observe(document.querySelector('main'),{childList:true,subtree:true});
 
 // ---------- auto-update (bypass stale phone cache) ----------
-const BUILD='1795674224';
+const BUILD='1795676418';
 try{fetch(location.pathname+'?b='+Date.now(),{cache:'no-store'}).then(r=>r.text()).then(h=>{const m=h.match(/const BUILD='(\d+)'/);if(m&&m[1]>BUILD&&!sessionStorage.getItem('rl'+m[1])){sessionStorage.setItem('rl'+m[1],'1');location.replace(location.pathname+'?v='+m[1]+location.hash);}}).catch(()=>{});}catch(_){}
 
 // ---------- products: commodity search & selection ----------
@@ -765,6 +765,27 @@ function pPartners(cs){const agg=f=>{const m={};let tot=0;cs.forEach(c=>{const z
   const tbl=(t,f)=>{const {tot,L}=agg(f);if(!L.length)return '';const mx=L[0][1];return `<div class="card" style="margin-top:16px"><h3>${t}</h3><div class="note" style="margin-top:0">Total ${uv(tot)} ${CUR==='usd'?'USD':'KD'} ${UNIT==='m'?'million':'thousand'} · 2025</div><div class="scroll"><table class="ppt"><thead><tr><th>#</th><th>Country</th><th class="n">Value</th><th class="n">Share</th><th style="width:22%"></th></tr></thead><tbody>${L.map(([id,v],i)=>`<tr><td>${i+1}</td><td><a href="#c${esc(id)}">${esc(BY[id].en)}</a></td><td class="n">${uv(v)}</td><td class="n">${tot?fmtN(v/tot*100,1)+'%':'–'}</td><td><span class="trk" style="display:flex"><i style="width:${v/mx*100}%;background:${f==='M'?'var(--mint)':'#9fb3d9'}"></i></span></td></tr>`).join('')}</tbody></table></div></div>`;};
   return tbl('Top Supplier Countries to the State of Kuwait – 2025','M')+tbl('Top Destinations of Kuwait\'s Exports – 2025','X')+'<div class="note">Country data are for 2025 by chapter (top countries per chapter); 2026 data by country are not yet available.</div>';}
 
+
+// ---------- opening-page exit styles (?exit=1..4) ----------
+const EXIT=(()=>{try{return +(new URLSearchParams(location.search).get('exit'))||1;}catch(_){return 1;}})();
+function introExit(el,cx,cy){return new Promise(res=>{el.dataset.sh='1';el.style.animation='none';const inn=el.querySelector('.iin'),kids=inn?[...inn.children]:[];
+  const home=$('main'),hdr=$('header.top');const reveal=(d)=>{[hdr,home].forEach(n=>{if(n)n.animate([{opacity:0,transform:'scale(.98)'},{opacity:1,transform:'none'}],{duration:d,easing:'ease-out'});});};
+  const done=ms=>setTimeout(()=>{res();},ms);
+  if(EXIT===1){ // soft dissolve: drift forward, blur and fade
+    el.animate([{opacity:1,transform:'scale(1)',filter:'blur(0)'},{opacity:0,transform:'scale(1.12)',filter:'blur(10px)'}],{duration:1700,easing:'cubic-bezier(.4,0,.2,1)',fill:'forwards'});reveal(1700);done(1650);}
+  else if(EXIT===2){ // curtain lift: content rises in sequence, then the backdrop slides up
+    kids.forEach((k,i)=>k.animate([{opacity:1,transform:'none'},{opacity:0,transform:'translateY(-40px)'}],{duration:700,delay:i*90,easing:'ease-in',fill:'forwards'}));
+    const t=kids.length*90+450;el.animate([{transform:'translateY(0)'},{transform:'translateY(-100%)'}],{duration:1100,delay:t,easing:'cubic-bezier(.7,0,.2,1)',fill:'forwards'});setTimeout(()=>reveal(900),t);done(t+1100);}
+  else if(EXIT===3){ // sand: map dots and text drift away like dust
+    const dirs={0:[-60,-40],1:[-50,50],2:[0,-70],3:[20,70],4:[70,-40],5:[70,50]};el.querySelectorAll('#imap .ct').forEach((g,i)=>{const [dx,dy]=dirs[i]||[0,-50];g.style.animation='none';g.style.opacity=1;g.animate([{transform:'none',opacity:1,filter:'blur(0)'},{transform:`translate(${dx}px,${dy-60}px) scale(1.08)`,opacity:0,filter:'blur(4px)'}],{duration:1800,delay:i*120,easing:'cubic-bezier(.4,0,.2,1)',fill:'forwards'});});el.querySelectorAll('#imap .kwp,#imap .iarc').forEach(n=>n.animate([{opacity:1},{opacity:0}],{duration:600,fill:'forwards'}));
+    kids.filter(k=>k.id!=='imap').forEach((k,i)=>k.animate([{opacity:1,filter:'blur(0)',letterSpacing:'0'},{opacity:0,filter:'blur(6px)',letterSpacing:'.3em'}],{duration:1300,delay:200+i*60,easing:'ease-in',fill:'forwards'}));
+    el.animate([{opacity:1},{opacity:1,offset:.6},{opacity:0}],{duration:2300,easing:'ease-in-out',fill:'forwards'});reveal(1200);done(2250);}
+  else { // light ring: a circle of light opens from the button and reveals the platform
+    const W=innerWidth,H=innerHeight,Rm=Math.hypot(Math.max(cx,W-cx),Math.max(cy,H-cy))+40,t0=performance.now(),D=1700;
+    const ring=document.createElement('div');ring.style.cssText=`position:fixed;left:${cx}px;top:${cy}px;width:0;height:0;border-radius:50%;z-index:150;pointer-events:none;box-shadow:0 0 0 2px #D4B85A,0 0 30px 8px #D4B85A88;transform:translate(-50%,-50%)`;document.body.appendChild(ring);
+    const f=now=>{const k=Math.min(1,(now-t0)/D),e=1-Math.pow(1-k,3),r=e*Rm;const m=`radial-gradient(circle at ${cx}px ${cy}px, transparent ${r}px, #000 ${r+2}px)`;el.style.webkitMaskImage=m;el.style.maskImage=m;ring.style.width=ring.style.height=2*r+'px';ring.style.opacity=String(1-k);if(k<1)requestAnimationFrame(f);else{ring.remove();res();}};
+    reveal(1200);requestAnimationFrame(f);}
+});}
 // ---------- glass-shatter exit for the opening page (canvas, iPhone-safe) ----------
 async function shatter(el,cx,cy,ready){
   const W=innerWidth,H=innerHeight,dpr=Math.min(devicePixelRatio||1,2);
@@ -818,7 +839,7 @@ function intro(force){const el=$('#intro');if(!el)return;if(!INTRO_HTML)INTRO_HT
     o+=`<g class="kwp"><circle cx="${w.kw.x}" cy="${w.kw.y}" r="4" fill="none" stroke="#D4B85A" stroke-width="1.5"><animate attributeName="r" values="3;14;3" dur="2.4s" repeatCount="indefinite"/><animate attributeName="opacity" values="1;0;1" dur="2.4s" repeatCount="indefinite"/></circle><circle cx="${w.kw.x}" cy="${w.kw.y}" r="3" fill="#fff"/></g>`;
     $('#imap').innerHTML=o;});
   const close=h=>{try{sessionStorage.setItem('kwIntro','1');}catch(_){}if(!el.dataset.sh)el.classList.add('out');document.body.classList.remove('noscroll');setTimeout(()=>el.remove(),el.dataset.sh?0:700);if(h)location.hash=h;else setTimeout(route,250);};
-  $('#iGo').onclick=ev=>{if(el.dataset.go)return;el.dataset.go='1';if(matchMedia('(prefers-reduced-motion: reduce)').matches){close();return;}const r=ev.currentTarget.getBoundingClientRect();shatter(el,r.left+r.width/2,r.top+r.height/2,()=>close()).catch(e=>{console.error('shatter',e);delete el.dataset.sh;close();});};
+  $('#iGo').onclick=ev=>{if(el.dataset.go)return;el.dataset.go='1';if(matchMedia('(prefers-reduced-motion: reduce)').matches){close();return;}const r=ev.currentTarget.getBoundingClientRect();introExit(el,r.left+r.width/2,r.top+r.height/2).then(()=>close()).catch(e=>{console.error('exit',e);delete el.dataset.sh;close();});};
 }
 
 function rank(){const p=$('#sP').value,mk=$('#sM').value,n=+$('#sN').value;
