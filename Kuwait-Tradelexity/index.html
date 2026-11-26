@@ -348,6 +348,15 @@ canvas.iemb{width:clamp(70px,14vh,130px)!important;height:clamp(70px,14vh,130px)
 .isc:hover,.isc:focus-visible{transform:translateY(-2px);box-shadow:0 0 22px #D4B85A55;border-color:#D4B85A}
 .isc svg{width:34px;height:34px;fill:none;stroke:#D4B85A;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}.isc b{font-size:18px}.isc small{color:#c9d2e3;font-size:12.5px;line-height:1.4}
 .ichg{margin-top:12px;background:none;border:0;color:#D4B85A;font:700 14px Almarai,sans-serif;cursor:pointer;text-decoration:underline}
+#intro.sel .ien,#intro.sel .ititle2{display:none}
+#intro.sel .iemb{width:56px!important;height:56px!important}
+#intro.sel .imin{font-size:30px;margin-top:4px}
+#intro.sel .ititle{font-size:15px;margin:6px 0 4px}
+#intro.sel .isel{font-size:16px;margin:4px 0 0}#intro.sel .isel img{width:46px;height:46px}
+#intro.sel .ipk-t{margin:6px 0}
+#intro.sel .isec{grid-template-columns:1fr 1fr!important;gap:10px}
+#intro.sel .isc{padding:14px 8px;gap:4px;border-radius:16px}#intro.sel .isc svg{width:28px;height:28px}#intro.sel .isc b{font-size:15px}#intro.sel .isc small{font-size:11px}
+#intro.sel .ichg{margin-top:8px}
 </style>
 <style>/* sources hidden on request – remove this rule to restore */ .srcl{display:none!important}</style>
 </head>
@@ -812,7 +821,7 @@ function armCounts(root){if(!cntIO||matchMedia('(prefers-reduced-motion: reduce)
 new MutationObserver(ms=>{const set=new Set();ms.forEach(m=>{const t=m.target.nodeType===1?m.target:m.target.parentElement;if(t&&!t.closest('b'))set.add(t);});set.forEach(armCounts);}).observe(document.querySelector('main'),{childList:true,subtree:true});
 
 // ---------- auto-update (bypass stale phone cache) ----------
-const BUILD='1795719169';
+const BUILD='1795719824';
 try{fetch(location.pathname+'?b='+Date.now(),{cache:'no-store'}).then(r=>r.text()).then(h=>{const m=h.match(/const BUILD='(\d+)'/);if(m&&m[1]>BUILD&&!sessionStorage.getItem('rl'+m[1])){sessionStorage.setItem('rl'+m[1],'1');location.replace(location.pathname+'?v='+m[1]+location.hash);}}).catch(()=>{});}catch(_){}
 
 // ---------- products: commodity search & selection ----------
@@ -890,9 +899,9 @@ function intro(force){const el=$('#intro');if(!ISKW){if(el)el.remove();return;}i
   $('#iGo').onclick=ev=>{const bx=el.querySelector('.ibtns');if(!bx||bx.dataset.pk)return;bx.dataset.pk='1';
     const CO=[['KW','kw','الكويت'],['SA','sa','السعودية'],['AE','ae','الإمارات'],['QA','qa','قطر'],['BH','bh','البحرين'],['OM','om','عُمان']];
     bx.innerHTML='<div class="ipk-t">اختر الدولة</div><div class="ipk">'+CO.map(([c,i,n])=>`<button class="ipc" data-c="${c}"><img src="cflags/${i}.svg" alt="">${n}</button>`).join('')+'</div>';
-    const pick=()=>{bx.innerHTML='<div class="ipk-t">اختر الدولة</div><div class="ipk">'+CO.map(([c,i,n])=>`<button class="ipc" data-c="${c}"><img src="cflags/${i}.svg" alt="">${n}</button>`).join('')+'</div>';
+    const pick=()=>{el.classList.remove('sel');bx.innerHTML='<div class="ipk-t">اختر الدولة</div><div class="ipk">'+CO.map(([c,i,n])=>`<button class="ipc" data-c="${c}"><img src="cflags/${i}.svg" alt="">${n}</button>`).join('')+'</div>';
      bx.querySelectorAll('.ipc').forEach(b=>b.onclick=()=>sector(b.dataset.c));};
-    const sector=c=>{const z=CO.find(r=>r[0]===c),EN=document.documentElement.lang==='en';
+    const sector=c=>{const z=CO.find(r=>r[0]===c),EN=document.documentElement.lang==='en';el.classList.add('sel');
      bx.innerHTML=`<div class="isel"><img src="cflags/${z[1]}.svg" alt=""><b>${z[2]}</b></div><div class="ipk-t">اختر القطاع</div><div class="isec">
       <button class="isc" data-s="t"><svg viewBox="0 0 24 24"><path d="M3 17l5-5 4 4 8-8"/><path d="M14 8h6v6"/></svg><b>التجارة الخارجية</b><small>الصادرات والواردات والشركاء التجاريون</small></button>
       <button class="isc" data-s="f"><svg viewBox="0 0 24 24"><path d="M4 20V10M10 20V4M16 20v-7M22 20H2"/></svg><b>الاقتصاد والمالية</b><small>الناتج الاقتصادي والمؤشرات النقدية والمالية العامة والحساب الخارجي</small></button></div>
