@@ -327,6 +327,14 @@ table td.n,table th.n{text-align:center!important}table th.n{direction:rtl;unico
 .csw a img{width:24px;height:24px;object-fit:contain;border-radius:50%;background:#fff;padding:1px}
 .csw a[aria-current="true"]{border-color:var(--mint);background:#d4b85a22;font-weight:700}
 #intro.fast,#intro.fast *{animation-delay:0s!important;animation-duration:.45s!important}
+.tspI{position:relative}
+.tspDot{position:fixed;z-index:60;border-radius:50%;background:#fff;box-shadow:0 0 10px 3px #ffffffaa,0 0 22px 6px #D4B85A88;pointer-events:none}
+.tspDot.on{background:#fff6d6;animation:tspGlow 1.6s ease-in-out infinite alternate}
+@keyframes tspGlow{from{box-shadow:0 0 8px 2px #ffffffcc,0 0 18px 6px #D4B85A99}to{box-shadow:0 0 16px 5px #ffffff,0 0 40px 14px #D4B85Acc}}
+.imin{animation:idrop 2.2s .8s cubic-bezier(.16,1,.3,1) both!important;text-shadow:0 2px 12px #0006!important}
+.ipk-t{animation:ipkGlow 1.8s ease-in-out infinite alternate}
+@keyframes ipkGlow{from{text-shadow:0 0 6px #D4B85A66}to{text-shadow:0 0 14px #D4B85A,0 0 28px #D4B85Aaa}}
+#intro.fast .imin{animation:idrop .45s both!important}
 </style>
 <style>
 .pick{min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:22px;padding:30px 16px;text-align:center}
@@ -361,7 +369,7 @@ table td.n,table th.n{text-align:center!important}table th.n{direction:rtl;unico
 {
 const $=s=>document.querySelector(s);
 const esc=s=>String(s==null?'':s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
-const BUILD='1795704506';
+const BUILD='1795704832';
 try{fetch(location.pathname+'?b='+Date.now(),{cache:'no-store'}).then(r=>r.text()).then(h=>{const m=h.match(/const BUILD='(\d+)'/);if(m&&m[1]>BUILD&&!sessionStorage.getItem('grl'+m[1])){sessionStorage.setItem('grl'+m[1],'1');const u=new URLSearchParams(location.search);u.set('v',m[1]);location.replace(location.pathname+'?'+u.toString()+location.hash);}}).catch(()=>{});}catch(_){}
 const QP=new URLSearchParams(location.search);
 const EN=QP.get('lang')==='en';

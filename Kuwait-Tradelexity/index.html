@@ -327,10 +327,18 @@ table td.n,table th.n{text-align:center!important}table th.n{direction:rtl;unico
 .csw a img{width:24px;height:24px;object-fit:contain;border-radius:50%;background:#fff;padding:1px}
 .csw a[aria-current="true"]{border-color:var(--mint);background:#d4b85a22;font-weight:700}
 #intro.fast,#intro.fast *{animation-delay:0s!important;animation-duration:.45s!important}
+.tspI{position:relative}
+.tspDot{position:fixed;z-index:60;border-radius:50%;background:#fff;box-shadow:0 0 10px 3px #ffffffaa,0 0 22px 6px #D4B85A88;pointer-events:none}
+.tspDot.on{background:#fff6d6;animation:tspGlow 1.6s ease-in-out infinite alternate}
+@keyframes tspGlow{from{box-shadow:0 0 8px 2px #ffffffcc,0 0 18px 6px #D4B85A99}to{box-shadow:0 0 16px 5px #ffffff,0 0 40px 14px #D4B85Acc}}
+.imin{animation:idrop 2.2s .8s cubic-bezier(.16,1,.3,1) both!important;text-shadow:0 2px 12px #0006!important}
+.ipk-t{animation:ipkGlow 1.8s ease-in-out infinite alternate}
+@keyframes ipkGlow{from{text-shadow:0 0 6px #D4B85A66}to{text-shadow:0 0 14px #D4B85A,0 0 28px #D4B85Aaa}}
+#intro.fast .imin{animation:idrop .45s both!important}
 </style>
 </head>
 <body>
-<div id="intro" data-w="1" role="dialog" aria-label="الصفحة الافتتاحية"><div class="tsp" aria-hidden="true"><canvas id="tspG"></canvas><div class="tspN"><span style="--d:0.90s" class="">T</span><span style="--d:0.99s" class="">r</span><span style="--d:1.08s" class="">a</span><span style="--d:1.17s" class="">d</span><span style="--d:1.26s" class="">e</span><span style="--d:1.35s" class="g">l</span><span style="--d:1.44s" class="g">e</span><span style="--d:1.53s" class="g">x</span><span style="--d:1.62s" class="g">i</span><span style="--d:1.71s" class="g">t</span><span style="--d:1.80s" class="g">y</span></div><div class="tspT">GLOBAL TRADE INTELLIGENCE</div></div>
+<div id="intro" data-w="1" role="dialog" aria-label="الصفحة الافتتاحية"><div class="tsp" aria-hidden="true"><canvas id="tspG"></canvas><div class="tspN"><span style="--d:0.90s" class="">T</span><span style="--d:0.99s" class="">r</span><span style="--d:1.08s" class="">a</span><span style="--d:1.17s" class="">d</span><span style="--d:1.26s" class="">e</span><span style="--d:1.35s" class="g">l</span><span style="--d:1.44s" class="g">e</span><span style="--d:1.53s" class="g">x</span><span style="--d:1.62s" class="g tspI">ı</span><span style="--d:1.71s" class="g">t</span><span style="--d:1.80s" class="g">y</span></div><div class="tspT">GLOBAL TRADE INTELLIGENCE</div></div>
   <div class="istars"></div>
   <div class="iin">
     <img src="globe.png" alt="Tradelexity" class="iemb">
@@ -764,7 +772,7 @@ function armCounts(root){if(!cntIO||matchMedia('(prefers-reduced-motion: reduce)
 new MutationObserver(ms=>{const set=new Set();ms.forEach(m=>{const t=m.target.nodeType===1?m.target:m.target.parentElement;if(t&&!t.closest('b'))set.add(t);});set.forEach(armCounts);}).observe(document.querySelector('main'),{childList:true,subtree:true});
 
 // ---------- auto-update (bypass stale phone cache) ----------
-const BUILD='1795704506';
+const BUILD='1795704832';
 try{fetch(location.pathname+'?b='+Date.now(),{cache:'no-store'}).then(r=>r.text()).then(h=>{const m=h.match(/const BUILD='(\d+)'/);if(m&&m[1]>BUILD&&!sessionStorage.getItem('rl'+m[1])){sessionStorage.setItem('rl'+m[1],'1');location.replace(location.pathname+'?v='+m[1]+location.hash);}}).catch(()=>{});}catch(_){}
 
 // ---------- products: commodity search & selection ----------
@@ -808,12 +816,13 @@ const SPLASH_HTML=(document.querySelector('#intro .tsp')||{}).outerHTML||'';
 function runSplash(el){const sp=el&&el.querySelector('.tsp');if(!sp)return;el.setAttribute('data-w','1');
   const cv=sp.querySelector('canvas'),dpr=Math.min(devicePixelRatio||1,2),S=cv.getBoundingClientRect().width||300;cv.width=S*dpr;cv.height=S*dpr;const x=cv.getContext('2d');x.scale(dpr,dpr);
   const R=S*.46,C=S/2,tilt=18*Math.PI/180,pts=[];for(let la=-81;la<=81;la+=7.5)for(let lo=-180;lo<180;lo+=7.5)pts.push([la*Math.PI/180,lo*Math.PI/180]);
-  const KW=[29.3*Math.PI/180,47.9*Math.PI/180];let t0=performance.now(),run=true;
+  const KW=[29.3*Math.PI/180,47.9*Math.PI/180];let t0=performance.now(),run=true,dropped=false;
+  const dropDot=(kx,ky)=>{try{const r=cv.getBoundingClientRect(),iEl=sp.querySelector('.tspI');if(!iEl)return;const ir=iEl.getBoundingClientRect();const d=document.createElement('i');d.className='tspDot';const sz=Math.max(6,ir.height*0.15);d.style.width=d.style.height=sz+'px';d.style.left=(r.left+kx-sz/2)+'px';d.style.top=(r.top+ky-sz/2)+'px';sp.appendChild(d);const tx=ir.left+ir.width/2-sz/2-(r.left+kx-sz/2),ty=ir.top+ir.height*0.06-(r.top+ky-sz/2);const a=d.animate([{transform:'translate(0,0) scale(1)'},{transform:`translate(${tx*0.5}px,${ty*0.25-40}px) scale(1.3)`,offset:.45},{transform:`translate(${tx}px,${ty}px) scale(1)`}],{duration:1100,easing:'cubic-bezier(.45,0,.4,1)',fill:'forwards'});a.onfinish=()=>d.classList.add('on');}catch(_){}};
   const proj=(phi,lam,l0)=>{const L=lam-l0,X=Math.cos(phi)*Math.sin(L),Y=Math.cos(tilt)*Math.sin(phi)-Math.sin(tilt)*Math.cos(phi)*Math.cos(L),Z=Math.sin(tilt)*Math.sin(phi)+Math.cos(tilt)*Math.cos(phi)*Math.cos(L);return [C+R*X,C-R*Y,Z];};
   const fr=now=>{if(!run)return;const t=(now-t0)/1000,l0=(-110+t*55)*Math.PI/180;x.clearRect(0,0,S,S);
     const gl=x.createRadialGradient(C,C,R*.2,C,C,R*1.15);gl.addColorStop(0,'rgba(212,184,90,.10)');gl.addColorStop(1,'rgba(212,184,90,0)');x.fillStyle=gl;x.beginPath();x.arc(C,C,R*1.15,0,7);x.fill();
     for(const [p,l] of pts){const [px,py,z]=proj(p,l,l0);if(z<=0.02)continue;x.globalAlpha=.25+.75*z;x.fillStyle='#D4B85A';x.beginPath();x.arc(px,py,(R/120)*(1.1+1.9*z),0,7);x.fill();}
-    const [kx,ky,kz]=proj(KW[0],KW[1],l0);if(kz>0){x.globalAlpha=Math.min(1,kz*1.6);const g=x.createRadialGradient(kx,ky,0,kx,ky,R*.2);g.addColorStop(0,'rgba(255,255,255,.6)');g.addColorStop(1,'rgba(255,255,255,0)');x.fillStyle=g;x.beginPath();x.arc(kx,ky,R*.2,0,7);x.fill();x.fillStyle='#fff';x.beginPath();x.arc(kx,ky,R*.06,0,7);x.fill();}
+    const [kx,ky,kz]=proj(KW[0],KW[1],l0);if(!dropped&&t>=2.8&&kz>0){dropped=true;dropDot(kx,ky);}if(kz>0&&!dropped){x.globalAlpha=Math.min(1,kz*1.6);const g=x.createRadialGradient(kx,ky,0,kx,ky,R*.2);g.addColorStop(0,'rgba(255,255,255,.6)');g.addColorStop(1,'rgba(255,255,255,0)');x.fillStyle=g;x.beginPath();x.arc(kx,ky,R*.2,0,7);x.fill();x.fillStyle='#fff';x.beginPath();x.arc(kx,ky,R*.06,0,7);x.fill();}
     x.globalAlpha=1;requestAnimationFrame(fr);};requestAnimationFrame(fr);
   setTimeout(()=>{sp.classList.add('out');setTimeout(()=>{run=false;sp.remove();el.removeAttribute('data-w');},950);},6600);}
 const HOME=(()=>{try{const q=new URLSearchParams(location.search);if(q.has('home')){sessionStorage.removeItem('kwIntro');history.replaceState(null,'',location.pathname);return true;}}catch(_){}return false;})();
