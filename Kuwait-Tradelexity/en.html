@@ -326,6 +326,7 @@ table td.n,table th.n{text-align:center!important}table th.n{direction:rtl;unico
 .csw a{display:flex;align-items:center;gap:6px;padding:5px 10px;border-radius:999px;border:1px solid var(--line);color:var(--ink);text-decoration:none;font-size:.9rem}
 .csw a img{width:24px;height:24px;object-fit:contain;border-radius:50%;background:#fff;padding:1px}
 .csw a[aria-current="true"]{border-color:var(--mint);background:#d4b85a22;font-weight:700}
+#intro.fast,#intro.fast *{animation-delay:0s!important;animation-duration:.45s!important}
 .bento .lnk .go{left:auto;right:14px}table th.n{direction:ltr}
 </style>
 </head>
@@ -344,7 +345,6 @@ table td.n,table th.n{text-align:center!important}table th.n{direction:rtl;unico
 </div>
 <header class="top"><a class="lang" href="./" onclick="this.href='./'+location.hash" lang="ar">عربي</a>
   <div class="brand"><img src="globe.png" alt="Tradelexity" width="54" height="54"><div><div class="min" dir="ltr" style="font-family:Montserrat,Almarai,sans-serif;font-size:15px"><span style="color:#fff">Trade</span>lexity</div><h1>Kuwait Foreign Trade Statistics</h1></div></div>
-  <div class="csw"><a href="en.html" aria-current="true"><img src="emblems/kw.png" alt="">Kuwait</a><a href="gcc.html?lang=en&c=SA"><img src="emblems/sa.png" alt="">Saudi Arabia</a><a href="gcc.html?lang=en&c=AE"><img src="emblems/ae.png" alt="">UAE</a><a href="gcc.html?lang=en&c=QA"><img src="emblems/qa.png" alt="">Qatar</a><a href="gcc.html?lang=en&c=BH"><img src="emblems/bh.png" alt="">Bahrain</a><a href="gcc.html?lang=en&c=OM"><img src="emblems/om.png" alt="">Oman</a></div>
   <p id="sub">Foreign trade statistics by country and group</p>
   <div class="bar">
     <div class="tabs" role="group" aria-label="View">
@@ -359,7 +359,7 @@ table td.n,table th.n{text-align:center!important}table th.n{direction:rtl;unico
   </div>
 </header>
 <main>
-<button id="back" class="back hide" type="button" aria-label="Back to home"><span>←</span> Back to home</button><button id="backIntro" class="back alt hide" type="button" aria-label="Opening page"><span>←</span> Opening page</button>
+<button id="back" class="back hide" type="button" aria-label="Back to the main page"><span>←</span> Back to the main page</button><button id="backIntro" class="back" type="button" aria-label="Back to the main page"><span>←</span> Back to the main page</button>
   <section id="vEnt">
     <div class="head"><div><h2 id="nm">…</h2><div class="en" id="nmEn"></div></div><div class="unit"><span id="unit"></span> <span class="cur" role="group" aria-label="Currency"><button id="cKd" aria-pressed="true">KD</button><button id="cUsd" aria-pressed="false">USD</button></span> <span class="cur" role="group" aria-label="Unit"><button id="uM" aria-pressed="true">Million</button><button id="uK" aria-pressed="false">Thousand</button></span></div></div>
     <p class="lead hide" id="lead"></p>
@@ -484,7 +484,7 @@ function svgBars(el,labels,series,opts){
     el.innerHTML=`<svg style="direction:ltr" viewBox="0 0 ${W} ${H}" role="img" aria-label="${esc(opts.aria)}">${defs}${o}</svg>`;};
   if(el._ro)el._ro.disconnect();const ro=new ResizeObserver(draw);ro.observe(el);el._ro=ro;draw();
 }
-function show(v){const bk=$('#back'),bo=$('#backIntro');if(bk)bk.classList.toggle('hide',v==='vEnt'&&!!(cur&&cur.kw));if(bo)bo.classList.toggle('hide',!(v==='vEnt'&&!!(cur&&cur.kw)));const bm={vTop:'top',vGr:'groups',vPr:'products',vFd:'food',vOil:'oil',vGcc:'gcc'};document.querySelectorAll('.bnav button').forEach(b=>b.classList.toggle('on',b.dataset.go===(bm[v]||(v==='vEnt'&&cur&&cur.kw?'kw':''))));['vEnt','vTop','vGr','vPr','vFd','vOil','vGcc'].forEach(id=>$('#'+id).classList.toggle('hide',id!==v));
+function show(v){const bk=$('#back'),bo=$('#backIntro');if(bk)bk.classList.toggle('hide',v==='vEnt'&&!!(cur&&cur.kw));if(bo)bo.classList.remove('hide');const bm={vTop:'top',vGr:'groups',vPr:'products',vFd:'food',vOil:'oil',vGcc:'gcc'};document.querySelectorAll('.bnav button').forEach(b=>b.classList.toggle('on',b.dataset.go===(bm[v]||(v==='vEnt'&&cur&&cur.kw?'kw':''))));['vEnt','vTop','vGr','vPr','vFd','vOil','vGcc'].forEach(id=>$('#'+id).classList.toggle('hide',id!==v));
   $('#tKw').setAttribute('aria-pressed',v==='vEnt'&&cur&&cur.kw?'true':'false');$('#tTop').setAttribute('aria-pressed',v==='vTop');$('#tGr').setAttribute('aria-pressed',v==='vGr');$('#tPr').setAttribute('aria-pressed',v==='vPr');$('#tFd').setAttribute('aria-pressed',v==='vFd');$('#tOil').setAttribute('aria-pressed',v==='vOil');$('#tGcc').setAttribute('aria-pressed',v==='vGcc');}
 let CUR='kd',UNIT='m';const RATE=3.21,UK=0.3075;
 function unitFor(max){const usd=CUR==='usd',c=usd?'USD':'KD';U=UNIT==='m'?{div:1000,lab:c+' million',d:2}:{div:1,lab:c+' thousand',d:1};U.k=usd?RATE:1;}
@@ -765,7 +765,7 @@ function armCounts(root){if(!cntIO||matchMedia('(prefers-reduced-motion: reduce)
 new MutationObserver(ms=>{const set=new Set();ms.forEach(m=>{const t=m.target.nodeType===1?m.target:m.target.parentElement;if(t&&!t.closest('b'))set.add(t);});set.forEach(armCounts);}).observe(document.querySelector('main'),{childList:true,subtree:true});
 
 // ---------- auto-update (bypass stale phone cache) ----------
-const BUILD='1795702678';
+const BUILD='1795703242';
 try{fetch(location.pathname+'?b='+Date.now(),{cache:'no-store'}).then(r=>r.text()).then(h=>{const m=h.match(/const BUILD='(\d+)'/);if(m&&m[1]>BUILD&&!sessionStorage.getItem('rl'+m[1])){sessionStorage.setItem('rl'+m[1],'1');location.replace(location.pathname+'?v='+m[1]+location.hash);}}).catch(()=>{});}catch(_){}
 
 // ---------- products: commodity search & selection ----------
@@ -817,11 +817,12 @@ function runSplash(el){const sp=el&&el.querySelector('.tsp');if(!sp)return;el.se
     const [kx,ky,kz]=proj(KW[0],KW[1],l0);if(kz>0){x.globalAlpha=Math.min(1,kz*1.6);const g=x.createRadialGradient(kx,ky,0,kx,ky,R*.2);g.addColorStop(0,'rgba(255,255,255,.6)');g.addColorStop(1,'rgba(255,255,255,0)');x.fillStyle=g;x.beginPath();x.arc(kx,ky,R*.2,0,7);x.fill();x.fillStyle='#fff';x.beginPath();x.arc(kx,ky,R*.06,0,7);x.fill();}
     x.globalAlpha=1;requestAnimationFrame(fr);};requestAnimationFrame(fr);
   setTimeout(()=>{sp.classList.add('out');setTimeout(()=>{run=false;sp.remove();el.removeAttribute('data-w');},950);},6600);}
-(()=>{const el=document.getElementById('intro');if(!el)return;let seen=false;try{seen=sessionStorage.getItem('kwIntro')==='1';}catch(_){}
+const HOME=(()=>{try{const q=new URLSearchParams(location.search);if(q.has('home')){sessionStorage.removeItem('kwIntro');history.replaceState(null,'',location.pathname);return true;}}catch(_){}return false;})();
+(()=>{const el=document.getElementById('intro');if(!el)return;if(HOME){const sp=el.querySelector('.tsp');if(sp)sp.remove();el.removeAttribute('data-w');el.classList.add('fast');return;}let seen=false;try{seen=sessionStorage.getItem('kwIntro')==='1';}catch(_){}
   if(seen||(location.hash.length>1&&location.hash!=='#kw')){const sp=el.querySelector('.tsp');if(sp)sp.remove();el.removeAttribute('data-w');return;}runSplash(el);})();
 // ---------- intro ----------
 let INTRO_HTML='';
-function showIntro(){if(!INTRO_HTML)return;if(!$('#intro'))document.body.insertAdjacentHTML('afterbegin',INTRO_HTML);window.scrollTo(0,0);const e=$('#intro');if(e&&!e.querySelector('.tsp')){e.insertAdjacentHTML('afterbegin',SPLASH_HTML);}runSplash(e);intro(true);}
+function showIntro(){if(!INTRO_HTML)return;if(!$('#intro'))document.body.insertAdjacentHTML('afterbegin',INTRO_HTML);window.scrollTo(0,0);const e=$('#intro');const sp=e.querySelector('.tsp');if(sp)sp.remove();e.removeAttribute('data-w');e.classList.add('fast');intro(true);}
 function intro(force){const el=$('#intro');if(!el)return;if(!INTRO_HTML)INTRO_HTML=el.outerHTML;let seen=false;try{seen=sessionStorage.getItem('kwIntro')==='1';}catch(_){}
   if(!force&&(seen||location.hash.length>1&&location.hash!=='#kw')){el.remove();return;}
   document.body.classList.add('noscroll');
@@ -842,6 +843,7 @@ function intro(force){const el=$('#intro');if(!el)return;if(!INTRO_HTML)INTRO_HT
     const CO=[['KW','kw','Kuwait'],['SA','sa','Saudi Arabia'],['AE','ae','UAE'],['QA','qa','Qatar'],['BH','bh','Bahrain'],['OM','om','Oman']];
     bx.innerHTML='<div class="ipk-t">Choose a country</div><div class="ipk">'+CO.map(([c,i,n])=>`<button class="ipc" data-c="${c}"><img src="emblems/${i}.png" alt="">${n}</button>`).join('')+'</div>';
     bx.querySelectorAll('.ipc').forEach(b=>b.onclick=e=>{const c=b.dataset.c;if(c==='KW')goKw(e);else location.href='gcc.html?lang=en&c='+c;});};
+  if(el.classList.contains('fast'))setTimeout(()=>{const b=el.querySelector('#iGo');if(b)b.click();},30);
 }
 
 function rank(){const p=$('#sP').value,mk=$('#sM').value,n=+$('#sN').value;

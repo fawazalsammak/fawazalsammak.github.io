@@ -326,6 +326,7 @@ table td.n,table th.n{text-align:center!important}table th.n{direction:rtl;unico
 .csw a{display:flex;align-items:center;gap:6px;padding:5px 10px;border-radius:999px;border:1px solid var(--line);color:var(--ink);text-decoration:none;font-size:.9rem}
 .csw a img{width:24px;height:24px;object-fit:contain;border-radius:50%;background:#fff;padding:1px}
 .csw a[aria-current="true"]{border-color:var(--mint);background:#d4b85a22;font-weight:700}
+#intro.fast,#intro.fast *{animation-delay:0s!important;animation-duration:.45s!important}
 </style>
 <style>
 .pick{min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:22px;padding:30px 16px;text-align:center}
@@ -344,7 +345,7 @@ table td.n,table th.n{text-align:center!important}table th.n{direction:rtl;unico
 .tgl button[aria-pressed="true"]{background:var(--mint);color:#0B193A;border-color:var(--mint);font-weight:700}
 .gk{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin:12px 0}
 @media(max-width:700px){.gk{grid-template-columns:repeat(2,1fr)}}
-.gk .k{background:var(--panel);border:1px solid var(--line);border-radius:16px;padding:14px;text-align:center}
+.gk .k{background:#13285a;border:0;border-radius:18px;box-shadow:0 8px 24px #0006;padding:14px;text-align:center}
 .gk .k small{display:block;color:var(--mut)}.gk .k b{display:block;font-size:1.45rem;margin:6px 0}
 .srch{width:100%;max-width:420px;padding:10px 14px;border-radius:12px;border:1px solid var(--line);background:var(--panel);color:var(--ink);font:inherit;margin:8px auto;display:block}
 .gtbl tr.clk{cursor:pointer}.gtbl tr.clk:hover td{background:#ffffff0a}
@@ -360,7 +361,7 @@ table td.n,table th.n{text-align:center!important}table th.n{direction:rtl;unico
 {
 const $=s=>document.querySelector(s);
 const esc=s=>String(s==null?'':s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
-const BUILD='1795702678';
+const BUILD='1795703242';
 try{fetch(location.pathname+'?b='+Date.now(),{cache:'no-store'}).then(r=>r.text()).then(h=>{const m=h.match(/const BUILD='(\d+)'/);if(m&&m[1]>BUILD&&!sessionStorage.getItem('grl'+m[1])){sessionStorage.setItem('grl'+m[1],'1');const u=new URLSearchParams(location.search);u.set('v',m[1]);location.replace(location.pathname+'?'+u.toString()+location.hash);}}).catch(()=>{});}catch(_){}
 const QP=new URLSearchParams(location.search);
 const EN=QP.get('lang')==='en';
@@ -424,10 +425,9 @@ const TABS=[['ov',T('الإجمالي','Overview')],['pt',T('الشركاء ال
 function render(){unitFor();
  const nm=EN?D.en:D.ar;
  $('#app').innerHTML=`<header class="top"><a class="lang" href="gcc.html?c=${code}${EN?'':'&lang=en'}">${EN?'عربي':'EN'}</a>
- <div class="brand"><img src="globe.png" alt="Tradelexity" width="54" height="54"><div><div class="min" dir="ltr" style="font-family:Montserrat,Almarai,sans-serif;font-size:15px"><span style="color:#fff">Trade</span>lexity</div><h1>${T('إحصاءات التجارة الخارجية','Foreign trade statistics')} – ${esc(nm)}</h1></div></div>
- <div class="csw">${CO.map(([c,iso,n])=>`<a href="${href(c)}" aria-current="${c===code}"><img src="${FLAG(iso)}" alt="">${esc(n)}</a>`).join('')}</div>
+ <div class="brand" onclick="location.href='${EN?'en.html':'index.html'}?home=1'" style="cursor:pointer"><img src="globe.png" alt="Tradelexity" width="54" height="54"><div><div class="min" dir="ltr" style="font-family:Montserrat,Almarai,sans-serif;font-size:15px"><span style="color:#fff">Trade</span>lexity</div><h1>${T('إحصاءات التجارة الخارجية','Foreign trade statistics')} – ${esc(nm)}</h1></div></div>
  <div class="tgl"><button id="cL" aria-pressed="${CUR==='loc'}">${esc(EN?D.cen:D.curs)}</button><button id="cU" aria-pressed="${CUR==='usd'}">${T('دولار','USD')}</button><button id="uM" aria-pressed="${UNIT==='m'}">${T('مليون','Million')}</button><button id="uK" aria-pressed="${UNIT==='k'}">${T('ألف','Thousand')}</button></div>
- <div class="bar"><div class="tabs">${TABS.map(([k,l])=>`<button data-v="${k}" aria-pressed="${VIEW===k}">${l}</button>`).join('')}</div></div></header><main id="mn"></main><nav class="bnav" aria-label="${T('التنقل','Navigation')}">${[['pt',T('الشركاء التجاريون','Partners')],['gr',T('المجموعات الاقتصادية','Groups')],['gcc',T('التجارة البينية الخليجية','Intra-GCC')],['ov',T('الرئيسية','Home'),1],['pr',T('السلع','Products')],['fd',T('الأمن الغذائي','Food')],['oil',T('الصادرات النفطية','Oil exports')]].map(([k,l,c])=>c?`<button data-go="${k}" class="ctr${VIEW===k?' on':''}"><b>${l}</b></button>`:`<button data-go="${k}" class="${VIEW===k?'on':''}"><span>${l}</span></button>`).join('')}</nav>
+ <div class="bar"><div class="tabs">${TABS.map(([k,l])=>`<button data-v="${k}" aria-pressed="${VIEW===k}">${l}</button>`).join('')}</div></div></header><main><a class="back" href="${EN?'en.html':'index.html'}?home=1" style="text-decoration:none"><span>${EN?'←':'→'}</span> ${T('العودة إلى الصفحة الرئيسية','Back to the main page')}</a><div id="mn"></div></main><nav class="bnav" aria-label="${T('التنقل','Navigation')}">${[['pt',T('الشركاء التجاريون','Partners')],['gr',T('المجموعات الاقتصادية','Groups')],['gcc',T('التجارة البينية الخليجية','Intra-GCC')],['ov',T('الرئيسية','Home'),1],['pr',T('السلع','Products')],['fd',T('الأمن الغذائي','Food')],['oil',T('الصادرات النفطية','Oil exports')]].map(([k,l,c])=>c?`<button data-go="${k}" class="ctr${VIEW===k?' on':''}"><b>${l}</b></button>`:`<button data-go="${k}" class="${VIEW===k?'on':''}"><span>${l}</span></button>`).join('')}</nav>
  <div class="srcl">${D.src?T('المصدر: '+D.src.ar+'. ','Source: '+D.src.en+'. ')+T('التحويل إلى الدولار بسعر ثابت: 1 دولار = '+D.rate+' '+D.cur+'.','USD at a fixed rate: 1 USD = '+D.rate+' '+D.cen+'.'):`${T('المصدر: قاعدة بيانات الأمم المتحدة لإحصاءات تجارة السلع (UN Comtrade)، البيانات كما أبلغت عنها '+D.ars+'. آخر سنة متاحة: '+D.ly+'. التحويل بسعر صرف ثابت: 1 دولار = '+D.rate+' '+D.cur+'.','Source: UN Comtrade, as reported by '+D.en+'. Latest available year: '+D.ly+'. Converted at a fixed rate: 1 USD = '+D.rate+' '+D.cen+'.')}`}</div>`;
  $('#cL').onclick=()=>{CUR='loc';render();};$('#cU').onclick=()=>{CUR='usd';render();};$('#uM').onclick=()=>{UNIT='m';render();};$('#uK').onclick=()=>{UNIT='k';render();};
  document.querySelectorAll('.bnav button').forEach(b=>b.onclick=()=>{VIEW=b.dataset.go;SEL=null;history.replaceState(null,'','#'+VIEW);render();window.scrollTo(0,0);});document.querySelectorAll('.tabs button').forEach(b=>b.onclick=()=>{VIEW=b.dataset.v;SEL=null;history.replaceState(null,'','#'+VIEW);render();window.scrollTo(0,0);});
@@ -480,6 +480,13 @@ function itc(){const it=D.itc||{};const R=Object.entries(it).map(([m,z])=>({m,o:
  M(`<div class="card"><h3>${T('إمكانات التصدير – ','Export potential – ')}${esc(EN?D.en:D.ars)} (${T('تقديرات مركز التجارة الدولية 2031','ITC estimates, 2031')})</h3>${w?`<div class="gk" style="grid-template-columns:repeat(3,1fr)"><div class="k"><small>${T('إمكانات التصدير إلى العالم','Export potential to the world')}</small><b>${f(w.pot)}</b></div><div class="k"><small>${T('الإمكانات غير المستغلة','Untapped potential')}</small><b>${f(w.gap)}</b></div><div class="k"><small>${T('نسبة المحقق','Share realised')}</small><b>${fmtN((w.pot-w.gap)/w.pot*100,0)}%</b></div></div>`:''}<div class="dnote" style="text-align:center">${U.lab}</div></div>
  <div class="card" style="margin-top:16px"><h3>${T('الصادرات المحتملة إلى أهم الشركاء','Export potential to main partners')}</h3><div class="scroll"><table class="gtbl"><thead><tr><th>${T('الدولة','Country')}</th><th class="n">${T('إمكانات التصدير','Potential')}</th><th class="n">${T('غير المستغلة','Untapped')}</th><th>${T('أهم المنتجات','Top products')}</th></tr></thead><tbody>${R.filter(r=>r.o).map(r=>`<tr class="clk" data-p="${r.m}"><td><b>${esc(pn(r.m))}</b></td>${cell(r.o)}</tr>`).join('')}</tbody></table></div></div>
  <div class="card" style="margin-top:16px"><h3>${T('إمكانات الشركاء في التصدير إلى ','Partners’ export potential to ')}${esc(EN?D.en:D.ars)}</h3><div class="scroll"><table class="gtbl"><thead><tr><th>${T('الدولة','Country')}</th><th class="n">${T('إمكانات التصدير','Potential')}</th><th class="n">${T('غير المستغلة','Untapped')}</th><th>${T('أهم المنتجات','Top products')}</th></tr></thead><tbody>${R.filter(r=>r.i).sort((a,b)=>b.i.pot-a.i.pot).map(r=>`<tr class="clk" data-p="${r.m}"><td><b>${esc(pn(r.m))}</b></td>${cell(r.i)}</tr>`).join('')}</tbody></table></div><div class="dnote">${U.lab} · ${ITCNOTE()}</div></div>`);bindP();}
+
+const CNT_SEL='.k>b,.t>b';
+const cntIO=('IntersectionObserver' in window)?new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting){cntIO.unobserve(e.target);countUp(e.target);}}),{threshold:.3}):null;
+function countUp(el){const raw=el.textContent;const m=raw.match(/^([^\d]*?)(\d[\d,]*(?:\.\d+)?)(.*)$/s);if(!m)return;const pre=m[1],num=m[2],suf=m[3],dec=(num.split('.')[1]||'').length,target=parseFloat(num.replace(/,/g,''));if(!isFinite(target)||target===0||/^(19|20)\d\d$/.test(num))return;
+ const t0=performance.now(),Dd=1300,fmt=v=>v.toLocaleString('en-US',{minimumFractionDigits:dec,maximumFractionDigits:dec});const step=t=>{const k=Math.min((t-t0)/Dd,1),e=1-Math.pow(1-k,3);el.textContent=pre+fmt(target*e)+suf;if(k<1)requestAnimationFrame(step);else el.textContent=raw;};requestAnimationFrame(step);}
+function armCounts(root){if(!cntIO||matchMedia('(prefers-reduced-motion: reduce)').matches)return;root.querySelectorAll(CNT_SEL).forEach(el=>{if(el._cnt===el.textContent)return;el._cnt=el.textContent;cntIO.observe(el);});}
+new MutationObserver(ms=>{if(ms.some(m=>{const t=m.target.nodeType===1?m.target:m.target.parentElement;return t&&!t.closest('b');}))armCounts(document.getElementById('app'));}).observe(document.getElementById('app'),{childList:true,subtree:true});
 const FOOD=Array.from({length:24},(_,i)=>String(i+1).padStart(2,'0'));
 function fd(){if(SEL&&SEL[0]==='h')return cprof(SEL.slice(1));const ys=D.years,xo={},mo={};ys.forEach(y=>{xo[y]=FOOD.reduce((a,h)=>a+yv((D.ch[h]||{}).x,y),0);mo[y]=FOOD.reduce((a,h)=>a+yv((D.ch[h]||{}).m,y),0);});
  M(`<div class="card"><h3>${T('تجارة السلع الغذائية (الفصول 01–24) – ','Food trade (HS 01–24) – ')}${LY()}</h3>${kpis(xo,mo,LY(),PY())}<div class="dnote" style="text-align:center">${T('نسبة الواردات الغذائية من إجمالي الواردات: ','Food share of total imports: ')}${fmtN(mo[LY()]/D.tot[LY()].m*100,1)}%</div></div>
