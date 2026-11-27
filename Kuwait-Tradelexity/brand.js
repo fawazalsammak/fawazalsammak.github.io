@@ -1,7 +1,7 @@
 /* tradelexity wordmark: lowercase, steady, single glow wave t -> y */
 (function(){
-var CSS='.bw{display:inline-block;animation:bwave 3.3s calc(var(--i)*.15s) ease-in-out infinite}.bw.g{color:#D4B85A}.bw.w{color:#fff}'+
-'@keyframes bwave{0%,40%,100%{text-shadow:0 2px 12px #0006}12%{text-shadow:0 0 8px #fff,0 0 20px #ffffffcc,0 0 38px #D4B85Abb}}'+
+var CSS='.bw{display:inline-block;font-family:Montserrat,sans-serif!important;animation:bwave 4.4s calc(var(--i)*.22s) ease-in-out infinite;will-change:text-shadow}.bw.g{color:#D4B85A}.bw.w{color:#fff}'+
+'@keyframes bwave{0%,100%{text-shadow:0 0 6px #D4B85A33}25%{text-shadow:0 0 10px #D4B85A99,0 0 22px #D4B85A55}50%{text-shadow:0 0 6px #D4B85A33}}'+
 '.brand .min,.imin,.fbn,.lgn{animation-name:none!important}.imin{animation:idrop 2.2s .8s cubic-bezier(.16,1,.3,1) both!important}'+
 '.tspDot.on{animation:none!important}';
 var st=document.createElement('style');st.textContent=CSS;document.head.appendChild(st);
