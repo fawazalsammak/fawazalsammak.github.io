@@ -432,12 +432,12 @@ requestAnimationFrame(loop);})();
 <label><span>كلمة المرور <i dir="ltr">Password</i></span><input id="lgp" type="password" autocomplete="off"></label>
 <div class="lge" id="lge"></div>
 <button type="submit" class="lgbtn">دخول · Sign in</button>
-<div class="lgd">نسخة تجريبية – أدخل أي اسم مستخدم وكلمة مرور<br><span dir="ltr">Demo version – enter any username and password</span></div>
+<div class="lgd">نسخة تجريبية – لا يلزم إدخال اسم مستخدم أو كلمة مرور حالياً<br><span dir="ltr">Demo version – no username or password required for now</span></div>
 </form></div>
 <script>(()=>{const q=new URLSearchParams(location.search);let ok=false;try{ok=sessionStorage.getItem('tlAuth')==='1';}catch(_){}
-if(ok||q.has('c')||q.has('go')||(location.hash.length>1&&location.hash!=='#kw'))return;const g=document.getElementById('lgate');g.style.display='flex';document.body.classList.add('noscroll');
+const g=document.getElementById('lgate');if(ok||q.has('c')||q.has('go')||q.has('home')||(location.hash.length>1&&location.hash!=='#kw')){g.remove();return;}let n=0;const show=()=>{if(document.querySelector('#intro .tsp')&&n++<60){setTimeout(show,200);return;}g.style.display='flex';document.body.classList.add('noscroll');};if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',()=>setTimeout(show,50));else setTimeout(show,50);
 document.getElementById('lgf').onsubmit=e=>{e.preventDefault();const u=document.getElementById('lgu').value.trim(),p=document.getElementById('lgp').value;
- if(!u||!p){document.getElementById('lge').textContent='يرجى إدخال اسم المستخدم وكلمة المرور · Please enter a username and password';return;}
+ 
  document.getElementById('lgp').value='';try{sessionStorage.setItem('tlAuth','1');}catch(_){}g.classList.add('out');setTimeout(()=>{g.remove();document.body.classList.remove('noscroll');},450);};})();</script>
 <div id="intro" data-w="1" role="dialog" aria-label="Opening page"><a class="ilang" id="iLang" href="index.html?home=1" lang="ar">عربي</a><div class="tsp" aria-hidden="true"><canvas id="tspG"></canvas><div class="tspN"><span style="--d:0.90s" class="">T</span><span style="--d:0.99s" class="">r</span><span style="--d:1.08s" class="">a</span><span style="--d:1.17s" class="">d</span><span style="--d:1.26s" class="">e</span><span style="--d:1.35s" class="g">l</span><span style="--d:1.44s" class="g">e</span><span style="--d:1.53s" class="g">x</span><span style="--d:1.62s" class="g tspI">ı</span><span style="--d:1.71s" class="g">t</span><span style="--d:1.80s" class="g">y</span></div><div class="tspT">GLOBAL TRADE FINANCE INTELLIGENCE</div></div>
   <div class="istars"></div>
@@ -996,7 +996,7 @@ function armCounts(root){if(!cntIO||matchMedia('(prefers-reduced-motion: reduce)
 new MutationObserver(ms=>{const set=new Set();ms.forEach(m=>{const t=m.target.nodeType===1?m.target:m.target.parentElement;if(t&&!t.closest('b'))set.add(t);});set.forEach(armCounts);}).observe(document.querySelector('main'),{childList:true,subtree:true});
 
 // ---------- auto-update (bypass stale phone cache) ----------
-const BUILD='1795813222';
+const BUILD='1795813535';
 try{fetch(location.pathname+'?b='+Date.now(),{cache:'no-store'}).then(r=>r.text()).then(h=>{const m=h.match(/const BUILD='(\d+)'/);if(m&&m[1]>BUILD&&!sessionStorage.getItem('rl'+m[1])){sessionStorage.setItem('rl'+m[1],'1');location.replace(location.pathname+'?v='+m[1]+location.hash);}}).catch(()=>{});}catch(_){}
 
 // ---------- products: commodity search & selection ----------
