@@ -397,7 +397,7 @@ function draw(cv,now){const r=cv.getBoundingClientRect();if(!r.width)return;cons
  for(const [p,l] of pts){const [px,py,z]=P(p,l);if(z<=0.02)continue;x.globalAlpha=.25+.75*z;x.fillStyle='#D4B85A';x.beginPath();x.arc(px,py,(R/95)*(1.1+1.9*z),0,7);x.fill();}
  const [kx,ky,kz]=P(KW[0],KW[1]);if(kz>0){x.globalAlpha=Math.min(1,kz*1.6);const g=x.createRadialGradient(kx,ky,0,kx,ky,R*.22);g.addColorStop(0,'rgba(255,255,255,.7)');g.addColorStop(1,'rgba(255,255,255,0)');x.fillStyle=g;x.beginPath();x.arc(kx,ky,R*.22,0,7);x.fill();x.fillStyle='#fff';x.beginPath();x.arc(kx,ky,R*.07,0,7);x.fill();}
  x.globalAlpha=1;}
-let last=0,tt=2;function loop(now){const dt=last?Math.min((now-last)/1000,1/30):0;last=now;tt+=dt;if(!document.querySelector('.tsp'))document.querySelectorAll('canvas.spin').forEach(cv=>{if(cv.offsetParent!==null)draw(cv,tt);});if(!RM)requestAnimationFrame(loop);}
+let last=0,tt=2,CVS=[],cvT=0;function loop(now){const dt=last?Math.min((now-last)/1000,.12):0;last=now;tt+=dt;if(now-cvT>500){cvT=now;CVS=[...document.querySelectorAll('canvas.spin')];CVS.tsp=!!document.querySelector('.tsp');}if(!CVS.tsp)CVS.forEach(cv=>{if(cv.offsetParent!==null)draw(cv,tt);});if(!RM)requestAnimationFrame(loop);}
 requestAnimationFrame(loop);})();
 </script>
 
@@ -944,7 +944,7 @@ function armCounts(root){if(!cntIO||matchMedia('(prefers-reduced-motion: reduce)
 new MutationObserver(ms=>{const set=new Set();ms.forEach(m=>{const t=m.target.nodeType===1?m.target:m.target.parentElement;if(t&&!t.closest('b'))set.add(t);});set.forEach(armCounts);}).observe(document.querySelector('main'),{childList:true,subtree:true});
 
 // ---------- auto-update (bypass stale phone cache) ----------
-const BUILD='1795779033';
+const BUILD='1795779382';
 try{fetch(location.pathname+'?b='+Date.now(),{cache:'no-store'}).then(r=>r.text()).then(h=>{const m=h.match(/const BUILD='(\d+)'/);if(m&&m[1]>BUILD&&!sessionStorage.getItem('rl'+m[1])){sessionStorage.setItem('rl'+m[1],'1');location.replace(location.pathname+'?v='+m[1]+location.hash);}}).catch(()=>{});}catch(_){}
 
 // ---------- products: commodity search & selection ----------
@@ -1134,7 +1134,7 @@ fetch(ISKW?'data.json':'data_'+CTRY+'.json').then(r=>r.json()).then(arr=>window.
   $('#sP').innerHTML=opts;$('#pP').innerHTML=opts;
   $('#ft').textContent='Sources: Central Statistical Bureau – Foreign Trade Statistics; UN Comtrade; International Trade Centre (ITC). Data for 2025 and 2026 are provisional. Foreign trade statistics have been compiled according to the General Trade System starting January 2024. Data updated: '+META.updated+'.';
   if(!ISKW){const ft=$('#ft');ft.textContent=(document.documentElement.lang==='en'?'Sources: '+(META.source_en||META.source)+'; International Trade Centre (ITC). Values in thousand '+CC.csE+'. Updated: ':'المصادر: '+META.source+'؛ مركز التجارة الدولية (ITC). تحديث البيانات: ')+META.updated+'.';}
-  [...C,...G].forEach(c=>{if(c.en)c.en=c.en.replace(/ (Of|And|The|In|For|De|Da|Du) /g,m=>m.toLowerCase());});fetch('data_en.json').then(r=>r.json()).then(E=>{H4N=E.hs4e;[...C,...G,...HS].forEach(c=>{if(c.en)c.en=c.en.replace(/ (Of|And|The|In|For|De|Da|Du) /g,m=>m.toLowerCase());});const tr=p=>String(p||'').split('، ').map(x=>E.itc[x]||x).join(', ');C.forEach(c=>{if(c.itc){['inn','out'].forEach(k=>{if(c.itc[k])c.itc[k].prod=tr(c.itc[k].prod);});}if(c.itcFood){c.itcFood.prod=tr(c.itcFood.prod);c.itcFood.lvl=E.itc[c.itcFood.lvl]||c.itcFood.lvl;}if(c.rep&&c.rep.food){c.rep.food.lvl=E.itc[c.rep.food.lvl]||c.rep.food.lvl;}c.rep=c.rep?{food:c.rep.food}:null;});route();intro();}).catch(()=>{route();intro();});}).catch(e=>{console.error('LOADERR',e&&e.stack||e);$('#nm').textContent='Data could not be loaded';});
+  [...C,...G].forEach(c=>{if(c.en)c.en=c.en.replace(/ (Of|And|The|In|For|De|Da|Du) /g,m=>m.toLowerCase());});intro();{const w=()=>{const el=document.getElementById('intro');if(el&&!el.classList.contains('hide')&&getComputedStyle(el).display!=='none')setTimeout(w,120);else route();};w();}}).catch(e=>{console.error('LOADERR',e&&e.stack||e);$('#nm').textContent='Data could not be loaded';});
 }
 </script>
 <script src="zoomintro.js"></script>
