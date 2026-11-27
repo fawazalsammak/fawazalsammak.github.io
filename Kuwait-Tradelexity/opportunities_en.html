@@ -465,6 +465,14 @@ main{max-width:820px}
 .otabs button{letter-spacing:.2px}
 .pdot i.on{background:#e58f8f}
 
+.frow{display:flex;align-items:center;justify-content:space-between;gap:8px;margin:2px 0 8px}.frow .fsw{margin:0}
+.frow .info{position:static;flex:none}
+.kyr{font-size:11.5px;color:var(--mut);margin:4px 4px 6px}
+.kp{grid-template-columns:repeat(4,1fr);margin:0 0 10px}
+.kc{min-height:96px;position:relative;overflow:hidden;padding:10px 6px 12px}
+.kc .ln{position:absolute;inset-inline:0;bottom:0;height:3px}
+@media(max-width:560px){.kp{grid-template-columns:1fr 1fr}}
+
 .pdfb{display:flex;align-items:center;justify-content:center;gap:8px;width:100%;margin:14px 0 0;padding:13px;border-radius:14px;border:1px solid #D4B85A;background:transparent;color:#D4B85A;font:800 14px Almarai,sans-serif;cursor:pointer}
 .pdfb .hi{font-size:18px}.pdfb:hover{background:#D4B85A;color:#0B193A}
 #brief{display:none}
@@ -517,14 +525,13 @@ requestAnimationFrame(loop);})();
 </header>
 <main>
 <button id="backIntro" class="back" type="button" data-h="en.html?home=1"><span>←</span> Back to the main page</button>
-<div class="fsw"><a id="swT" data-h="en.html" href="en.html">Trade</a><a id="swF" data-h="finance_en.html" href="finance_en.html">Economy & Finance</a><span>Opportunities</span></div>
+<div class="frow"><div class="fsw"><a id="swT" data-h="en.html" href="en.html">Trade</a><a id="swF" data-h="finance_en.html" href="finance_en.html">Economy & Finance</a><span>Opportunities</span></div><button class="info" type="button" id="inf" aria-label="help">?</button></div>
 <div class="pair">
  <div class="pc"><span class="lb">Exporter</span><div class="fl"><img id="fX" alt=""></div><div class="nmw"><span class="nm" id="nX"></span><select id="sX" aria-label="exporter"></select></div></div>
  <button class="swap" id="swap" type="button" aria-label="swap">⇄</button>
  <div class="pc"><span class="lb">Target market</span><div class="fl"><img id="fY" alt=""></div><div class="nmw"><span class="nm" id="nY"></span><select id="sY" aria-label="market"></select></div></div>
 </div>
-<div class="flow" id="flow"></div>
-<div class="kp" id="kp"></div>
+<div class="kyr" id="kyr"></div><div class="kp" id="kp"></div>
 <div class="otabs"><button data-t="o" class="on">Opportunities</button><button data-t="n">Market needs</button><button data-t="s">Export strengths</button></div>
 <section class="pane on" id="po"><div class="hint" id="hintO"></div><div class="tm" id="tm"></div>
  <div class="lg"><span><i style="background:#D4B85A"></i>Strong</span><span><i style="background:#4f8f83"></i>Market need</span><span><i style="background:#3b4a68"></i>Local competition</span><span><i style="background:#e58f8f;border-radius:50%;width:7px;height:7px"></i>Shortage years</span></div></section>
@@ -639,16 +646,17 @@ function render(){if(X===Y)Y=Object.keys(O.c).find(c=>c!==X);
  ['X','Y'].forEach(s=>{const c=s==='X'?X:Y;$('#f'+s).src=flag(c);$('#n'+s).textContent=nm(c);$('#s'+s).value=c;});
  $('#swT').href=$('#swT').dataset.h+(X==='KW'?'#kw':'?c='+X);$('#swF').href=$('#swF').dataset.h+'?c='+X;
  R=analyse();const bl=bilat(X,Y),bal=bl.x-bl.m,best=R.ops[0];
- const lv=R.TCI>=40?L('تكامل مرتفع','High fit'):R.TCI>=25?L('تكامل متوسط','Medium fit'):L('تكامل منخفض','Low fit');
- $('#flow').innerHTML=`<button class="info" type="button" id="inf">?</button>`+flowSVG(bl);
- $('#kp').innerHTML=`<div class="kc">${gauge(R.TCI)}<small>${lv}</small></div>
-  <div class="kc"><small>${L('الميزان التجاري','Trade balance')}</small><b class="${bal>=0?'up':'dn'}">${(bal<0?'−':'+')+usd(Math.abs(bal))}</b><small>${bal>=0?L('فائض','Surplus'):L('عجز','Deficit')}</small></div>
-  <div class="kc" ${best?`data-k="${best.k}" style="cursor:pointer"`:''}><small>${L('أفضل فرصة','Top opportunity')}</small><span class="ic">${best?ico(best.k):'–'}</span><small style="color:#fff;font-weight:800">${best?sn(best.k):''}</small></div>`;
- const bk=$('#kp [data-k]');if(bk)bk.onclick=()=>sheet(bk.dataset.k);
+ const lv=R.TCI>=40?L('مرتفع','High'):R.TCI>=25?L('متوسط','Medium'):L('منخفض','Low');
+ const yr=O.c[X].ly||O.c[X].y[O.c[X].y.length-1];
+ $('#kp').innerHTML=`<div class="kc"><small>${L('الصادرات','Exports')}</small><b>${usd(bl.x)}</b><span class="ln" style="background:#D4B85A"></span></div>
+  <div class="kc"><small>${L('الواردات','Imports')}</small><b>${usd(bl.m)}</b><span class="ln" style="background:#5e9e8f"></span></div>
+  <div class="kc"><small>${L('الميزان التجاري','Trade balance')}</small><b class="${bal>=0?'up':'dn'}">${(bal<0?'−':'+')+usd(Math.abs(bal))}</b><span class="ln" style="background:#8a94a6"></span></div>
+  <div class="kc"><small>${L('التكامل التجاري','Complementarity')}</small>${gauge(R.TCI)}<small>${lv}</small></div>`;
+ $('#kyr').textContent=L('التبادل الثنائي · '+yr,'Bilateral trade · '+yr);
  $('#inf').onclick=()=>{$('#shb').innerHTML=`<div class="gr"></div><div class="hd"><span class="e"><svg class="hi" viewBox="0 0 24 24"><path d="M12 3a9 9 0 1 0 0 18 9 9 0 0 0 0-18zM12 11v6M12 7.5h.01"/></svg></span><div><b>${L('كيف تُقرأ الصفحة','How to read this')}</b></div></div><div style="font-size:13px;line-height:1.8;color:#dfe7f5;margin-top:10px">${L('<b>مؤشر التكامل</b> (0–100): مدى توافق ما تصدّره الدولة الأولى مع ما تستورده الثانية؛ فوق 40 مرتفع.<br><b>المربعات</b>: كل مربع سلعة، وحجمه يمثل حجم الفرصة (الأصغر بين صادرات الأولى وواردات الثانية). الذهبي = فرصة قوية، الأخضر المائل للزرقة = حاجة قائمة بتنافسية أقل، الرمادي = منافسة محلية.<br><b>مؤشر العجز</b>: عدد السنوات (من 3) التي استوردت فيها السوق أكثر مما صدّرت.<br><b>الميزة النسبية ×</b>: أكثر من 1 تعني أن الدولة منافسة عالمياً في السلعة.<br>البيانات: فصول النظام المنسق، متوسط آخر 3 سنوات، بالدولار الأمريكي.','<b>Fit index</b> (0–100): how well the first country\'s exports match what the second imports; above 40 is high.<br><b>Tiles</b>: each tile is a product; its size is the opportunity (the smaller of the first country\'s exports and the market\'s imports). Gold = strong opportunity, teal = market need with lower competitiveness, slate = local competition.<br><b>Shortage marker</b>: years (of 3) the market imported more than it exported.<br><b>RCA ×</b>: above 1 means the country is globally competitive in that product.<br>Data: HS chapters, average of the latest 3 years, US$.')}</div><button class="cl" type="button">${L('إغلاق','Close')}</button>`;$('#sh').classList.add('on');$('#shb .cl').onclick=()=>$('#sh').classList.remove('on');};
- $('#hintO').innerHTML=`<span>${L('ما يمكن أن تبيعه '+nm(X)+' إلى '+nm(Y),'What '+nm(X)+' can sell to '+nm(Y))}</span><span>${L('اختر أي سلعة لعرض التفاصيل','Select a product for details')}</span>`;
- $('#bn').innerHTML=`<div class="hint"><span>${L('أكبر ما تفتقر إليه '+nm(Y)+' (صافي الواردات)','What '+nm(Y)+' lacks most (net imports)')}</span></div>`+bars(R.lacks,o=>o.net,'linear-gradient(90deg,#ef8b8b,#f3b0a0)',o=>`<span class="pdot">${pdots(o.need,o.n)}</span>`);
- $('#bs').innerHTML=`<div class="hint"><span>${L('أقوى صادرات '+nm(X)+' تنافسياً','Most competitive exports of '+nm(X))}</span></div>`+bars(R.str,o=>o.x,'linear-gradient(90deg,#6fb5a6,#8fd1bf)',o=>`<span class="rca">×${o.rca.toLocaleString('en-US',{maximumFractionDigits:1})}</span>`);
+ $('#hintO').innerHTML=`<span>${L('حجم المربع = حجم الفرصة','Tile size = opportunity size')}</span><span>${L('اختر أي سلعة لعرض التفاصيل','Select a product for details')}</span>`;
+ $('#bn').innerHTML=`<div class="hint"><span>${L('صافي الواردات (الواردات − الصادرات)','Net imports (imports − exports)')}</span></div>`+bars(R.lacks,o=>o.net,'linear-gradient(90deg,#ef8b8b,#f3b0a0)',o=>`<span class="pdot">${pdots(o.need,o.n)}</span>`);
+ $('#bs').innerHTML=`<div class="hint"><span>${L('الصادرات ذات الميزة النسبية','Exports with comparative advantage')}</span></div>`+bars(R.str,o=>o.x,'linear-gradient(90deg,#6fb5a6,#8fd1bf)',o=>`<span class="rca">×${o.rca.toLocaleString('en-US',{maximumFractionDigits:1})}</span>`);
  document.querySelectorAll('.br').forEach(b=>b.onclick=()=>sheet(b.dataset.k));
  setTab(TAB);}
 Promise.all([fetch('opp.json').then(r=>r.json()),fetch('fin.json').then(r=>r.json())]).then(([o,f])=>{O=o;CH=o.ch;N=f.c;
