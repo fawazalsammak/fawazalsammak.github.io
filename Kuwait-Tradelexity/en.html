@@ -382,6 +382,7 @@ img.cemb.ofh{width:auto!important;height:38px!important;max-width:70px;border-ra
 #bento .t.w4,#bento .t.xp{align-items:stretch;text-align:start}
 #bento .t.bal b{font-size:clamp(28px,7vw,38px)}
 .cur button:first-child{border-radius:0;border-start-start-radius:8px;border-end-start-radius:8px}.cur button:last-child{border-radius:0;border-start-end-radius:8px;border-end-end-radius:8px}
+.ilg{display:flex;gap:12px;justify-content:center;flex-wrap:wrap}.ilg .ibtn{min-width:170px}.ilb[data-l=en]{font-family:Montserrat,Almarai,sans-serif}
 .bento .lnk .go{left:auto;right:14px}table th.n{direction:ltr}
 </style>
 <style>/* sources hidden on request – remove this rule to restore */ .srcl{display:none!important}.bento .lnk .go{left:auto;right:14px}table th.n{direction:ltr}
@@ -410,7 +411,7 @@ requestAnimationFrame(loop);})();
     <div class="iline"></div>
     <div class="ien">GLOBAL TRADE FINANCE INTELLIGENCE</div>
     <svg id="imap" viewBox="0 0 1000 520" aria-hidden="true"></svg>
-    <div class="ibtns"><button id="iGo" class="ibtn main">Enter the Platform</button></div>
+    <div class="ibtns"><div class="ilg"><button class="ibtn main ilb" data-l="ar" lang="ar">الدخول بالعربية</button><button class="ibtn main ilb" data-l="en" lang="en">Enter in English</button></div><button id="iGo" class="ibtn main" style="display:none">Enter the Platform</button></div>
   </div>
 </div>
 <header class="top"><a class="lang" href="./" onclick="this.href='./'+location.search+location.hash" lang="ar">عربي</a>
@@ -945,7 +946,7 @@ function armCounts(root){if(!cntIO||matchMedia('(prefers-reduced-motion: reduce)
 new MutationObserver(ms=>{const set=new Set();ms.forEach(m=>{const t=m.target.nodeType===1?m.target:m.target.parentElement;if(t&&!t.closest('b'))set.add(t);});set.forEach(armCounts);}).observe(document.querySelector('main'),{childList:true,subtree:true});
 
 // ---------- auto-update (bypass stale phone cache) ----------
-const BUILD='1795779697';
+const BUILD='1795780230';
 try{fetch(location.pathname+'?b='+Date.now(),{cache:'no-store'}).then(r=>r.text()).then(h=>{const m=h.match(/const BUILD='(\d+)'/);if(m&&m[1]>BUILD&&!sessionStorage.getItem('rl'+m[1])){sessionStorage.setItem('rl'+m[1],'1');location.replace(location.pathname+'?v='+m[1]+location.hash);}}).catch(()=>{});}catch(_){}
 
 // ---------- products: commodity search & selection ----------
@@ -1138,6 +1139,7 @@ fetch(ISKW?'data.json':'data_'+CTRY+'.json').then(r=>r.json()).then(arr=>window.
   [...C,...G].forEach(c=>{if(c.en)c.en=c.en.replace(/ (Of|And|The|In|For|De|Da|Du) /g,m=>m.toLowerCase());});intro();{const w=()=>{const el=document.getElementById('intro');if(el&&!el.classList.contains('hide')&&getComputedStyle(el).display!=='none')setTimeout(w,120);else route();};w();}}).catch(e=>{console.error('LOADERR',e&&e.stack||e);$('#nm').textContent='Data could not be loaded';});
 }
 </script>
+<script>(()=>{const cur=document.documentElement.lang==='en'?'en':'ar';document.querySelectorAll('.ilb').forEach(b=>b.onclick=()=>{if(b.dataset.l===cur){const g=document.getElementById('iGo');if(g)g.click();const w=b.closest('.ilg');if(w)w.remove();}else{try{sessionStorage.setItem('kwIntro','1');}catch(_){}location.href=(b.dataset.l==='en'?'en.html':'index.html')+'?home=1';}});})();</script>
 <script src="zoomintro.js"></script>
 </body>
 </html>
