@@ -455,7 +455,6 @@ requestAnimationFrame(loop);})();
         <div class="lg"><span style="--c:var(--mint)">Exports</span><span style="--c:var(--navy)">Imports</span></div></div>
     </div>
     <div class="card" id="tblc" style="margin-top:16px"><h3>Detailed Table</h3><div class="scroll"><table id="tbl"></table></div></div>
-    <div style="margin-top:14px;display:flex;gap:10px;align-items:center;flex-wrap:wrap"><button class="copy" id="cp">Copy data summary</button><span class="note" id="cpMsg"></span></div>
   </section>
   <section id="vTop" class="hide">
     <div class="head"><h2>Main Trading Partners</h2><div class="unit">Values in KD million · Ranking excludes goods of unspecified destination (oil and oil-product exports)</div></div>
@@ -949,7 +948,7 @@ function armCounts(root){if(!cntIO||matchMedia('(prefers-reduced-motion: reduce)
 new MutationObserver(ms=>{const set=new Set();ms.forEach(m=>{const t=m.target.nodeType===1?m.target:m.target.parentElement;if(t&&!t.closest('b'))set.add(t);});set.forEach(armCounts);}).observe(document.querySelector('main'),{childList:true,subtree:true});
 
 // ---------- auto-update (bypass stale phone cache) ----------
-const BUILD='1795789489';
+const BUILD='1795789799';
 try{fetch(location.pathname+'?b='+Date.now(),{cache:'no-store'}).then(r=>r.text()).then(h=>{const m=h.match(/const BUILD='(\d+)'/);if(m&&m[1]>BUILD&&!sessionStorage.getItem('rl'+m[1])){sessionStorage.setItem('rl'+m[1],'1');location.replace(location.pathname+'?v='+m[1]+location.hash);}}).catch(()=>{});}catch(_){}
 
 // ---------- products: commodity search & selection ----------
@@ -1098,7 +1097,7 @@ $('#tGr').onclick=()=>{show('vGr');groups();try{history.replaceState(null,'','#g
 ['sP','sM','sN'].forEach(id=>$('#'+id).addEventListener('change',rank));
 $('#rk').addEventListener('click',e=>{const b=e.target.closest('.row');if(b){render(BY[b.dataset.id]);window.scrollTo(0,0);}});
 $('#gr').addEventListener('click',e=>{const b=e.target.closest('.row');if(b){render(BY[b.dataset.g]);window.scrollTo(0,0);}});
-$('#cp').addEventListener('click',async()=>{try{await navigator.clipboard.writeText(summary(cur));$('#cpMsg').textContent='Copied';}catch(_){$('#cpMsg').textContent='Copy is not available in this view';}});
+
 window.addEventListener('hashchange',route);
 document.querySelector('.bnav').addEventListener('click',ev=>{const b=ev.target.closest('button');if(!b)return;const k=b.dataset.go;if(k==='kw')render(entKw());else{location.hash=k;}window.scrollTo(0,0);});
 $('#tFd').onclick=()=>food();$('#tOil').onclick=()=>oil();$('#tGcc').onclick=()=>gcc();
