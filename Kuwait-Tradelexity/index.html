@@ -388,6 +388,8 @@ img.cemb.ofh{width:auto!important;height:38px!important;max-width:70px;border-ra
 #intro.pk .ihd{position:sticky;top:0;z-index:3;padding:8px 0 2px;margin:0 -16px;background:linear-gradient(180deg,#14285a 80%,#14285a00)}
 
 a,a:link,a:visited,a:hover{text-decoration:none!important}u,abbr{text-decoration:none!important}
+
+.fsw{display:inline-flex;border:1px solid #D4B85A88;border-radius:999px;overflow:hidden;margin:4px 0 6px}.fsw a,.fsw span{font:800 13px Noto Naskh Arabic,sans-serif;padding:8px 16px;color:#e6ebf3;text-decoration:none}.fsw span{background:#D4B85A;color:#0B193A}.tsw{display:flex;width:max-content;margin:6px auto 10px}
 </style>
 <style>/* sources hidden on request – remove this rule to restore */ .srcl{display:none!important}</style>
 </head>
@@ -432,7 +434,7 @@ requestAnimationFrame(loop);})();
   </div>
 </header>
 <main>
-<button id="back" class="back hide" type="button" aria-label="العودة إلى الصفحة الرئيسية"><span>→</span> العودة إلى الصفحة الرئيسية</button><button id="backIntro" class="back" type="button" aria-label="العودة إلى الصفحة الرئيسية"><span>→</span> العودة إلى الصفحة الرئيسية</button>
+<button id="back" class="back hide" type="button" aria-label="العودة إلى الصفحة الرئيسية"><span>→</span> العودة إلى الصفحة الرئيسية</button><button id="backIntro" class="back" type="button" aria-label="العودة إلى الصفحة الرئيسية"><span>→</span> العودة إلى الصفحة الرئيسية</button><div class="fsw tsw" id="tsw"><span>التجارة الخارجية</span><a id="tswF" href="finance.html">الاقتصاد والمالية</a><a id="tswO" href="opportunities.html">الفرص</a></div>
   <section id="vEnt">
     <div class="head"><div><h2 id="nm">…</h2><div class="en" id="nmEn"></div></div><div class="unit"><span id="unit"></span> <span class="cur" role="group" aria-label="العملة"><button id="cUsd" aria-pressed="true">دولار</button><button id="cKd" aria-pressed="false">د.ك</button></span> <span class="cur" role="group" aria-label="الوحدة"><button id="uM" aria-pressed="true">مليون</button><button id="uK" aria-pressed="false">ألف</button></span></div></div>
     <p class="lead hide" id="lead"></p>
@@ -642,7 +644,7 @@ const CFGS={KW:{full:'دولة الكويت',short:'الكويت',aF:'الكوي
  BY:{full:"بيلاروسيا",short:"بيلاروسيا",aF:"– بيلاروسيا",aM:"بيلاروسيا",cs:"روبل بيلاروسي",cw:"روبل بيلاروسي",fullE:"Belarus",shortE:"Belarus",aE:"Belarus",csE:"BYN",cwE:"BYN",rate:1,iso:'by',rate:3.069,self:null},
  MK:{full:"مقدونيا الشمالية",short:"مقدونيا الشمالية",aF:"– مقدونيا الشمالية",aM:"مقدونيا الشمالية",cs:"دينار مقدوني",cw:"دينار مقدوني",fullE:"North Macedonia",shortE:"North Macedonia",aE:"North Macedonia",csE:"MKD",cwE:"MKD",rate:1,iso:'mk',rate:54.655,self:null},
  KG:{full:"قيرغيزستان",short:"قيرغيزستان",aF:"– قيرغيزستان",aM:"قيرغيزستان",cs:"سوم قيرغيزي",cw:"سوم قيرغيزي",fullE:"Kyrgyzstan",shortE:"Kyrgyzstan",aE:"Kyrgyzstan",csE:"KGS",cwE:"KGS",rate:1,iso:'kg',rate:87.36,self:null}};
-const CC=CFGS[CTRY]||CFGS.KW,ISKW=CTRY==='KW';if(!ISKW)['cKd','fKd'].forEach(i=>{const b=document.getElementById(i);if(b)b.parentElement.style.display='none';});
+const CC=CFGS[CTRY]||CFGS.KW,ISKW=CTRY==='KW';{const fx=document.documentElement.lang==='en'?'_en':'';const f=document.getElementById('tswF'),o=document.getElementById('tswO');if(f)f.href=(fx?'finance_en.html':'finance.html')+'?c='+CTRY;if(o)o.href=(fx?'opportunities_en.html':'opportunities.html')+'?c='+CTRY;}if(!ISKW)['cKd','fKd'].forEach(i=>{const b=document.getElementById(i);if(b)b.parentElement.style.display='none';});
 const $=s=>document.querySelector(s);
 const esc=s=>String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 let D=null,META=null,TOT={},C=[],G=[],BY={},cur=null,HS=[],SITC=null,H4N={};
@@ -963,7 +965,7 @@ function armCounts(root){if(!cntIO||matchMedia('(prefers-reduced-motion: reduce)
 new MutationObserver(ms=>{const set=new Set();ms.forEach(m=>{const t=m.target.nodeType===1?m.target:m.target.parentElement;if(t&&!t.closest('b'))set.add(t);});set.forEach(armCounts);}).observe(document.querySelector('main'),{childList:true,subtree:true});
 
 // ---------- auto-update (bypass stale phone cache) ----------
-const BUILD='1795806729';
+const BUILD='1795807320';
 try{fetch(location.pathname+'?b='+Date.now(),{cache:'no-store'}).then(r=>r.text()).then(h=>{const m=h.match(/const BUILD='(\d+)'/);if(m&&m[1]>BUILD&&!sessionStorage.getItem('rl'+m[1])){sessionStorage.setItem('rl'+m[1],'1');location.replace(location.pathname+'?v='+m[1]+location.hash);}}).catch(()=>{});}catch(_){}
 
 // ---------- products: commodity search & selection ----------
@@ -1016,6 +1018,7 @@ function runSplash(el){const sp=el&&el.querySelector('.tsp');if(!sp)return;el.se
     const [kx,ky,kz]=proj(KW[0],KW[1],l0);if(!dropped&&t>=2.8&&kz>0){dropped=true;dropDot(kx,ky);}if(kz>0&&!dropped){x.globalAlpha=Math.min(1,kz*1.6);const g=x.createRadialGradient(kx,ky,0,kx,ky,R*.2);g.addColorStop(0,'rgba(255,255,255,.6)');g.addColorStop(1,'rgba(255,255,255,0)');x.fillStyle=g;x.beginPath();x.arc(kx,ky,R*.2,0,7);x.fill();x.fillStyle='#fff';x.beginPath();x.arc(kx,ky,R*.06,0,7);x.fill();}
     x.globalAlpha=1;requestAnimationFrame(fr);};requestAnimationFrame(fr);
   setTimeout(()=>{sp.classList.add('out');setTimeout(()=>{run=false;sp.remove();el.removeAttribute('data-w');},950);},6600);}
+(()=>{try{const q=new URLSearchParams(location.search);if(q.has('go')){sessionStorage.setItem('kwIntro','1');q.delete('go');history.replaceState(null,'',location.pathname+(q.toString()?'?'+q:'')+location.hash);}}catch(_){}})();
 const HOME=(()=>{try{const q=new URLSearchParams(location.search);if(q.has('home')){sessionStorage.removeItem('kwIntro');history.replaceState(null,'',location.pathname);return true;}}catch(_){}return false;})();
 (()=>{const el=document.getElementById('intro');if(!el)return;if(!ISKW){el.remove();return;}if(HOME){const sp=el.querySelector('.tsp');if(sp)sp.remove();el.removeAttribute('data-w');el.classList.add('fast');return;}let seen=false;try{seen=sessionStorage.getItem('kwIntro')==='1';}catch(_){}
   if(seen||(location.hash.length>1&&location.hash!=='#kw')){const sp=el.querySelector('.tsp');if(sp)sp.remove();el.removeAttribute('data-w');return;}runSplash(el);})();

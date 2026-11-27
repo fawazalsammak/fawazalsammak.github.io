@@ -379,6 +379,8 @@ img.cemb.ofh{width:auto!important;height:38px!important;max-width:70px;border-ra
 
 a,a:link,a:visited,a:hover{text-decoration:none!important}u,abbr{text-decoration:none!important}
 
+.fsw{display:inline-flex;border:1px solid #D4B85A88;border-radius:999px;overflow:hidden;margin:4px 0 6px}.fsw a,.fsw span{font:800 13px Noto Naskh Arabic,sans-serif;padding:8px 16px;color:#e6ebf3;text-decoration:none}.fsw span{background:#D4B85A;color:#0B193A}.tsw{display:flex;width:max-content;margin:6px auto 10px}
+
 main{max-width:820px}
 .fsw{display:inline-flex;border:1px solid #D4B85A88;border-radius:999px;overflow:hidden;margin:2px 0 10px}
 .fsw a,.fsw span{font:800 12.5px Noto Naskh Arabic,sans-serif;padding:7px 13px;color:#e6ebf3;text-decoration:none}.fsw span{background:#D4B85A;color:#0B193A}
@@ -679,7 +681,7 @@ function setTab(t){TAB=t;document.querySelectorAll('.otabs button').forEach(b=>b
 function render(){const ml=marketList();if(X===Y||![...$('#sY').options].some(o=>o.value===Y))Y=(ml&&ml[0]&&ml[0][0])||[...$('#sY').options][0].value;
  history.replaceState(null,'','?c='+X+'&to='+Y);document.title='Tradelexity – '+nm(X)+' → '+nm(Y);
  ['X','Y'].forEach(s=>{const c=s==='X'?X:Y;$('#f'+s).src=flag(c);$('#n'+s).textContent=nm(c);$('#s'+s).value=c;});
- $('#swT').href=$('#swT').dataset.h+(X==='KW'?'#kw':'?c='+X);$('#swF').href=$('#swF').dataset.h+'?c='+X;
+ $('#swT').href=$('#swT').dataset.h+'?c='+X+'&go=1'+(X==='KW'?'#kw':'');$('#swF').href=$('#swF').dataset.h+'?c='+X;
  R=analyse();const bl=bilat(X,Y),bal=bl.x-bl.m,best=R.ops[0];
  const lv=R.TCI>=40?L('عالٍ','High'):R.TCI>=25?L('متوسط','Medium'):L('منخفض','Low');
  const yr=O.c[X].ly||O.c[X].y[O.c[X].y.length-1];

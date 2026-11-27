@@ -383,6 +383,8 @@ img.cemb.ofh{width:auto!important;height:38px!important;max-width:70px;border-ra
 
 a,a:link,a:visited,a:hover{text-decoration:none!important}u,abbr{text-decoration:none!important}
 
+.fsw{display:inline-flex;border:1px solid #D4B85A88;border-radius:999px;overflow:hidden;margin:4px 0 6px}.fsw a,.fsw span{font:800 13px Noto Naskh Arabic,sans-serif;padding:8px 16px;color:#e6ebf3;text-decoration:none}.fsw span{background:#D4B85A;color:#0B193A}.tsw{display:flex;width:max-content;margin:6px auto 10px}
+
 .rban{display:flex;align-items:center;justify-content:space-between;gap:12px;margin:12px 0;padding:14px 16px;border-radius:18px;border:1.5px solid;background:linear-gradient(135deg,#ffffff0f,#ffffff05);cursor:pointer}
 .rban small{display:block;color:var(--mut);font-size:12.5px}.rban b{display:block;font-size:19px;margin:2px 0}.rban em{font-style:normal;font-size:12.5px;color:#c9d2e3}
 .rbs{font:800 32px Montserrat,sans-serif;white-space:nowrap}.rbs i{font-style:normal;font-size:13px;color:var(--mut);margin-inline-start:2px}
@@ -487,7 +489,7 @@ function setHead(){document.title='Tradelexity – '+(EN?C.en:C.ar);
 $('#h1').textContent=EN?C.adjE+' '+$('#h1').dataset.t:$('#h1').dataset.t+(C.adj?' '+C.adj:' – '+C.ar);
 $('#emb').src='oflags/'+C.iso+'.svg';$('#emb').classList.add('ofh');
 $('.lang').href=$('.lang').dataset.h+'?c='+CTRY+location.hash;
-$('#swT').href=$('#swT').dataset.h+(CTRY==='KW'?'#kw':'?c='+CTRY);if(CTRY!=='KW'){const b=document.getElementById('cLoc');if(b)b.parentElement.style.display='none';}$('#swO').href=$('#swO').dataset.h+'?c='+CTRY;
+$('#swT').href=$('#swT').dataset.h+'?c='+CTRY+'&go=1'+(CTRY==='KW'?'#kw':'');if(CTRY!=='KW'){const b=document.getElementById('cLoc');if(b)b.parentElement.style.display='none';}$('#swO').href=$('#swO').dataset.h+'?c='+CTRY;
 }
 $('#backIntro').onclick=()=>{location.href=$('#backIntro').dataset.h;};
 let CUR='usd';const PJ=2026;
