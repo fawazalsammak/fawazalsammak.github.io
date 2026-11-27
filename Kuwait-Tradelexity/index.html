@@ -389,7 +389,7 @@ img.cemb.ofh{width:auto!important;height:38px!important;max-width:70px;border-ra
 
 a,a:link,a:visited,a:hover{text-decoration:none!important}u,abbr{text-decoration:none!important}
 
-.fsw{display:inline-flex;border:1px solid #D4B85A88;border-radius:999px;overflow:hidden;margin:4px 0 6px}.fsw a,.fsw span{font:800 13px Noto Naskh Arabic,sans-serif;padding:8px 16px;color:#e6ebf3;text-decoration:none}.fsw span{background:#D4B85A;color:#0B193A}.tsw{display:flex;width:max-content;margin:6px auto 10px}
+.fsw{display:inline-flex;border:1px solid #D4B85A88;border-radius:999px;overflow:hidden;margin:4px 0 6px}.fsw a,.fsw span{font:800 13px Noto Naskh Arabic,sans-serif;padding:8px 16px;color:#e6ebf3;text-decoration:none}.fsw span{background:#D4B85A;color:#0B193A}.tsw{display:flex;flex-wrap:wrap;justify-content:center;width:max-content;max-width:100%;margin:6px auto 10px}
 
 #intro .ilang{position:fixed;top:calc(12px + env(safe-area-inset-top));inset-inline-end:12px;z-index:9999;font:800 13px Montserrat,Noto Naskh Arabic,sans-serif;color:#0B193A;background:#D4B85A;border-radius:999px;padding:7px 14px;text-decoration:none;box-shadow:0 2px 10px #0006}
 #intro:not(.pk):not(.sel) .ilang{display:none}
@@ -467,7 +467,7 @@ document.getElementById('lgf').onsubmit=e=>{e.preventDefault();const u=document.
   </div>
 </header>
 <main>
-<button id="back" class="back hide" type="button" aria-label="العودة إلى الصفحة الرئيسية"><span>→</span> العودة إلى الصفحة الرئيسية</button><button id="backIntro" class="back" type="button" aria-label="العودة إلى الصفحة الرئيسية"><span>→</span> العودة إلى الصفحة الرئيسية</button><div class="fsw tsw" id="tsw"><span>التجارة الخارجية</span><a id="tswF" href="finance.html">الاقتصاد والمالية</a><a id="tswO" href="opportunities.html">آفاق التبادل</a></div>
+<button id="back" class="back hide" type="button" aria-label="العودة إلى الصفحة الرئيسية"><span>→</span> العودة إلى الصفحة الرئيسية</button><button id="backIntro" class="back" type="button" aria-label="العودة إلى الصفحة الرئيسية"><span>→</span> العودة إلى الصفحة الرئيسية</button><div class="fsw tsw" id="tsw"><a id="tswS" href="summary.html">الملخص</a><span>التجارة الخارجية</span><a id="tswF" href="finance.html">الاقتصاد والمالية</a><a id="tswO" href="opportunities.html">آفاق التبادل</a></div>
   <section id="vEnt">
     <div class="head"><div><h2 id="nm">…</h2><div class="en" id="nmEn"></div></div><div class="unit"><span id="unit"></span> <span class="cur" role="group" aria-label="العملة"><button id="cUsd" aria-pressed="true">دولار</button><button id="cKd" aria-pressed="false">د.ك</button></span> <span class="cur" role="group" aria-label="الوحدة"><button id="uM" aria-pressed="true">مليون</button><button id="uK" aria-pressed="false">ألف</button></span></div></div>
     <p class="lead hide" id="lead"></p>
@@ -677,7 +677,7 @@ const CFGS={KW:{full:'دولة الكويت',short:'الكويت',aF:'الكوي
  BY:{full:"بيلاروسيا",short:"بيلاروسيا",aF:"– بيلاروسيا",aM:"بيلاروسيا",cs:"روبل بيلاروسي",cw:"روبل بيلاروسي",fullE:"Belarus",shortE:"Belarus",aE:"Belarus",csE:"BYN",cwE:"BYN",rate:1,iso:'by',rate:3.069,self:null},
  MK:{full:"مقدونيا الشمالية",short:"مقدونيا الشمالية",aF:"– مقدونيا الشمالية",aM:"مقدونيا الشمالية",cs:"دينار مقدوني",cw:"دينار مقدوني",fullE:"North Macedonia",shortE:"North Macedonia",aE:"North Macedonia",csE:"MKD",cwE:"MKD",rate:1,iso:'mk',rate:54.655,self:null},
  KG:{full:"قيرغيزستان",short:"قيرغيزستان",aF:"– قيرغيزستان",aM:"قيرغيزستان",cs:"سوم قيرغيزي",cw:"سوم قيرغيزي",fullE:"Kyrgyzstan",shortE:"Kyrgyzstan",aE:"Kyrgyzstan",csE:"KGS",cwE:"KGS",rate:1,iso:'kg',rate:87.36,self:null}};
-const CC=CFGS[CTRY]||CFGS.KW,ISKW=CTRY==='KW';{const fx=document.documentElement.lang==='en'?'_en':'';const f=document.getElementById('tswF'),o=document.getElementById('tswO');if(f)f.href=(fx?'finance_en.html':'finance.html')+'?c='+CTRY;if(o)o.href=(fx?'opportunities_en.html':'opportunities.html')+'?c='+CTRY;}if(!ISKW)['cKd','fKd'].forEach(i=>{const b=document.getElementById(i);if(b)b.parentElement.style.display='none';});
+const CC=CFGS[CTRY]||CFGS.KW,ISKW=CTRY==='KW';{const fx=document.documentElement.lang==='en'?'_en':'';const f=document.getElementById('tswF'),o=document.getElementById('tswO');if(f)f.href=(fx?'finance_en.html':'finance.html')+'?c='+CTRY;const sm=document.getElementById('tswS');if(sm)sm.href=(fx?'summary_en.html':'summary.html')+'?c='+CTRY;if(o)o.href=(fx?'opportunities_en.html':'opportunities.html')+'?c='+CTRY;}if(!ISKW)['cKd','fKd'].forEach(i=>{const b=document.getElementById(i);if(b)b.parentElement.style.display='none';});
 const $=s=>document.querySelector(s);
 const esc=s=>String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 let D=null,META=null,TOT={},C=[],G=[],BY={},cur=null,HS=[],SITC=null,H4N={};
@@ -998,7 +998,7 @@ function armCounts(root){if(!cntIO||matchMedia('(prefers-reduced-motion: reduce)
 new MutationObserver(ms=>{const set=new Set();ms.forEach(m=>{const t=m.target.nodeType===1?m.target:m.target.parentElement;if(t&&!t.closest('b'))set.add(t);});set.forEach(armCounts);}).observe(document.querySelector('main'),{childList:true,subtree:true});
 
 // ---------- auto-update (bypass stale phone cache) ----------
-const BUILD='1795816064';
+const BUILD='1795816672';
 try{fetch(location.pathname+'?b='+Date.now(),{cache:'no-store'}).then(r=>r.text()).then(h=>{const m=h.match(/const BUILD='(\d+)'/);if(m&&m[1]>BUILD&&!sessionStorage.getItem('rl'+m[1])){sessionStorage.setItem('rl'+m[1],'1');location.replace(location.pathname+'?v='+m[1]+location.hash);}}).catch(()=>{});}catch(_){}
 
 // ---------- products: commodity search & selection ----------
@@ -1086,7 +1086,7 @@ function intro(force){const el=$('#intro');if(!ISKW){if(el)el.remove();return;}i
     const pick=()=>{el.classList.remove('sel');el.classList.add('pk');
      bx.innerHTML=`<div class="ipk-t">${EN?'Choose a country':'اختر الدولة'}</div><div class="ihd"><input class="isrch" type="search" placeholder="${EN?'Search '+CO.length+' economies…':'ابحث بين '+CO.length+' اقتصاداً…'}" aria-label="search"><div class="irg">${RGS.map(([k,a,e])=>`<button data-r="${k}" class="${k===RGc?'on':''}">${EN?e:a}</button>`).join('')}</div></div><div class="ipk">${byR(RGc)}</div>`;
      const g=bx.querySelector('.ipk'),q=bx.querySelector('.isrch');
-     const bind=()=>g.querySelectorAll('.ipc').forEach(b=>b.onclick=()=>sector(b.dataset.c));
+     const bind=()=>g.querySelectorAll('.ipc').forEach(b=>b.onclick=()=>{const c=b.dataset.c;try{sessionStorage.setItem('tzoom',c);sessionStorage.setItem('kwIntro','1');}catch(_){}location.href=(EN?'summary_en.html':'summary.html')+'?c='+c;});
      bx.querySelectorAll('.irg button').forEach(b=>b.onclick=()=>{RGc=b.dataset.r;q.value='';bx.querySelectorAll('.irg button').forEach(x=>x.classList.toggle('on',x===b));g.innerHTML=byR(RGc);bind();});
      q.oninput=()=>{const t=q.value.trim().toLowerCase();bx.querySelectorAll('.irg button').forEach(x=>x.classList.toggle('on',!t&&x.dataset.r===RGc));g.innerHTML=t?tiles(CO.filter(r=>r[4].toLowerCase().includes(t))):byR(RGc);bind();};
      bind();};

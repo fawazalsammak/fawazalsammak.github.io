@@ -383,7 +383,7 @@ img.cemb.ofh{width:auto!important;height:38px!important;max-width:70px;border-ra
 
 a,a:link,a:visited,a:hover{text-decoration:none!important}u,abbr{text-decoration:none!important}
 
-.fsw{display:inline-flex;border:1px solid #D4B85A88;border-radius:999px;overflow:hidden;margin:4px 0 6px}.fsw a,.fsw span{font:800 13px Noto Naskh Arabic,sans-serif;padding:8px 16px;color:#e6ebf3;text-decoration:none}.fsw span{background:#D4B85A;color:#0B193A}.tsw{display:flex;width:max-content;margin:6px auto 10px}
+.fsw{display:inline-flex;border:1px solid #D4B85A88;border-radius:999px;overflow:hidden;margin:4px 0 6px}.fsw a,.fsw span{font:800 13px Noto Naskh Arabic,sans-serif;padding:8px 16px;color:#e6ebf3;text-decoration:none}.fsw span{background:#D4B85A;color:#0B193A}.tsw{display:flex;flex-wrap:wrap;justify-content:center;width:max-content;max-width:100%;margin:6px auto 10px}
 
 #intro .ilang{position:fixed;top:calc(12px + env(safe-area-inset-top));inset-inline-end:12px;z-index:9999;font:800 13px Montserrat,Noto Naskh Arabic,sans-serif;color:#0B193A;background:#D4B85A;border-radius:999px;padding:7px 14px;text-decoration:none;box-shadow:0 2px 10px #0006}
 #intro:not(.pk):not(.sel) .ilang{display:none}
@@ -483,7 +483,7 @@ requestAnimationFrame(loop);})();
 <main>
 <button id="backIntro" class="back" type="button" data-h="en.html?home=1"><span>←</span> Back to the main page</button>
 <div style="display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap">
- <div class="fsw"><a id="swT" data-h="en.html" href="en.html">Foreign Trade</a><span>Economy & Finance</span><a id="swO" data-h="opportunities_en.html" href="opportunities_en.html">Trade Prospects</a></div>
+ <div class="fsw"><a id="swS" href="summary.html">Summary</a><a id="swT" data-h="en.html" href="en.html">Foreign Trade</a><span>Economy & Finance</span><a id="swO" data-h="opportunities_en.html" href="opportunities_en.html">Trade Prospects</a></div>
  <span class="cur" role="group"><button id="cUsd" aria-pressed="true">USD</button><button id="cLoc" aria-pressed="false">د.ك</button></span>
 </div>
 <nav class="ftabs"><button data-go="output"><span>Output</span></button><button data-go="monetary"><span>Monetary</span></button><button data-go="fiscal"><span>Fiscal</span></button><button data-go="home" class=ctr><b>Home</b></button><button data-go="external"><span>External</span></button><button data-go="fdi"><span>FDI</span></button><button data-go="rating"><span>Ratings</span></button><button data-go="risk"><span>Risk</span></button></nav>
@@ -509,7 +509,7 @@ function setHead(){document.title='Tradelexity – '+(EN?C.en:C.ar);
 $('#h1').textContent=EN?C.adjE+' '+$('#h1').dataset.t:$('#h1').dataset.t+(C.adj?' '+C.adj:' – '+C.ar);
 $('#emb').src='oflags/'+C.iso+'.svg';$('#emb').classList.add('ofh');
 $('.lang').href=$('.lang').dataset.h+'?c='+CTRY+location.hash;
-$('#swT').href=$('#swT').dataset.h+'?c='+CTRY+'&go=1'+(CTRY==='KW'?'#kw':'');if(CTRY!=='KW'){const b=document.getElementById('cLoc');if(b)b.parentElement.style.display='none';}$('#swO').href=$('#swO').dataset.h+'?c='+CTRY;
+$('#swS').href=(document.documentElement.lang==='en'?'summary_en.html':'summary.html')+'?c='+CTRY;$('#swT').href=$('#swT').dataset.h+'?c='+CTRY+'&go=1'+(CTRY==='KW'?'#kw':'');if(CTRY!=='KW'){const b=document.getElementById('cLoc');if(b)b.parentElement.style.display='none';}$('#swO').href=$('#swO').dataset.h+'?c='+CTRY;
 }
 $('#backIntro').onclick=()=>{location.href=$('#backIntro').dataset.h;};
 let CUR='usd';const PJ=2026;

@@ -379,7 +379,7 @@ img.cemb.ofh{width:auto!important;height:38px!important;max-width:70px;border-ra
 
 a,a:link,a:visited,a:hover{text-decoration:none!important}u,abbr{text-decoration:none!important}
 
-.fsw{display:inline-flex;border:1px solid #D4B85A88;border-radius:999px;overflow:hidden;margin:4px 0 6px}.fsw a,.fsw span{font:800 13px Noto Naskh Arabic,sans-serif;padding:8px 16px;color:#e6ebf3;text-decoration:none}.fsw span{background:#D4B85A;color:#0B193A}.tsw{display:flex;width:max-content;margin:6px auto 10px}
+.fsw{display:inline-flex;border:1px solid #D4B85A88;border-radius:999px;overflow:hidden;margin:4px 0 6px}.fsw a,.fsw span{font:800 13px Noto Naskh Arabic,sans-serif;padding:8px 16px;color:#e6ebf3;text-decoration:none}.fsw span{background:#D4B85A;color:#0B193A}.tsw{display:flex;flex-wrap:wrap;justify-content:center;width:max-content;max-width:100%;margin:6px auto 10px}
 
 #intro .ilang{position:fixed;top:calc(12px + env(safe-area-inset-top));inset-inline-end:12px;z-index:9999;font:800 13px Montserrat,Noto Naskh Arabic,sans-serif;color:#0B193A;background:#D4B85A;border-radius:999px;padding:7px 14px;text-decoration:none;box-shadow:0 2px 10px #0006}
 #intro:not(.pk):not(.sel) .ilang{display:none}
@@ -564,7 +564,7 @@ requestAnimationFrame(loop);})();
 </header>
 <main>
 <button id="backIntro" class="back" type="button" data-h="index.html?home=1"><span>→</span> العودة إلى الصفحة الرئيسية</button>
-<div class="frow"><div class="fsw"><a id="swT" data-h="index.html" href="index.html">التجارة</a><a id="swF" data-h="finance.html" href="finance.html">الاقتصاد والمالية</a><span>آفاق التبادل</span></div><button class="info" type="button" id="inf" aria-label="help">?</button></div>
+<div class="frow"><div class="fsw"><a id="swS" href="summary.html">الملخص</a><a id="swT" data-h="index.html" href="index.html">التجارة</a><a id="swF" data-h="finance.html" href="finance.html">الاقتصاد والمالية</a><span>آفاق التبادل</span></div><button class="info" type="button" id="inf" aria-label="help">?</button></div>
 <div class="pair">
  <div class="pc"><span class="lb">الدولة المُصدِّرة</span><div class="fl"><img id="fX" alt=""></div><div class="nmw"><span class="nm" id="nX"></span><select id="sX" aria-label="exporter"></select></div></div>
  <button class="swap" id="swap" type="button" aria-label="swap"><svg viewBox="0 0 24 24"><path d="M4 8h15M15 4l4 4-4 4M20 16H5M9 12l-4 4 4 4"/></svg></button>
@@ -700,7 +700,7 @@ function setTab(t){TAB=t;document.querySelectorAll('.otabs button').forEach(b=>b
 function render(){const ml=marketList();if(X===Y||![...$('#sY').options].some(o=>o.value===Y))Y=(ml&&ml[0]&&ml[0][0])||[...$('#sY').options][0].value;
  history.replaceState(null,'','?c='+X+'&to='+Y);document.title='Tradelexity – '+nm(X)+' → '+nm(Y);
  ['X','Y'].forEach(s=>{const c=s==='X'?X:Y;$('#f'+s).src=flag(c);$('#n'+s).textContent=nm(c);$('#s'+s).value=c;});
- $('#swT').href=$('#swT').dataset.h+'?c='+X+'&go=1'+(X==='KW'?'#kw':'');$('#swF').href=$('#swF').dataset.h+'?c='+X;
+ $('#swS').href=(document.documentElement.lang==='en'?'summary_en.html':'summary.html')+'?c='+X;$('#swT').href=$('#swT').dataset.h+'?c='+X+'&go=1'+(X==='KW'?'#kw':'');$('#swF').href=$('#swF').dataset.h+'?c='+X;
  R=analyse();const bl=bilat(X,Y),bal=bl.x-bl.m,best=R.ops[0];
  const lv=R.TCI>=40?L('عالٍ','High'):R.TCI>=25?L('متوسط','Medium'):L('منخفض','Low');
  const yr=O.c[X].ly||O.c[X].y[O.c[X].y.length-1];
