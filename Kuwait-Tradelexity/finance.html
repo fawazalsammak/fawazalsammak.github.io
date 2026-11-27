@@ -361,7 +361,7 @@ canvas.iemb{width:clamp(70px,14vh,130px)!important;height:clamp(70px,14vh,130px)
 #intro.pk .ipk{display:grid!important;grid-template-columns:repeat(auto-fill,minmax(84px,1fr));gap:8px;width:min(620px,92vw);margin:0 auto;max-height:none}
 #intro.pk .ipc{min-width:0;padding:8px 4px;font-size:12.5px}#intro.pk .ipc img{width:46px;height:46px}
 .inone{grid-column:1/-1;color:#9fb3d9;padding:20px;text-align:center}
-.isc.off{opacity:.45;cursor:not-allowed}.isc.off::after{content:"قريباً";font:800 11px Almarai,sans-serif;color:#0B193A;background:#D4B85A;border-radius:999px;padding:2px 10px}
+.isec .iop{grid-column:1/-1}.isc.off{opacity:.45;cursor:not-allowed}.isc.off::after{content:"قريباً";font:800 11px Almarai,sans-serif;color:#0B193A;background:#D4B85A;border-radius:999px;padding:2px 10px}
 html[lang=en] .isc.off::after{content:"Coming soon"}
 img.of{border-radius:5px!important;object-fit:contain!important;box-shadow:0 0 0 1px #ffffff40,0 4px 12px #0008!important;background:transparent}
 #intro .ipc img.of,#intro.pk .ipc img.of{width:auto!important;height:34px!important;max-width:64px}
@@ -375,6 +375,11 @@ img.cemb.ofh{width:auto!important;height:38px!important;max-width:70px;border-ra
 #bento .t,#bento2 .t{display:flex;flex-direction:column;justify-content:center;align-items:center;text-align:center;min-height:132px}
 #bento .t.w4,#bento .t.xp{align-items:stretch;text-align:start}
 #bento .t.bal b{font-size:clamp(28px,7vw,38px)}
+.cur button:first-child{border-radius:0;border-start-start-radius:8px;border-end-start-radius:8px}.cur button:last-child{border-radius:0;border-start-end-radius:8px;border-end-end-radius:8px}
+.ilg{display:flex;gap:12px;justify-content:center;flex-wrap:wrap}.ilg .ibtn{min-width:170px}.ilb[data-l=en]{font-family:Montserrat,Almarai,sans-serif}
+.iaz{grid-column:1/-1;color:#D4B85A;font:800 15px Almarai,Montserrat,sans-serif;padding:8px 4px 2px;border-bottom:1px solid #D4B85A44;margin-top:4px;text-align:start}
+#intro.pk .iin{height:auto;min-height:100vh;min-height:100dvh;justify-content:flex-start}
+#intro.pk .ihd{position:sticky;top:0;z-index:3;padding:8px 0 2px;margin:0 -16px;background:linear-gradient(180deg,#14285a 80%,#14285a00)}
 
 .fsw{display:inline-flex;border:1px solid #D4B85A88;border-radius:999px;overflow:hidden;margin:4px 0 6px}
 .fsw a,.fsw span{font:800 13px Almarai,sans-serif;padding:8px 16px;color:#e6ebf3;text-decoration:none}
@@ -443,7 +448,7 @@ requestAnimationFrame(loop);})();
 <main>
 <button id="backIntro" class="back" type="button" data-h="index.html?home=1"><span>→</span> العودة إلى الصفحة الرئيسية</button>
 <div style="display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap">
- <div class="fsw"><a id="swT" data-h="index.html" href="index.html">التجارة الخارجية</a><span>الاقتصاد والمالية</span></div>
+ <div class="fsw"><a id="swT" data-h="index.html" href="index.html">التجارة الخارجية</a><span>الاقتصاد والمالية</span><a id="swO" data-h="opportunities.html" href="opportunities.html">الفرص</a></div>
  <span class="cur" role="group"><button id="cUsd" aria-pressed="true">دولار</button><button id="cLoc" aria-pressed="false">د.ك</button></span>
 </div>
 <nav class="ftabs"><button data-go="output"><span>الناتج الاقتصادي</span></button><button data-go="monetary"><span>المؤشرات النقدية</span></button><button data-go="fiscal"><span>المالية العامة</span></button><button data-go="home" class=ctr><b>الرئيسية</b></button><button data-go="external"><span>الحساب الخارجي</span></button><button data-go="fdi"><span>الاستثمار المباشر</span></button><button data-go="rating"><span>التصنيف الائتماني</span></button></nav>
@@ -469,7 +474,7 @@ function setHead(){document.title='Tradelexity – '+(EN?C.en:C.ar);
 $('#h1').textContent=EN?C.adjE+' '+$('#h1').dataset.t:$('#h1').dataset.t+(C.adj?' '+C.adj:' – '+C.ar);
 $('#emb').src='oflags/'+C.iso+'.svg';$('#emb').classList.add('ofh');
 $('.lang').href=$('.lang').dataset.h+'?c='+CTRY+location.hash;
-$('#swT').href=$('#swT').dataset.h+(CTRY==='KW'?'#kw':'?c='+CTRY);
+$('#swT').href=$('#swT').dataset.h+(CTRY==='KW'?'#kw':'?c='+CTRY);$('#swO').href=$('#swO').dataset.h+'?c='+CTRY;
 }
 $('#backIntro').onclick=()=>{location.href=$('#backIntro').dataset.h;};
 let CUR='usd';const PJ=2026;
