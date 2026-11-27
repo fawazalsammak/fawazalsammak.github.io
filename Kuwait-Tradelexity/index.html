@@ -947,7 +947,7 @@ function armCounts(root){if(!cntIO||matchMedia('(prefers-reduced-motion: reduce)
 new MutationObserver(ms=>{const set=new Set();ms.forEach(m=>{const t=m.target.nodeType===1?m.target:m.target.parentElement;if(t&&!t.closest('b'))set.add(t);});set.forEach(armCounts);}).observe(document.querySelector('main'),{childList:true,subtree:true});
 
 // ---------- auto-update (bypass stale phone cache) ----------
-const BUILD='1795780583';
+const BUILD='1795780928';
 try{fetch(location.pathname+'?b='+Date.now(),{cache:'no-store'}).then(r=>r.text()).then(h=>{const m=h.match(/const BUILD='(\d+)'/);if(m&&m[1]>BUILD&&!sessionStorage.getItem('rl'+m[1])){sessionStorage.setItem('rl'+m[1],'1');location.replace(location.pathname+'?v='+m[1]+location.hash);}}).catch(()=>{});}catch(_){}
 
 // ---------- products: commodity search & selection ----------
@@ -1034,7 +1034,7 @@ function intro(force){const el=$('#intro');if(!ISKW){if(el)el.remove();return;}i
      bx.innerHTML=`<div class="ipk-t">${EN?'Choose a country':'اختر الدولة'}</div><div class="ihd"><input class="isrch" type="search" placeholder="${EN?'Search 104 economies…':'ابحث بين 104 اقتصادات…'}" aria-label="search"><div class="irg">${RGS.map(([k,a,e])=>`<button data-r="${k}" class="${k===RGc?'on':''}">${EN?e:a}</button>`).join('')}</div></div><div class="ipk">${byR(RGc)}</div>`;
      const g=bx.querySelector('.ipk'),q=bx.querySelector('.isrch');
      const bind=()=>g.querySelectorAll('.ipc').forEach(b=>b.onclick=()=>sector(b.dataset.c));
-     bx.querySelectorAll('.irg button').forEach(b=>b.onclick=()=>{RGc=b.dataset.r;q.value='';bx.querySelectorAll('.irg button').forEach(x=>x.classList.toggle('on',x===b));g.innerHTML=tiles(CO.filter(r=>r[3]===RGc));bind();});
+     bx.querySelectorAll('.irg button').forEach(b=>b.onclick=()=>{RGc=b.dataset.r;q.value='';bx.querySelectorAll('.irg button').forEach(x=>x.classList.toggle('on',x===b));g.innerHTML=byR(RGc);bind();});
      q.oninput=()=>{const t=q.value.trim().toLowerCase();bx.querySelectorAll('.irg button').forEach(x=>x.classList.toggle('on',!t&&x.dataset.r===RGc));g.innerHTML=t?tiles(CO.filter(r=>r[4].toLowerCase().includes(t))):byR(RGc);bind();};
      bind();};
     const sector=c=>{const z=CO.find(r=>r[0]===c),hasT=TR.includes(c);el.classList.add('sel');el.classList.remove('pk');el.scrollTo(0,0);
