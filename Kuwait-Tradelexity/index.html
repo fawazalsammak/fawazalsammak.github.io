@@ -445,7 +445,7 @@ document.getElementById('lgf').onsubmit=e=>{e.preventDefault();const u=document.
     <div class="iline"></div>
     <div class="ien">GLOBAL TRADE FINANCE INTELLIGENCE</div>
     <svg id="imap" viewBox="0 0 1000 520" aria-hidden="true"></svg>
-    <div class="ibtns"><div class="ilg"><button class="ibtn main ilb" data-l="ar" lang="ar">الدخول بالعربية</button><button class="ibtn main ilb" data-l="en" lang="en">Enter in English</button></div><button id="iGo" class="ibtn main" style="display:none">الدخول إلى المنصة</button></div>
+    <div class="ibtns"><div class="ilg"><button class="ibtn main ilb" data-l="ar" lang="ar">العربية</button><button class="ibtn main ilb" data-l="en" lang="en">English</button></div><button id="iGo" class="ibtn main" style="display:none">الدخول إلى المنصة</button></div>
   </div>
 </div>
 <header class="top"><a class="lang" href="en.html" onclick="const q=new URLSearchParams(location.search);q.set('go','1');this.href='en.html?'+q+location.hash" lang="en">English</a>
@@ -994,7 +994,7 @@ function armCounts(root){if(!cntIO||matchMedia('(prefers-reduced-motion: reduce)
 new MutationObserver(ms=>{const set=new Set();ms.forEach(m=>{const t=m.target.nodeType===1?m.target:m.target.parentElement;if(t&&!t.closest('b'))set.add(t);});set.forEach(armCounts);}).observe(document.querySelector('main'),{childList:true,subtree:true});
 
 // ---------- auto-update (bypass stale phone cache) ----------
-const BUILD='1795813535';
+const BUILD='1795813674';
 try{fetch(location.pathname+'?b='+Date.now(),{cache:'no-store'}).then(r=>r.text()).then(h=>{const m=h.match(/const BUILD='(\d+)'/);if(m&&m[1]>BUILD&&!sessionStorage.getItem('rl'+m[1])){sessionStorage.setItem('rl'+m[1],'1');location.replace(location.pathname+'?v='+m[1]+location.hash);}}).catch(()=>{});}catch(_){}
 
 // ---------- products: commodity search & selection ----------
