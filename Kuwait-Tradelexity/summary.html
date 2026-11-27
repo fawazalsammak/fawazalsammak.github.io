@@ -301,7 +301,7 @@ table td.n,table th.n{text-align:center!important}table th.n{direction:rtl;unico
 .tsp.out{opacity:0;transform:scale(1.08);pointer-events:none}
 #tspG{width:min(62vw,46vh,340px);height:min(62vw,46vh,340px);animation:tspIn 1.2s cubic-bezier(.16,1,.3,1) both}
 .tspN{margin-top:clamp(14px,3vh,28px);font:700 clamp(38px,10vw,64px)/1 Montserrat,Noto Naskh Arabic,sans-serif;letter-spacing:-.5px;direction:ltr;display:flex;color:#fff}
-.tspN span{display:inline-block;animation:tspDrop 1.1s var(--d) cubic-bezier(.2,1.3,.4,1) both,bwave 3.3s calc(2.4s + var(--i,0)*.15s) ease-in-out infinite}.tspN span.g{color:#D4B85A}
+.tspN span{display:inline-block;animation:tspDrop 1.1s var(--d) cubic-bezier(.2,1.3,.4,1) both,bwave 4.4s calc(2.4s + var(--i,0)*.22s) ease-in-out infinite}.tspN span.g{color:#D4B85A}
 .tspT{margin-top:12px;font:600 clamp(10px,2.6vw,14px) Montserrat,sans-serif;letter-spacing:3px;color:#9fb3d9;direction:ltr;animation:iup 1s 2.2s ease both;text-align:center;padding:0 12px}
 @keyframes tspDrop{0%{opacity:0;transform:translateY(-60vh)}60%{opacity:1}100%{opacity:1;transform:none}}
 @keyframes tspIn{0%{opacity:0;transform:scale(.6) rotate(-20deg)}100%{opacity:1;transform:none}}
@@ -396,7 +396,7 @@ a,a:link,a:visited,a:hover{text-decoration:none!important}u,abbr{text-decoration
 .lgbtn{font:800 16px Noto Naskh Arabic,Montserrat,sans-serif;color:#0B193A;background:#D4B85A;border:0;border-radius:12px;padding:13px;cursor:pointer}
 .lgbtn:hover{filter:brightness(1.07)}.lgd{font-size:11.5px;color:#8a9ab8;text-align:center;line-height:1.7}
 
-.imin .gw{display:inline-block;color:#fff;animation:bwave 3.3s calc(var(--i)*.15s) ease-in-out infinite}
+.imin .gw{display:inline-block;color:#fff;animation:bwave 4.4s calc(var(--i)*.22s) ease-in-out infinite}
 .imin .gw.g{color:#D4B85A}
 @keyframes gwave{0%,40%,100%{text-shadow:0 2px 12px #0006}12%{text-shadow:0 0 8px #fff,0 0 20px #ffffffcc,0 0 38px #D4B85Abb}}
 
@@ -421,6 +421,7 @@ a.rw:hover{background:#ffffff12}.rw img{width:26px;height:17px;object-fit:cover;
 .go a{display:flex;flex-direction:column;gap:3px;padding:14px;border-radius:16px;border:1px solid #D4B85A88;background:linear-gradient(145deg,#ffffff12,#ffffff05);color:#fff;text-decoration:none}
 .go a b{font-size:16px}.go a small{color:#c9d2e3;font-size:12px}.go a:hover{border-color:#D4B85A;box-shadow:0 0 18px #D4B85A33}
 .note{font-size:12px;color:var(--mut);line-height:1.7;margin:10px 2px}
+.rsel{background:#0B193A;color:#D4B85A;border:1px solid #D4B85A88;border-radius:10px;padding:4px 8px;font:800 15px Noto Naskh Arabic,Montserrat,sans-serif;max-width:60vw}.rsub{font-size:12px;color:var(--mut);margin:-4px 0 8px}.rsub:empty{display:none}
 .kwb{border-color:#D4B85A88;background:linear-gradient(135deg,#2a4a8f55,#ffffff05)}
 </style></head>
 <body>
@@ -451,7 +452,19 @@ const EN=document.documentElement.lang==='en',L=(a,e)=>EN?e:a,$=s=>document.quer
 const q=new URLSearchParams(location.search);let C=(q.get('c')||'KW').toUpperCase();
 const fm=v=>v==null||!isFinite(v)?'–':(Math.abs(v)>=1000?(v/1000).toLocaleString('en-US',{maximumFractionDigits:1})+L(' مليار $',' $ bn'):Math.round(v).toLocaleString('en-US')+L(' مليون $',' $ m'));
 const pc=(v,s)=>v==null?'–':(s&&v>0?'+':'')+(+v).toFixed(1)+'%';
-Promise.all([fetch('sum.json').then(r=>r.json()),fetch('fin.json').then(r=>r.json())]).then(([S,F])=>{const N=F.c;
+
+const avg=a=>{const v=a.filter(x=>x>0);return v.length?v.reduce((s,x)=>s+x,0)/v.length:0;};
+let O=null,FB=null,CHC={},WX=null;
+function chap(c){if(CHC[c])return CHC[c];const d=O.c[c],n=d.y.length,r={};for(const [k,v] of Object.entries(d.ch)){if(+k>=98)continue;const xs=v.slice(0,n),ms=v.slice(n);r[k]={x:avg(xs),m:avg(ms),need:ms.filter((m,i)=>m>xs[i]&&m>0).length,n};}return CHC[c]=r;}
+function world(){if(WX)return WX;WX={_T:0};for(const c in O.c)for(const [k,v] of Object.entries(chap(c))){WX[k]=(WX[k]||0)+v.x;WX._T+=v.x;}return WX;}
+function anal(X,Y){const A=chap(X),B=chap(Y),W=world();let ax=0,bm=0;for(const k in A)ax+=A[k].x;for(const k in B)bm+=B[k].m;ax=ax||1;bm=bm||1;const ks=new Set([...Object.keys(A),...Object.keys(B)]);let d=0;const ops=[];
+ ks.forEach(k=>{d+=Math.abs(((B[k]||{}).m||0)/bm-((A[k]||{}).x||0)/ax);const a=A[k],b=B[k];if(!a||!b||!a.x||!b.m)return;const rca=(a.x/ax)/((W[k]||1)/W._T),pot=Math.min(a.x,b.m),net=b.m-b.x;
+  ops.push({k,v:pot,s:net>0&&rca>=1?1:0,sc:pot*Math.min(2.5,Math.max(.3,rca))*(net>0?1:.4)*(.6+.4*b.need/(b.n||3))});});
+ ops.sort((p,q)=>q.sc-p.sc);return {tci:Math.round(100*(1-d/2)),ops:ops.slice(0,3)};}
+function bil(a,b){const pa=O.c[a].p[b],pb=O.c[b].p[a];let x=pa?pa[0]:0,m=pa?pa[1]:0;if(pb){if(pb[1]>x)x=pb[1];if(!m)m=pb[0];}return [x,m];}
+function inv(a,b){if(!FB)return [null,null];const fa=FB.c[a]||{},fb=FB.c[b]||{},f=(lst,c)=>{const r=((lst||{}).p||[]).find(r=>r[0]===c);return r?r[1]:null;};
+ let ab=f(fa.o,b);if(ab==null)ab=f(fb.i,a);let ba=f(fa.i,b);if(ba==null)ba=f(fb.o,a);return [ab,ba];}
+Promise.all([fetch('sum.json').then(r=>r.json()),fetch('fin.json').then(r=>r.json()),fetch('opp.json').then(r=>r.json()),fetch('fdib.json').then(r=>r.ok?r.json():null).catch(()=>null)]).then(([S,F,OO,FF])=>{const N=F.c;O=OO;FB=FF;
  if(!S.c[C])C='KW';const d=S.c[C],nm=c=>N[c]?(EN?N[c].en:N[c].ar):c,fl=c=>`oflags/${c.toLowerCase()}.svg`,hs=k=>S.hs[k]?(EN?S.hs[k][1]:S.hs[k][0]):k;
  document.title='Tradelexity – '+nm(C);
  const sfx=EN?'_en':'';const link=(p,extra)=>p+'?c='+C+(extra||'');
@@ -462,16 +475,20 @@ Promise.all([fetch('sum.json').then(r=>r.json()),fetch('fin.json').then(r=>r.jso
  const row=(c,v,k)=>`<a class="rw" href="?c=${c}">${k!=null?`<span class="k">${k}</span>`:''}<span class="n">${N[c]?`<img src="${fl(c)}" alt=""> `:''}${nm(c)}</span><span class="v">${v}</span></a>`;
  const prow=(o,i)=>`<div class="rw"><span class="k">${i+1}</span><span class="n">${hs(o.k)}${o.s?`<span class="tg">${L('فرصة قوية','Strong')}</span>`:''}</span><span class="v">${fm(o.v)}</span></div>`;
  const hrow=(a,i)=>`<div class="rw"><span class="k">${i+1}</span><span class="n">${hs(a[0])}</span><span class="v">${fm(a[1])}</span></div>`;
- let kwSec='';
- if(d.kw){const k=d.kw,b=k.tr[0]-k.tr[1],tl=t=>t>=40?[L('عالٍ','High'),'#7fd3a5']:t>=25?[L('متوسط','Medium'),'#D4B85A']:[L('منخفض','Low'),'#e07a7a'],t1=tl(k.tci);
-  kwSec=`<div class="sec kwb"><h3><span>${L('العلاقة مع دولة الكويت','Relationship with Kuwait')}</span><a href="${EN?'opportunities_en.html':'opportunities.html'}?c=KW&to=${C}">${L('التفاصيل ←','Details →')}</a></h3>
-   <div class="kg"><div><small>${L('صادرات الكويت إلى ','Kuwait exports to ')+nm(C)}</small><b>${fm(k.tr[0])}</b></div><div><small>${L('واردات الكويت من ','Kuwait imports from ')+nm(C)}</small><b>${fm(k.tr[1])}</b></div>
-   <div><small>${L('الميزان التجاري','Trade balance')}</small><b style="color:${b>=0?'#7fd3a5':'#e07a7a'}">${fm(Math.abs(b))}</b><small>${L('لصالح ','in favour of ')+(b>=0?nm('KW'):nm(C))}</small></div>
-   <div><small>${L('التكامل التجاري','Trade complementarity')}</small><b style="color:${t1[1]}">${k.tci}/100</b><small>${t1[0]}</small></div>
-   ${k.inv&&(k.inv[0]!=null||k.inv[1]!=null)?`<div><small>${L('استثمارات الكويت في ','Kuwait investment in ')+nm(C)}</small><b>${fm(k.inv[0])}</b></div><div><small>${L('استثمارات ','Investment of ')+nm(C)+L(' في الكويت',' in Kuwait')}</small><b>${fm(k.inv[1])}</b></div>`:''}</div>
-   <div class="two" style="margin-top:10px"><div><h3 style="font-size:14px">${L('أبرز ما يمكن أن تصدّره الكويت إليها','Top Kuwaiti export opportunities')}</h3><div class="rl">${k.ops.map(prow).join('')||'–'}</div></div>
-   <div><h3 style="font-size:14px">${L('أبرز ما يمكن أن تورّده إلى الكويت','Top supply opportunities to Kuwait')}</h3><div class="rl">${k.ops2.map(prow).join('')||'–'}</div></div></div></div>`;}
- else if(d.mk){kwSec=`<div class="sec kwb"><h3><span>${L('أفضل الأسواق لصادرات الكويت (التكامل التجاري)','Best markets for Kuwaiti exports (complementarity)')}</span><a href="opportunities${sfx}.html?c=KW">${L('التفاصيل ←','Details →')}</a></h3><div class="rl">${d.mk.map(([c,v],i)=>row(c,v+'/100',i+1)).join('')}</div></div>`;}
+ let P0=(q.get('p')||'').toUpperCase();const parts=Object.keys(O.c).filter(c=>c!==C&&N[c]);
+ if(!P0||!O.c[P0]||P0===C){const pp=O.c[C].p;P0=Object.keys(pp).filter(c=>c!==C&&O.c[c]&&N[c]).sort((a,b)=>(pp[b][0]+pp[b][1])-(pp[a][0]+pp[a][1]))[0]||(C==='KW'?'CN':'KW');}
+ function relHTML(P){const tr=bil(C,P),b=tr[0]-tr[1],a1=anal(C,P),a2=anal(P,C),iv=inv(C,P),tl=t=>t>=40?[L('عالٍ','High'),'#7fd3a5']:t>=25?[L('متوسط','Medium'),'#D4B85A']:[L('منخفض','Low'),'#e07a7a'],t1=tl(a1.tci);
+  const opts=parts.slice().sort((x,y)=>nm(x).localeCompare(nm(y),EN?'en':'ar')).map(c=>`<option value="${c}"${c===P?' selected':''}>${nm(c)}</option>`).join('');
+  return `<div class="sec kwb" id="rel"><h3><span>${L('العلاقة مع ','Relationship with ')}<select id="relSel" class="rsel">${opts}</select></span><a href="${EN?'opportunities_en.html':'opportunities.html'}?c=${C}&to=${P}">${L('التفاصيل ←','Details →')}</a></h3>
+   <div class="rsub">${P===P0&&!q.get('p')?L('الشريك التجاري الأول','Largest trading partner'):''}</div>
+   <div class="kg"><div><small>${L('صادرات ','Exports of ')+nm(C)+L(' إلى ',' to ')+nm(P)}</small><b>${fm(tr[0])}</b></div><div><small>${L('واردات ','Imports of ')+nm(C)+L(' من ',' from ')+nm(P)}</small><b>${fm(tr[1])}</b></div>
+   <div><small>${L('الميزان التجاري','Trade balance')}</small><b style="color:${b>=0?'#7fd3a5':'#e07a7a'}">${fm(Math.abs(b))}</b><small>${L('لصالح ','in favour of ')+(b>=0?nm(C):nm(P))}</small></div>
+   <div><small>${L('التكامل التجاري','Trade complementarity')}</small><b style="color:${t1[1]}">${a1.tci}/100</b><small>${t1[0]}</small></div>
+   ${iv[0]!=null||iv[1]!=null?`<div><small>${L('استثمارات ','Investment of ')+nm(C)+L(' في ',' in ')+nm(P)}</small><b>${fm(iv[0])}</b></div><div><small>${L('استثمارات ','Investment of ')+nm(P)+L(' في ',' in ')+nm(C)}</small><b>${fm(iv[1])}</b></div>`:''}</div>
+   <div class="two" style="margin-top:10px"><div><h3 style="font-size:14px">${L('أبرز ما يمكن أن تصدّره '+nm(C)+' إليها','Top export opportunities for '+nm(C))}</h3><div class="rl">${a1.ops.map(prow).join('')||'–'}</div></div>
+   <div><h3 style="font-size:14px">${L('أبرز ما يمكن أن تورّده إلى '+nm(C),'Top supply opportunities to '+nm(C))}</h3><div class="rl">${a2.ops.map(prow).join('')||'–'}</div></div></div></div>`;}
+ let kwSec=relHTML(P0);
+ if(d.mk)kwSec+=`<div class="sec"><h3><span>${L('أفضل الأسواق لصادرات الكويت (التكامل التجاري)','Best markets for Kuwaiti exports (complementarity)')}</span><a href="opportunities${sfx}.html?c=KW">${L('التفاصيل ←','Details →')}</a></h3><div class="rl">${d.mk.map(([c,v],i)=>row(c,v+'/100',i+1)).join('')}</div></div>`;
  $('#out').innerHTML=`<div class="sh"><img src="${fl(C)}" alt=""><div><h2>${nm(C)}</h2><small>${L('الملخص التنفيذي · بيانات ','Executive summary · data ')+d.y}</small></div></div>
   <div class="vr"><div class="vc" style="--c:${R[1]}"><small>${L('مخاطر الاستثمار','Investment risk')}</small><b>${d.risk??'–'}</b><em>${R[0]}</em></div>
    <div class="vc"><small>${L('التصنيف الائتماني','Credit rating')}</small><b dir="ltr">${d.rt}</b><em>S&amp;P</em></div>
@@ -490,6 +507,7 @@ Promise.all([fetch('sum.json').then(r=>r.json()),fetch('fin.json').then(r=>r.jso
    <a href="${$('#swF').href}"><b>${L('الاقتصاد والمالية','Economy & Finance')}</b><small>${L('الناتج والمؤشرات النقدية والاستثمار والمخاطر','Output, monetary, investment, risk')}</small></a>
    <a href="${$('#swO').href}"><b>${L('فرص التجارة الدولية','Trade Prospects')}</b><small>${L('الفرص والاحتياجات والموردون','Opportunities, needs, suppliers')}</small></a></div>
   <div class="note">${L('القيم بالدولار الأمريكي. اضغط على أي دولة لعرض ملخصها.','Values in US dollars. Tap any country to open its summary.')}</div>`;
+ const bindRel=()=>{const se=$('#relSel');if(se)se.onchange=e=>{const P=e.target.value;$('#rel').outerHTML=relHTML(P);const u=new URL(location.href);u.searchParams.set('p',P);history.replaceState(null,'',u);bindRel();};};bindRel();
 }).catch(e=>console.error('SUMERR',e));
 </script>
 <script src="zoomintro.js"></script>
