@@ -405,6 +405,10 @@ a,a:link,a:visited,a:hover{text-decoration:none!important}u,abbr{text-decoration
 .lge{min-height:0;font-size:12.5px;color:#f3a3a3;text-align:center}.lge:empty{display:none}
 .lgbtn{font:800 16px Noto Naskh Arabic,Montserrat,sans-serif;color:#0B193A;background:#D4B85A;border:0;border-radius:12px;padding:13px;cursor:pointer}
 .lgbtn:hover{filter:brightness(1.07)}.lgd{font-size:11.5px;color:#8a9ab8;text-align:center;line-height:1.7}
+
+.imin .gw{display:inline-block;color:#fff;animation:gwave 3.3s calc(var(--i)*.15s) ease-in-out infinite}
+.imin .gw.g{color:#D4B85A}
+@keyframes gwave{0%,40%,100%{text-shadow:0 2px 12px #0006}12%{text-shadow:0 0 8px #fff,0 0 20px #ffffffcc,0 0 38px #D4B85Abb}}
 .bento .lnk .go{left:auto;right:14px}table th.n{direction:ltr}
 </style>
 <style>/* sources hidden on request – remove this rule to restore */ .srcl{display:none!important}.bento .lnk .go{left:auto;right:14px}table th.n{direction:ltr}
@@ -443,7 +447,7 @@ document.getElementById('lgf').onsubmit=e=>{e.preventDefault();const u=document.
   <div class="istars"></div>
   <div class="iin">
     <canvas class="spin iemb" aria-label="Tradelexity"></canvas>
-    <div class="imin" dir="ltr" style="font-family:Montserrat,Noto Naskh Arabic,sans-serif;letter-spacing:.5px">Trade<span style="color:#D4B85A">lexity</span></div>
+    <div class="imin" dir="ltr" style="font-family:Montserrat,Noto Naskh Arabic,sans-serif;letter-spacing:.5px"><span class="gw" style="--i:0">T</span><span class="gw" style="--i:1">r</span><span class="gw" style="--i:2">a</span><span class="gw" style="--i:3">d</span><span class="gw" style="--i:4">e</span><span class="gw g" style="--i:5">l</span><span class="gw g" style="--i:6">e</span><span class="gw g" style="--i:7">x</span><span class="gw g" style="--i:8">i</span><span class="gw g" style="--i:9">t</span><span class="gw g" style="--i:10">y</span></div>
     <div class="iline"></div>
     <div class="ien">GLOBAL TRADE FINANCE INTELLIGENCE</div>
     <svg id="imap" viewBox="0 0 1000 520" aria-hidden="true"></svg>
@@ -996,7 +1000,7 @@ function armCounts(root){if(!cntIO||matchMedia('(prefers-reduced-motion: reduce)
 new MutationObserver(ms=>{const set=new Set();ms.forEach(m=>{const t=m.target.nodeType===1?m.target:m.target.parentElement;if(t&&!t.closest('b'))set.add(t);});set.forEach(armCounts);}).observe(document.querySelector('main'),{childList:true,subtree:true});
 
 // ---------- auto-update (bypass stale phone cache) ----------
-const BUILD='1795813674';
+const BUILD='1795813999';
 try{fetch(location.pathname+'?b='+Date.now(),{cache:'no-store'}).then(r=>r.text()).then(h=>{const m=h.match(/const BUILD='(\d+)'/);if(m&&m[1]>BUILD&&!sessionStorage.getItem('rl'+m[1])){sessionStorage.setItem('rl'+m[1],'1');location.replace(location.pathname+'?v='+m[1]+location.hash);}}).catch(()=>{});}catch(_){}
 
 // ---------- products: commodity search & selection ----------
