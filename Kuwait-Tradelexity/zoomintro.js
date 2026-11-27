@@ -8,7 +8,7 @@ const RM=matchMedia('(prefers-reduced-motion: reduce)').matches;
 const ov=document.createElement('div');ov.id='tzoom';
 ov.style.cssText='position:fixed;inset:0;z-index:9999;background:radial-gradient(70% 55% at 50% 45%,#1d3a78 0%,#0f2350 45%,#071433 100%);transition:opacity .7s ease;cursor:pointer';
 const cv=document.createElement('canvas');cv.style.cssText='position:absolute;inset:0;width:100%;height:100%';ov.appendChild(cv);
-const nm=document.createElement('div');nm.style.cssText='position:absolute;left:0;right:0;bottom:12%;text-align:center;color:#fff;font:800 clamp(22px,5vw,34px) Almarai,Montserrat,sans-serif;letter-spacing:.5px;opacity:0;transform:translateY(12px);transition:opacity .6s,transform .6s;text-shadow:0 0 18px #D4B85A99';ov.appendChild(nm);
+const nm=document.createElement('div');nm.style.cssText='position:absolute;left:0;top:0;display:flex;align-items:center;gap:10px;padding:8px 14px 8px 10px;border-radius:14px;background:rgba(11,25,58,.72);border:1px solid #D4B85A88;box-shadow:0 0 24px #D4B85A44;backdrop-filter:blur(6px);-webkit-backdrop-filter:blur(6px);color:#fff;font:800 clamp(17px,4.4vw,24px) Almarai,Montserrat,sans-serif;white-space:nowrap;opacity:0;transition:opacity .5s;pointer-events:none;will-change:transform';ov.appendChild(nm);
 const lg=document.createElement('div');lg.style.cssText='position:absolute;top:7%;left:0;right:0;text-align:center;font:700 15px Montserrat,sans-serif;color:#fff;letter-spacing:.5px;opacity:.9';lg.innerHTML='Trade<span style="color:#D4B85A">lexity</span>';ov.appendChild(lg);
 document.documentElement.appendChild(ov);
 const done=()=>{if(ov.dataset.d)return;ov.dataset.d=1;ov.style.opacity='0';setTimeout(()=>ov.remove(),750);};
@@ -17,7 +17,7 @@ fetch('world.json').then(r=>r.json()).then(w=>{
  const ctx=cv.getContext('2d');let W,H,dpr;
  const fit=()=>{dpr=Math.min(devicePixelRatio||1,2);W=innerWidth;H=innerHeight;cv.width=W*dpr;cv.height=H*dpr;ctx.setTransform(dpr,0,0,dpr,0,0);};fit();addEventListener('resize',fit);
  const en=document.documentElement.lang==='en';
- try{const f=(w.c[id]||{}).n||(w.dots[id]||{}).n;nm.textContent=(ZN[c]||[])[en?1:0]||f||'';}catch(_){}
+ try{const f=(w.c[id]||{}).n||(w.dots[id]||{}).n;nm.innerHTML='<img src="oflags/'+c.toLowerCase()+'.svg" alt="" style="height:26px;width:auto;border-radius:4px;box-shadow:0 0 0 1px #ffffff40"><span></span>';nm.querySelector('span').textContent=(ZN[c]||[])[en?1:0]||f||'';}catch(_){}
  // continents: rough regions on the 1000x520 projection
  const reg=(x,y)=>x<350?(y<230?0:1):x<640?(y<150&&x<620?2:(y<410&&x<640&&y>=150?3:4)):(y>330&&x>780?5:4);
  const D=w.dm.map(d=>({x:d[0],y:d[1],id:d[2],g:reg(d[0],d[1])}));
@@ -51,7 +51,8 @@ fetch('world.json').then(r=>r.json()).then(w=>{
   if(gl&&tgt.length<=3){const X=ox+cx*sc,Y=oy+cy*sc,rr=(14+10*Math.sin(t*4))*ze+6;ctx.strokeStyle='rgba(255,233,168,'+(.8*gl)+')';ctx.lineWidth=2;ctx.beginPath();ctx.arc(X,Y,rr,0,6.28);ctx.stroke();ctx.beginPath();ctx.arc(X,Y,rr*1.9,0,6.28);ctx.globalAlpha=.35*gl;ctx.stroke();ctx.globalAlpha=1;}
   if(!tgt.length&&gl){const X=ox+cx*sc,Y=oy+cy*sc;ctx.fillStyle='#fff6d6';ctx.shadowColor='#ffe9a8';ctx.shadowBlur=30*pulse;ctx.beginPath();ctx.arc(X,Y,Math.max(4,r*1.8),0,6.28);ctx.fill();ctx.shadowBlur=0;}
   ctx.globalAlpha=1;
-  if(t>T3-.6&&!nm.dataset.s){nm.dataset.s=1;nm.style.opacity='1';nm.style.transform='none';}
+  {const tx=ox+cx*sc,ty=oy+cy*sc,hh=Math.max(bh*sc/2,(tgt.length<=3?30:8)),lw=nm.offsetWidth||160,lh=nm.offsetHeight||44;let lx=tx-lw/2,ly=ty+hh+14;if(ly+lh>H-20)ly=ty-hh-14-lh;lx=Math.max(12,Math.min(W-lw-12,lx));ly=Math.max(60,Math.min(H-lh-20,ly));nm.style.transform=`translate(${lx}px,${ly}px)`;}
+  if(t>T2+.4&&!nm.dataset.s){nm.dataset.s=1;nm.style.opacity='1';}
 };window.__ZDRAW=draw;
  const fr=now=>{if(t0===null)t0=now;const t=RM?T3:(now-t0)/1000;if(window.__ZT==null){draw(t);if(t>=TE)done();}if(ov.isConnected)requestAnimationFrame(fr);};
  requestAnimationFrame(fr);
