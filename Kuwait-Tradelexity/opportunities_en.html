@@ -529,7 +529,7 @@ requestAnimationFrame(loop);})();
 <div class="pair">
  <div class="pc"><span class="lb">Exporter</span><div class="fl"><img id="fX" alt=""></div><div class="nmw"><span class="nm" id="nX"></span><select id="sX" aria-label="exporter"></select></div></div>
  <button class="swap" id="swap" type="button" aria-label="swap"><svg viewBox="0 0 24 24"><path d="M4 8h15M15 4l4 4-4 4M20 16H5M9 12l-4 4 4 4"/></svg></button>
- <div class="pc"><span class="lb">Target market</span><div class="fl"><img id="fY" alt=""></div><div class="nmw"><span class="nm" id="nY"></span><select id="sY" aria-label="market"></select></div></div>
+ <div class="pc"><span class="lb">Target market · ranked by TCI</span><div class="fl"><img id="fY" alt=""></div><div class="nmw"><span class="nm" id="nY"></span><select id="sY" aria-label="market"></select></div></div>
 </div>
 <div class="kyr" id="kyr"></div><div class="kp" id="kp"></div>
 <div class="otabs"><button data-t="o" class="on">Opportunities</button><button data-t="n">Market needs</button><button data-t="s">Export strengths</button></div>
@@ -561,9 +561,17 @@ tr:'M3 16l2-6.5A2 2 0 0 1 7 8h10a2 2 0 0 1 2 1.5L21 16v3H3zM3 16h18M7 19v2M17 19
 function sec(k){const c=+k;return c<=5?'an':c<=14?'pl':c===15?'oi':c<=24?'fo':c<=26?'mi':c===27?'fu':c===30?'ph':c<=38?'ch':c<=40?'pt':c<=43?'le':c<=46?'wo':c<=49?'pa':c<=63?'tx':c<=67?'fw':c<=70?'st':c===71?'je':c<=83?'me':c===84?'ma':c===85?'el':c<=89?'tr':c<=92?'in':c===93?'ar':c<=96?'mc':'at';}
 const ico=k=>`<svg class="hi" viewBox="0 0 24 24" aria-hidden="true"><path d="${IP[sec(k)]}"/></svg>`;
 const avg=a=>{const v=a.filter(x=>x>0);return v.length?v.reduce((s,x)=>s+x,0)/v.length:0;};
-function chap(c){const d=O.c[c],n=d.y.length,r={};for(const [k,v] of Object.entries(d.ch)){const xs=v.slice(0,n),ms=v.slice(n);r[k]={x:avg(xs)||0,m:avg(ms)||0,need:ms.filter((m,i)=>m>xs[i]&&m>0).length,n};}return r;}
+const CC={};function chap(c){if(CC[c])return CC[c];return CC[c]=chap0(c);}
+function chap0(c){const d=O.c[c],n=d.y.length,r={};for(const [k,v] of Object.entries(d.ch)){const xs=v.slice(0,n),ms=v.slice(n);r[k]={x:avg(xs)||0,m:avg(ms)||0,need:ms.filter((m,i)=>m>xs[i]&&m>0).length,n};}return r;}
 let WX=null;function world(){if(WX)return WX;WX={};let T=0;for(const c in O.c){for(const [k,v] of Object.entries(chap(c))){WX[k]=(WX[k]||0)+v.x;T+=v.x;}}WX._T=T;return WX;}
 function bilat(a,b){const pa=O.c[a].p[b],pb=O.c[b].p[a];let x=pa?pa[0]:0,m=pa?pa[1]:0;if(pb){if(pb[1]>x)x=pb[1];if(!m)m=pb[0];}return {x:x||0,m:m||0};}
+
+function tci(a,b){const A=chap(a),B=chap(b);let ax=0,bm=0;for(const k in A)ax+=A[k].x;for(const k in B)bm+=B[k].m;if(!ax||!bm)return null;
+ const ks=new Set([...Object.keys(A),...Object.keys(B)]);let d=0;ks.forEach(k=>{d+=Math.abs(((B[k]||{}).m||0)/bm-((A[k]||{}).x||0)/ax);});return Math.round(100*(1-d/2));}
+let MK='';function marketList(){if(MK===X)return;MK=X;const rows=Object.keys(O.c).filter(c=>N[c]&&c!==X).map(c=>[c,tci(X,c)]).filter(r=>r[1]!=null).sort((a,b)=>b[1]-a[1]);
+ const g=[[L('تكامل عالٍ','High complementarity'),r=>r[1]>=40],[L('تكامل متوسط','Medium complementarity'),r=>r[1]>=25&&r[1]<40],[L('تكامل منخفض','Low complementarity'),r=>r[1]<25]];
+ $('#sY').innerHTML=g.map(([t,f])=>{const rr=rows.filter(f);return rr.length?`<optgroup label="${t}">${rr.map(r=>`<option value="${r[0]}">${nm(r[0])} · ${r[1]}</option>`).join('')}</optgroup>`:'';}).join('');
+ return rows;}
 let R;
 function analyse(){const A=chap(X),B=chap(Y),W=world(),Ax=Object.values(A).reduce((s,v)=>s+v.x,0)||1,Bm=Object.values(B).reduce((s,v)=>s+v.m,0)||1;
  const ks=new Set([...Object.keys(A),...Object.keys(B)]);let d=0;ks.forEach(k=>{d+=Math.abs(((B[k]||{}).m||0)/Bm-((A[k]||{}).x||0)/Ax);});
@@ -622,7 +630,7 @@ function sheet(k){const a=R.A[k]||{x:0},b=R.B[k]||{x:0,m:0,need:0,n:3},rca=R.rca
 function brief(){const bl=bilat(X,Y),bal=bl.x-bl.m,ly=O.c[X].ly||O.c[X].y[O.c[X].y.length-1],yrs=O.c[X].y;
  const f1=v=>v.toLocaleString('en-US',{maximumFractionDigits:1});
  const tag=o=>o.rca>=1&&o.net>0?['g',L('قوية','Strong')]:o.net>0?['y',L('محتملة','Possible')]:['r',L('محدودة','Limited')];
- const lv=R.TCI>=40?L('مرتفع','high'):R.TCI>=25?L('متوسط','moderate'):L('منخفض','low');
+ const lv=R.TCI>=40?L('عالٍ','high'):R.TCI>=25?L('متوسط','moderate'):L('منخفض','low');
  const top=R.ops.slice(0,10),strong=top.filter(o=>o.rca>=1&&o.net>0).slice(0,3).map(o=>sn(o.k));
  const d=new Date().toLocaleDateString(EN?'en-GB':'ar-KW-u-nu-latn',{day:'numeric',month:'long',year:'numeric'});
  const summ=L(`يبلغ مؤشر التكامل التجاري بين صادرات ${nm(X)} وواردات ${nm(Y)} ${R.TCI} من 100 (مستوى ${lv}). بلغت صادرات ${nm(X)} إلى ${nm(Y)} ${usd(bl.x)} مقابل واردات بقيمة ${usd(bl.m)} في ${ly}.${strong.length?` وتتركز أبرز الفرص في: ${strong.join('، ')}.`:''}`,
@@ -630,7 +638,7 @@ function brief(){const bl=bilat(X,Y),bal=bl.x-bl.m,ly=O.c[X].ly||O.c[X].y[O.c[X]
  const mini=(list,val,ex)=>`<table><thead><tr><th>HS</th><th>${L('السلعة','Product')}</th><th class="num">${L('القيمة','Value')}</th><th class="num">${ex[0]}</th></tr></thead><tbody>${list.slice(0,6).map(o=>`<tr><td>${o.k}</td><td>${sn(o.k)}</td><td class="num">${usd(val(o))}</td><td class="num">${ex[1](o)}</td></tr>`).join('')}</tbody></table>`;
  $('#brief').innerHTML=`<div class="bh"><div><div class="br1">Trade<span>lexity</span></div><div class="br2">GLOBAL TRADE FINANCE INTELLIGENCE</div></div><div class="dt">${L('موجز فرص التبادل التجاري','Trade Opportunity Brief')}<br>${d}</div></div>
  <div class="ttl"><img src="${flag(X)}" alt=""><span class="ar">${EN?'→':'←'}</span><img src="${flag(Y)}" alt=""><div><h2>${L('فرص صادرات '+nm(X)+' إلى '+nm(Y),nm(X)+' export opportunities in '+nm(Y))}</h2><small>${L('متوسط '+yrs[0]+'–'+yrs[yrs.length-1]+' · القيم بالدولار الأمريكي','Average '+yrs[0]+'–'+yrs[yrs.length-1]+' · values in US dollars')}</small></div></div>
- <div class="kr"><div class="kk"><small>${L('مؤشر التكامل التجاري','Complementarity index')}</small><b>${R.TCI} / 100</b></div><div class="kk"><small>${L('الصادرات إلى '+nm(Y),'Exports to '+nm(Y))} (${ly})</small><b>${usd(bl.x)}</b></div><div class="kk"><small>${L('الواردات من '+nm(Y),'Imports from '+nm(Y))} (${ly})</small><b>${usd(bl.m)}</b></div><div class="kk"><small>${L('الميزان التجاري','Trade balance')}</small><b style="color:${bal>=0?'#2f6f61':'#a13d3d'}">${(bal<0?'−':'+')+usd(Math.abs(bal))}</b></div></div>
+ <div class="kr"><div class="kk"><small>${L('مؤشر التكامل التجاري (TCI)','Trade Complementarity Index (TCI)')}</small><b>${R.TCI} / 100</b></div><div class="kk"><small>${L('الصادرات إلى '+nm(Y),'Exports to '+nm(Y))} (${ly})</small><b>${usd(bl.x)}</b></div><div class="kk"><small>${L('الواردات من '+nm(Y),'Imports from '+nm(Y))} (${ly})</small><b>${usd(bl.m)}</b></div><div class="kk"><small>${L('الميزان التجاري','Trade balance')}</small><b style="color:${bal>=0?'#2f6f61':'#a13d3d'}">${(bal<0?'−':'+')+usd(Math.abs(bal))}</b></div></div>
  <div class="sum">${summ}</div>
  <h3>${L('أبرز 10 فرص تصديرية','Top 10 export opportunities')}</h3>
  <table><thead><tr><th>#</th><th>HS</th><th>${L('السلعة','Product')}</th><th class="num">${L('واردات '+nm(Y),nm(Y)+' imports')}</th><th class="num">${L('صادرات '+nm(X),nm(X)+' exports')}</th><th class="num">${L('حجم الفرصة','Opportunity')}</th><th class="num">${L('سنوات العجز','Shortage yrs')}</th><th class="num">RCA</th><th>${L('التقييم','Rating')}</th></tr></thead>
@@ -641,19 +649,19 @@ function brief(){const bl=bilat(X,Y),bal=bl.x-bl.m,ly=O.c[X].ly||O.c[X].y[O.c[X]
   'Methodology: Trade complementarity index (UNCTAD) = 100 × (1 − ½ Σ|product share of market imports − product share of exporter exports|). Opportunity = the smaller of the exporter\'s exports and the market\'s imports of the product. Revealed comparative advantage (RCA) = product share of the country\'s exports ÷ its share of total exports of covered countries; above 1 indicates competitiveness. Shortage years = years in which the market\'s imports exceeded its exports of the product. Data at HS 2-digit chapter level. Bilateral exports use the higher of exporter-reported and partner-reported (mirror) figures so that crude oil is captured.<br>Sources: UN Comtrade database; Foreign Trade Statistics – Central Statistical Bureau (State of Kuwait). Indicators are for guidance and do not constitute a feasibility study.')}</div>`;
  const imgs=[...document.querySelectorAll('#brief img')];Promise.all(imgs.map(i=>i.complete?1:new Promise(r=>{i.onload=i.onerror=r;}))).then(()=>setTimeout(()=>window.print(),150));}
 function setTab(t){TAB=t;document.querySelectorAll('.otabs button').forEach(b=>b.classList.toggle('on',b.dataset.t===t));document.querySelectorAll('.pane').forEach(p=>p.classList.toggle('on',p.id==='p'+t));if(t==='o')drawTM();grow();}
-function render(){if(X===Y)Y=Object.keys(O.c).find(c=>c!==X);
+function render(){const ml=marketList();if(X===Y||![...$('#sY').options].some(o=>o.value===Y))Y=(ml&&ml[0]&&ml[0][0])||[...$('#sY').options][0].value;
  history.replaceState(null,'','?c='+X+'&to='+Y);document.title='Tradelexity – '+nm(X)+' → '+nm(Y);
  ['X','Y'].forEach(s=>{const c=s==='X'?X:Y;$('#f'+s).src=flag(c);$('#n'+s).textContent=nm(c);$('#s'+s).value=c;});
  $('#swT').href=$('#swT').dataset.h+(X==='KW'?'#kw':'?c='+X);$('#swF').href=$('#swF').dataset.h+'?c='+X;
  R=analyse();const bl=bilat(X,Y),bal=bl.x-bl.m,best=R.ops[0];
- const lv=R.TCI>=40?L('مرتفع','High'):R.TCI>=25?L('متوسط','Medium'):L('منخفض','Low');
+ const lv=R.TCI>=40?L('عالٍ','High'):R.TCI>=25?L('متوسط','Medium'):L('منخفض','Low');
  const yr=O.c[X].ly||O.c[X].y[O.c[X].y.length-1];
  $('#kp').innerHTML=`<div class="kc"><small>${L('الصادرات','Exports')}</small><b>${usd(bl.x)}</b><span class="ln" style="background:#D4B85A"></span></div>
   <div class="kc"><small>${L('الواردات','Imports')}</small><b>${usd(bl.m)}</b><span class="ln" style="background:#5e9e8f"></span></div>
   <div class="kc"><small>${L('الميزان التجاري','Trade balance')}</small><b class="${bal>=0?'up':'dn'}">${(bal<0?'−':'+')+usd(Math.abs(bal))}</b><span class="ln" style="background:#8a94a6"></span></div>
-  <div class="kc"><small>${L('التكامل التجاري','Complementarity')}</small>${gauge(R.TCI)}<small>${lv}</small></div>`;
+  <div class="kc"><small>${L('مؤشر التكامل التجاري (TCI)','Trade Complementarity Index (TCI)')}</small>${gauge(R.TCI)}<small>${lv}</small></div>`;
  $('#kyr').textContent=L('التبادل الثنائي · '+yr,'Bilateral trade · '+yr);
- $('#inf').onclick=()=>{$('#shb').innerHTML=`<div class="gr"></div><div class="hd"><span class="e"><svg class="hi" viewBox="0 0 24 24"><path d="M12 3a9 9 0 1 0 0 18 9 9 0 0 0 0-18zM12 11v6M12 7.5h.01"/></svg></span><div><b>${L('كيف تُقرأ الصفحة','How to read this')}</b></div></div><div style="font-size:13px;line-height:1.8;color:#dfe7f5;margin-top:10px">${L('<b>مؤشر التكامل</b> (0–100): مدى توافق ما تصدّره الدولة الأولى مع ما تستورده الثانية؛ فوق 40 مرتفع.<br><b>المربعات</b>: كل مربع سلعة، وحجمه يمثل حجم الفرصة (الأصغر بين صادرات الأولى وواردات الثانية). الذهبي = فرصة قوية، الأخضر المائل للزرقة = حاجة قائمة بتنافسية أقل، الرمادي = منافسة محلية.<br><b>مؤشر العجز</b>: عدد السنوات (من 3) التي استوردت فيها السوق أكثر مما صدّرت.<br><b>الميزة النسبية ×</b>: أكثر من 1 تعني أن الدولة منافسة عالمياً في السلعة.<br>البيانات: فصول النظام المنسق، متوسط آخر 3 سنوات، بالدولار الأمريكي.','<b>Fit index</b> (0–100): how well the first country\'s exports match what the second imports; above 40 is high.<br><b>Tiles</b>: each tile is a product; its size is the opportunity (the smaller of the first country\'s exports and the market\'s imports). Gold = strong opportunity, teal = market need with lower competitiveness, slate = local competition.<br><b>Shortage marker</b>: years (of 3) the market imported more than it exported.<br><b>RCA ×</b>: above 1 means the country is globally competitive in that product.<br>Data: HS chapters, average of the latest 3 years, US$.')}</div><button class="cl" type="button">${L('إغلاق','Close')}</button>`;$('#sh').classList.add('on');$('#shb .cl').onclick=()=>$('#sh').classList.remove('on');};
+ $('#inf').onclick=()=>{$('#shb').innerHTML=`<div class="gr"></div><div class="hd"><span class="e"><svg class="hi" viewBox="0 0 24 24"><path d="M12 3a9 9 0 1 0 0 18 9 9 0 0 0 0-18zM12 11v6M12 7.5h.01"/></svg></span><div><b>${L('كيف تُقرأ الصفحة','How to read this')}</b></div></div><div style="font-size:13px;line-height:1.8;color:#dfe7f5;margin-top:10px">${L('<b>مؤشر التكامل التجاري (TCI)</b> (0–100): مدى توافق ما تصدّره الدولة الأولى مع ما تستورده الثانية؛ فوق 40 عالٍ، 25–40 متوسط، أقل من 25 منخفض.<br><b>المربعات</b>: كل مربع سلعة، وحجمه يمثل حجم الفرصة (الأصغر بين صادرات الأولى وواردات الثانية). الذهبي = فرصة قوية، الأخضر المائل للزرقة = حاجة قائمة بتنافسية أقل، الرمادي = منافسة محلية.<br><b>مؤشر العجز</b>: عدد السنوات (من 3) التي استوردت فيها السوق أكثر مما صدّرت.<br><b>الميزة النسبية ×</b>: أكثر من 1 تعني أن الدولة منافسة عالمياً في السلعة.<br>البيانات: فصول النظام المنسق، متوسط آخر 3 سنوات، بالدولار الأمريكي.','<b>Trade Complementarity Index (TCI)</b> (0–100): how well the first country\'s exports match what the second imports; above 40 is high, 25–40 medium, below 25 low.<br><b>Tiles</b>: each tile is a product; its size is the opportunity (the smaller of the first country\'s exports and the market\'s imports). Gold = strong opportunity, teal = market need with lower competitiveness, slate = local competition.<br><b>Shortage marker</b>: years (of 3) the market imported more than it exported.<br><b>RCA ×</b>: above 1 means the country is globally competitive in that product.<br>Data: HS chapters, average of the latest 3 years, US$.')}</div><button class="cl" type="button">${L('إغلاق','Close')}</button>`;$('#sh').classList.add('on');$('#shb .cl').onclick=()=>$('#sh').classList.remove('on');};
  $('#hintO').innerHTML=`<span>${L('حجم المربع = حجم الفرصة','Tile size = opportunity size')}</span><span>${L('اختر أي سلعة لعرض التفاصيل','Select a product for details')}</span>`;
  $('#bn').innerHTML=`<div class="hint"><span>${L('صافي الواردات (الواردات − الصادرات)','Net imports (imports − exports)')}</span></div>`+bars(R.lacks,o=>o.net,'linear-gradient(90deg,#ef8b8b,#f3b0a0)',o=>`<span class="pdot">${pdots(o.need,o.n)}</span>`);
  $('#bs').innerHTML=`<div class="hint"><span>${L('الصادرات ذات الميزة النسبية','Exports with comparative advantage')}</span></div>`+bars(R.str,o=>o.x,'linear-gradient(90deg,#6fb5a6,#8fd1bf)',o=>`<span class="rca">×${o.rca.toLocaleString('en-US',{maximumFractionDigits:1})}</span>`);
@@ -662,7 +670,7 @@ function render(){if(X===Y)Y=Object.keys(O.c).find(c=>c!==X);
 Promise.all([fetch('opp.json').then(r=>r.json()),fetch('fin.json').then(r=>r.json())]).then(([o,f])=>{O=o;CH=o.ch;N=f.c;
  const cs=Object.keys(O.c).filter(c=>N[c]).sort((a,b)=>nm(a).localeCompare(nm(b),EN?'en':'ar'));
  if(!O.c[X])X='KW';if(!Y||!O.c[Y]){const p=O.c[X].p;Y=Object.keys(p).filter(c=>O.c[c]&&c!==X).sort((a,b)=>(p[b][0]+p[b][1])-(p[a][0]+p[a][1]))[0]||'SA';}
- const opts=cs.map(c=>`<option value="${c}">${nm(c)}</option>`).join('');$('#sX').innerHTML=opts;$('#sY').innerHTML=opts;
+ const opts=cs.map(c=>`<option value="${c}">${nm(c)}</option>`).join('');$('#sX').innerHTML=opts;
  $('#sX').onchange=e=>{X=e.target.value;render();};$('#sY').onchange=e=>{Y=e.target.value;render();};
  $('#swap').onclick=()=>{$('#swap').classList.toggle('sp');[X,Y]=[Y,X];render();};
  document.querySelectorAll('.otabs button').forEach(b=>b.onclick=()=>setTab(b.dataset.t));
