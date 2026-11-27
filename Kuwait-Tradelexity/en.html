@@ -424,7 +424,7 @@ requestAnimationFrame(loop);})();
     <div class="ibtns"><div class="ilg"><button class="ibtn main ilb" data-l="ar" lang="ar">الدخول بالعربية</button><button class="ibtn main ilb" data-l="en" lang="en">Enter in English</button></div><button id="iGo" class="ibtn main" style="display:none">Enter the Platform</button></div>
   </div>
 </div>
-<header class="top"><a class="lang" href="./" onclick="this.href='./'+location.search+location.hash" lang="ar">عربي</a>
+<header class="top"><a class="lang" href="index.html" onclick="const q=new URLSearchParams(location.search);q.set('go','1');this.href='index.html?'+q+location.hash" lang="ar">عربي</a>
   <div class="brand"><canvas class="spin bglobe" aria-label="Tradelexity"></canvas><div><div class="min" dir="ltr" style="font-family:Montserrat,Noto Naskh Arabic,sans-serif;font-size:15px"><span style="color:#fff">Trade</span>lexity</div><h1>Kuwait Foreign Trade Statistics</h1></div><img class="cemb ofh" src="oflags/kw.svg" alt="State of Kuwait emblem"></div>
   <div class="bar">
     <div class="tabs" role="group" aria-label="View">
@@ -970,7 +970,7 @@ function armCounts(root){if(!cntIO||matchMedia('(prefers-reduced-motion: reduce)
 new MutationObserver(ms=>{const set=new Set();ms.forEach(m=>{const t=m.target.nodeType===1?m.target:m.target.parentElement;if(t&&!t.closest('b'))set.add(t);});set.forEach(armCounts);}).observe(document.querySelector('main'),{childList:true,subtree:true});
 
 // ---------- auto-update (bypass stale phone cache) ----------
-const BUILD='1795812110';
+const BUILD='1795812656';
 try{fetch(location.pathname+'?b='+Date.now(),{cache:'no-store'}).then(r=>r.text()).then(h=>{const m=h.match(/const BUILD='(\d+)'/);if(m&&m[1]>BUILD&&!sessionStorage.getItem('rl'+m[1])){sessionStorage.setItem('rl'+m[1],'1');location.replace(location.pathname+'?v='+m[1]+location.hash);}}).catch(()=>{});}catch(_){}
 
 // ---------- products: commodity search & selection ----------
