@@ -625,7 +625,7 @@ const CFGS={KW:{full:'دولة الكويت',short:'الكويت',aF:'الكوي
  SN:{full:"السنغال",short:"السنغال",aF:"– السنغال",aM:"السنغال",cs:"فرنك أفريقي",cw:"فرنك أفريقي",fullE:"Senegal",shortE:"Senegal",aE:"Senegal",csE:"XOF",cwE:"XOF",rate:1,iso:'sn',rate:581.928,self:null},
  CM:{full:"الكاميرون",short:"الكاميرون",aF:"– الكاميرون",aM:"الكاميرون",cs:"فرنك أفريقي",cw:"فرنك أفريقي",fullE:"Cameroon",shortE:"Cameroon",aE:"Cameroon",csE:"XAF",cwE:"XAF",rate:1,iso:'cm',rate:581.928,self:null},
  MN:{full:"منغوليا",short:"منغوليا",aF:"– منغوليا",aM:"منغوليا",cs:"توغريك",cw:"توغريك",fullE:"Mongolia",shortE:"Mongolia",aE:"Mongolia",csE:"MNT",cwE:"MNT",rate:1,iso:'mn',rate:3545.144,self:null}};
-const CC=CFGS[CTRY]||CFGS.KW,ISKW=CTRY==='KW';
+const CC=CFGS[CTRY]||CFGS.KW,ISKW=CTRY==='KW';if(!ISKW)['cKd','fKd'].forEach(i=>{const b=document.getElementById(i);if(b)b.parentElement.style.display='none';});
 const $=s=>document.querySelector(s);
 const esc=s=>String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 let D=null,META=null,TOT={},C=[],G=[],BY={},cur=null,HS=[],SITC=null,H4N={};
@@ -946,7 +946,7 @@ function armCounts(root){if(!cntIO||matchMedia('(prefers-reduced-motion: reduce)
 new MutationObserver(ms=>{const set=new Set();ms.forEach(m=>{const t=m.target.nodeType===1?m.target:m.target.parentElement;if(t&&!t.closest('b'))set.add(t);});set.forEach(armCounts);}).observe(document.querySelector('main'),{childList:true,subtree:true});
 
 // ---------- auto-update (bypass stale phone cache) ----------
-const BUILD='1795791788';
+const BUILD='1795792077';
 try{fetch(location.pathname+'?b='+Date.now(),{cache:'no-store'}).then(r=>r.text()).then(h=>{const m=h.match(/const BUILD='(\d+)'/);if(m&&m[1]>BUILD&&!sessionStorage.getItem('rl'+m[1])){sessionStorage.setItem('rl'+m[1],'1');location.replace(location.pathname+'?v='+m[1]+location.hash);}}).catch(()=>{});}catch(_){}
 
 // ---------- products: commodity search & selection ----------

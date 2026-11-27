@@ -474,7 +474,7 @@ function setHead(){document.title='Tradelexity – '+(EN?C.en:C.ar);
 $('#h1').textContent=EN?C.adjE+' '+$('#h1').dataset.t:$('#h1').dataset.t+(C.adj?' '+C.adj:' – '+C.ar);
 $('#emb').src='oflags/'+C.iso+'.svg';$('#emb').classList.add('ofh');
 $('.lang').href=$('.lang').dataset.h+'?c='+CTRY+location.hash;
-$('#swT').href=$('#swT').dataset.h+(CTRY==='KW'?'#kw':'?c='+CTRY);$('#swO').href=$('#swO').dataset.h+'?c='+CTRY;
+$('#swT').href=$('#swT').dataset.h+(CTRY==='KW'?'#kw':'?c='+CTRY);if(CTRY!=='KW'){const b=document.getElementById('cLoc');if(b)b.parentElement.style.display='none';}$('#swO').href=$('#swO').dataset.h+'?c='+CTRY;
 }
 $('#backIntro').onclick=()=>{location.href=$('#backIntro').dataset.h;};
 let CUR='usd';const PJ=2026;
