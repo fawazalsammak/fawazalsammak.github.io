@@ -381,6 +381,7 @@ img.cemb.ofh{width:auto!important;height:38px!important;max-width:70px;border-ra
 #bento .t,#bento2 .t{display:flex;flex-direction:column;justify-content:center;align-items:center;text-align:center;min-height:132px}
 #bento .t.w4,#bento .t.xp{align-items:stretch;text-align:start}
 #bento .t.bal b{font-size:clamp(28px,7vw,38px)}
+.cur button:first-child{border-radius:0;border-start-start-radius:8px;border-end-start-radius:8px}.cur button:last-child{border-radius:0;border-start-end-radius:8px;border-end-end-radius:8px}
 </style>
 <style>/* sources hidden on request – remove this rule to restore */ .srcl{display:none!important}</style>
 </head>
@@ -427,7 +428,7 @@ requestAnimationFrame(loop);})();
 <main>
 <button id="back" class="back hide" type="button" aria-label="العودة إلى الصفحة الرئيسية"><span>→</span> العودة إلى الصفحة الرئيسية</button><button id="backIntro" class="back" type="button" aria-label="العودة إلى الصفحة الرئيسية"><span>→</span> العودة إلى الصفحة الرئيسية</button>
   <section id="vEnt">
-    <div class="head"><div><h2 id="nm">…</h2><div class="en" id="nmEn"></div></div><div class="unit"><span id="unit"></span> <span class="cur" role="group" aria-label="العملة"><button id="cKd" aria-pressed="true">د.ك</button><button id="cUsd" aria-pressed="false">دولار</button></span> <span class="cur" role="group" aria-label="الوحدة"><button id="uM" aria-pressed="true">مليون</button><button id="uK" aria-pressed="false">ألف</button></span></div></div>
+    <div class="head"><div><h2 id="nm">…</h2><div class="en" id="nmEn"></div></div><div class="unit"><span id="unit"></span> <span class="cur" role="group" aria-label="العملة"><button id="cUsd" aria-pressed="true">دولار</button><button id="cKd" aria-pressed="false">د.ك</button></span> <span class="cur" role="group" aria-label="الوحدة"><button id="uM" aria-pressed="true">مليون</button><button id="uK" aria-pressed="false">ألف</button></span></div></div>
     <p class="lead hide" id="lead"></p>
     <div class="kpis" id="kpis"></div>
     <div class="agr hide" id="agr"></div>
@@ -465,7 +466,7 @@ requestAnimationFrame(loop);})();
     <div class="rank" id="gr" style="margin-top:14px"></div>
   </section>
   <section id="vFd" class="hide">
-    <div class="head"><div><h2>الواردات الغذائية حسب البند الجمركي (السلعة) والدولة المورّدة</h2></div><div class="unit"><span class="cur" role="group" aria-label="العملة"><button id="fKd" aria-pressed="true">د.ك</button><button id="fUsd" aria-pressed="false">دولار</button></span> <span class="cur" role="group" aria-label="الوحدة"><button id="fM" aria-pressed="true">مليون</button><button id="fK" aria-pressed="false">ألف</button></span></div></div>
+    <div class="head"><div><h2>الواردات الغذائية حسب البند الجمركي (السلعة) والدولة المورّدة</h2></div><div class="unit"><span class="cur" role="group" aria-label="العملة"><button id="fUsd" aria-pressed="true">دولار</button><button id="fKd" aria-pressed="false">د.ك</button></span> <span class="cur" role="group" aria-label="الوحدة"><button id="fM" aria-pressed="true">مليون</button><button id="fK" aria-pressed="false">ألف</button></span></div></div>
     <div class="ctl" style="position:relative"><input id="fq" type="search" placeholder="ابحث برمز HS أو اسم السلعة واختر بنداً جمركياً أو أكثر (قمح، أرز، 1006…)" autocomplete="off" aria-label="بحث السلع الغذائية" list="" style="flex:1 1 260px;font:16px Almarai,sans-serif;padding:10px 14px;border-radius:10px;border:1px solid var(--line);min-height:44px;background:var(--bg);color:var(--ink)"></div>
     <div id="fSug" class="fsug" role="listbox"></div>
     <div id="fChips" class="chips"></div>
@@ -658,7 +659,7 @@ function svgBars(el,labels,series,opts){
 }
 function show(v){const bk=$('#back'),bo=$('#backIntro');if(bk)bk.classList.toggle('hide',v==='vEnt'&&!!(cur&&cur.kw));if(bo)bo.classList.remove('hide');const bm={vTop:'top',vGr:'groups',vPr:'products',vFd:'food',vOil:'oil',vGcc:'gcc'};document.querySelectorAll('.bnav button').forEach(b=>b.classList.toggle('on',b.dataset.go===(bm[v]||(v==='vEnt'&&cur&&cur.kw?'kw':''))));['vEnt','vTop','vGr','vPr','vFd','vOil','vGcc'].forEach(id=>$('#'+id).classList.toggle('hide',id!==v));
   $('#tKw').setAttribute('aria-pressed',v==='vEnt'&&cur&&cur.kw?'true':'false');$('#tTop').setAttribute('aria-pressed',v==='vTop');$('#tGr').setAttribute('aria-pressed',v==='vGr');$('#tPr').setAttribute('aria-pressed',v==='vPr');$('#tFd').setAttribute('aria-pressed',v==='vFd');$('#tOil').setAttribute('aria-pressed',v==='vOil');$('#tGcc').setAttribute('aria-pressed',v==='vGcc');}
-let CUR='kd',UNIT='m';const RATE=ISKW?3.21:1/CC.rate,UK=ISKW?0.3075:CC.rate;
+let CUR='usd',UNIT='m';const RATE=ISKW?3.21:1/CC.rate,UK=ISKW?0.3075:CC.rate;
 function unitFor(max){const usd=CUR==='usd',c=usd?'دولار':'د.ك';U=UNIT==='m'?{div:1000,lab:'مليون '+c,d:2}:{div:1,lab:'ألف '+c,d:1};U.k=usd?RATE:1;}
 const f=v=>{if(v==null)return '–';const z=v*(U.k||1)/U.div;const r=z!==0&&Math.abs(z)<0.005?(z<0?'−':'')+'<0.01':fmtN(z,U.d);return z<0?'\u2066'+r+'\u2069':r;};
 const mv=kd=>(CUR==='usd'?kd/UK:kd)*(UNIT==='m'?1:1000); // ITC / Comtrade values stored in million KD
@@ -942,7 +943,7 @@ function armCounts(root){if(!cntIO||matchMedia('(prefers-reduced-motion: reduce)
 new MutationObserver(ms=>{const set=new Set();ms.forEach(m=>{const t=m.target.nodeType===1?m.target:m.target.parentElement;if(t&&!t.closest('b'))set.add(t);});set.forEach(armCounts);}).observe(document.querySelector('main'),{childList:true,subtree:true});
 
 // ---------- auto-update (bypass stale phone cache) ----------
-const BUILD='1795779382';
+const BUILD='1795779697';
 try{fetch(location.pathname+'?b='+Date.now(),{cache:'no-store'}).then(r=>r.text()).then(h=>{const m=h.match(/const BUILD='(\d+)'/);if(m&&m[1]>BUILD&&!sessionStorage.getItem('rl'+m[1])){sessionStorage.setItem('rl'+m[1],'1');location.replace(location.pathname+'?v='+m[1]+location.hash);}}).catch(()=>{});}catch(_){}
 
 // ---------- products: commodity search & selection ----------

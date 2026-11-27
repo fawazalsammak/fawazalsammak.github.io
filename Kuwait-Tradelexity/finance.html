@@ -367,6 +367,14 @@ img.of{border-radius:5px!important;object-fit:contain!important;box-shadow:0 0 0
 #intro .ipc img.of,#intro.pk .ipc img.of{width:auto!important;height:34px!important;max-width:64px}
 #intro .isel img.of,#intro.sel .isel img.of{width:auto!important;height:44px!important;max-width:84px;border-radius:6px!important}
 img.cemb.ofh{width:auto!important;height:38px!important;max-width:70px;border-radius:6px!important;padding:0!important;background:transparent!important;object-fit:contain}
+#vEnt .head{display:block}
+#vEnt .unit{display:flex;flex-wrap:wrap;align-items:center;gap:10px;margin:4px 0 14px}
+#vEnt #unit{flex-basis:100%;font-size:13.5px}
+#vEnt .unit .cur{margin:0;flex:1 1 0;min-width:0;display:flex}
+#vEnt .unit .cur button{flex:1;min-height:42px;font-size:14px;padding:0 8px;white-space:nowrap}
+#bento .t,#bento2 .t{display:flex;flex-direction:column;justify-content:center;align-items:center;text-align:center;min-height:132px}
+#bento .t.w4,#bento .t.xp{align-items:stretch;text-align:start}
+#bento .t.bal b{font-size:clamp(28px,7vw,38px)}
 
 .fsw{display:inline-flex;border:1px solid #D4B85A88;border-radius:999px;overflow:hidden;margin:4px 0 6px}
 .fsw a,.fsw span{font:800 13px Almarai,sans-serif;padding:8px 16px;color:#e6ebf3;text-decoration:none}
@@ -426,7 +434,7 @@ function draw(cv,now){const r=cv.getBoundingClientRect();if(!r.width)return;cons
  for(const [p,l] of pts){const [px,py,z]=P(p,l);if(z<=0.02)continue;x.globalAlpha=.25+.75*z;x.fillStyle='#D4B85A';x.beginPath();x.arc(px,py,(R/95)*(1.1+1.9*z),0,7);x.fill();}
  const [kx,ky,kz]=P(KW[0],KW[1]);if(kz>0){x.globalAlpha=Math.min(1,kz*1.6);const g=x.createRadialGradient(kx,ky,0,kx,ky,R*.22);g.addColorStop(0,'rgba(255,255,255,.7)');g.addColorStop(1,'rgba(255,255,255,0)');x.fillStyle=g;x.beginPath();x.arc(kx,ky,R*.22,0,7);x.fill();x.fillStyle='#fff';x.beginPath();x.arc(kx,ky,R*.07,0,7);x.fill();}
  x.globalAlpha=1;}
-let last=0,tt=2;function loop(now){const dt=last?Math.min((now-last)/1000,1/30):0;last=now;tt+=dt;if(!document.querySelector('.tsp'))document.querySelectorAll('canvas.spin').forEach(cv=>{if(cv.offsetParent!==null)draw(cv,tt);});if(!RM)requestAnimationFrame(loop);}
+let last=0,tt=2,CVS=[],cvT=0;function loop(now){const dt=last?Math.min((now-last)/1000,.12):0;last=now;tt+=dt;if(now-cvT>500){cvT=now;CVS=[...document.querySelectorAll('canvas.spin')];CVS.tsp=!!document.querySelector('.tsp');}if(!CVS.tsp)CVS.forEach(cv=>{if(cv.offsetParent!==null)draw(cv,tt);});if(!RM)requestAnimationFrame(loop);}
 requestAnimationFrame(loop);})();
 </script>
 <header class="top"><a class="lang" data-h="finance_en.html" href="finance_en.html" lang="en">English</a>
@@ -436,7 +444,7 @@ requestAnimationFrame(loop);})();
 <button id="backIntro" class="back" type="button" data-h="index.html?home=1"><span>→</span> العودة إلى الصفحة الرئيسية</button>
 <div style="display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap">
  <div class="fsw"><a id="swT" data-h="index.html" href="index.html">التجارة الخارجية</a><span>الاقتصاد والمالية</span></div>
- <span class="cur" role="group"><button id="cLoc" aria-pressed="true">د.ك</button><button id="cUsd" aria-pressed="false">دولار</button></span>
+ <span class="cur" role="group"><button id="cUsd" aria-pressed="true">دولار</button><button id="cLoc" aria-pressed="false">د.ك</button></span>
 </div>
 <nav class="ftabs"><button data-go="output"><span>الناتج الاقتصادي</span></button><button data-go="monetary"><span>المؤشرات النقدية</span></button><button data-go="fiscal"><span>المالية العامة</span></button><button data-go="home" class=ctr><b>الرئيسية</b></button><button data-go="external"><span>الحساب الخارجي</span></button><button data-go="fdi"><span>الاستثمار المباشر</span></button><button data-go="rating"><span>التصنيف الائتماني</span></button></nav>
 <section class="fsec" id="vHome"></section><section class="fsec" id="vOut"></section><section class="fsec" id="vMon"></section><section class="fsec" id="vFis"></section><section class="fsec" id="vExt"></section><section class="fsec" id="vFdi"></section><section class="fsec" id="vRat"></section>
@@ -464,7 +472,7 @@ $('.lang').href=$('.lang').dataset.h+'?c='+CTRY+location.hash;
 $('#swT').href=$('#swT').dataset.h+(CTRY==='KW'?'#kw':'?c='+CTRY);
 }
 $('#backIntro').onclick=()=>{location.href=$('#backIntro').dataset.h;};
-let CUR='loc';const PJ=2026;
+let CUR='usd';const PJ=2026;
 const fmt=(v,d=1)=>v==null||!isFinite(v)?'–':(+v).toLocaleString('en-US',{minimumFractionDigits:d,maximumFractionDigits:d});
 const sg=(v,d=1)=>v==null?'–':(v>0?'+':v<0?'−':'')+fmt(Math.abs(v),d);
 const last=(o,maxY='2025')=>{const ks=Object.keys(o||{}).filter(y=>y<=maxY).sort();return ks.length?[ks[ks.length-1],o[ks[ks.length-1]]]:[null,null];};
