@@ -488,7 +488,7 @@ Promise.all([fetch('sum.json').then(r=>r.json()),fetch('fin.json').then(r=>r.jso
     <h3 style="margin-top:12px"><span>${L('أبرز الاحتياجات (صافي الواردات)','Main needs (net imports)')}</span></h3><div class="rl">${d.nd.map(hrow).join('')}</div></div></div>
   <div class="go"><a href="${$('#swT').href}"><b>${L('التجارة الخارجية','Foreign Trade')}</b><small>${L('الصادرات والواردات والشركاء والسلع','Exports, imports, partners, products')}</small></a>
    <a href="${$('#swF').href}"><b>${L('الاقتصاد والمالية','Economy & Finance')}</b><small>${L('الناتج والمؤشرات النقدية والاستثمار والمخاطر','Output, monetary, investment, risk')}</small></a>
-   <a href="${$('#swO').href}"><b>${L('فرص التبادل التجاري','Trade Prospects')}</b><small>${L('الفرص والاحتياجات والموردون','Opportunities, needs, suppliers')}</small></a></div>
+   <a href="${$('#swO').href}"><b>${L('فرص التجارة الدولية','Trade Prospects')}</b><small>${L('الفرص والاحتياجات والموردون','Opportunities, needs, suppliers')}</small></a></div>
   <div class="note">${L('القيم بالدولار الأمريكي. اضغط على أي دولة لعرض ملخصها.','Values in US dollars. Tap any country to open its summary.')}</div>`;
 }).catch(e=>console.error('SUMERR',e));
 </script>

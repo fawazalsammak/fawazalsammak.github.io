@@ -467,7 +467,7 @@ document.getElementById('lgf').onsubmit=e=>{e.preventDefault();const u=document.
   </div>
 </header>
 <main>
-<button id="back" class="back hide" type="button" aria-label="العودة إلى الصفحة الرئيسية"><span>→</span> العودة إلى الصفحة الرئيسية</button><button id="backIntro" class="back" type="button" aria-label="العودة إلى الصفحة الرئيسية"><span>→</span> العودة إلى الصفحة الرئيسية</button><div class="fsw tsw" id="tsw"><a id="tswS" href="summary.html">الملخص</a><span>التجارة الخارجية</span><a id="tswF" href="finance.html">الاقتصاد والمالية</a><a id="tswO" href="opportunities.html">فرص التبادل</a></div>
+<button id="back" class="back hide" type="button" aria-label="العودة إلى الصفحة الرئيسية"><span>→</span> العودة إلى الصفحة الرئيسية</button><button id="backIntro" class="back" type="button" aria-label="العودة إلى الصفحة الرئيسية"><span>→</span> العودة إلى الصفحة الرئيسية</button><div class="fsw tsw" id="tsw"><a id="tswS" href="summary.html">الملخص</a><span>التجارة الخارجية</span><a id="tswF" href="finance.html">الاقتصاد والمالية</a><a id="tswO" href="opportunities.html">فرص التجارة الدولية</a></div>
   <section id="vEnt">
     <div class="head"><div><h2 id="nm">…</h2><div class="en" id="nmEn"></div></div><div class="unit"><span id="unit"></span> <span class="cur" role="group" aria-label="العملة"><button id="cUsd" aria-pressed="true">دولار</button><button id="cKd" aria-pressed="false">د.ك</button></span> <span class="cur" role="group" aria-label="الوحدة"><button id="uM" aria-pressed="true">مليون</button><button id="uK" aria-pressed="false">ألف</button></span></div></div>
     <p class="lead hide" id="lead"></p>
@@ -998,7 +998,7 @@ function armCounts(root){if(!cntIO||matchMedia('(prefers-reduced-motion: reduce)
 new MutationObserver(ms=>{const set=new Set();ms.forEach(m=>{const t=m.target.nodeType===1?m.target:m.target.parentElement;if(t&&!t.closest('b'))set.add(t);});set.forEach(armCounts);}).observe(document.querySelector('main'),{childList:true,subtree:true});
 
 // ---------- auto-update (bypass stale phone cache) ----------
-const BUILD='1795817132';
+const BUILD='1795817413';
 try{fetch(location.pathname+'?b='+Date.now(),{cache:'no-store'}).then(r=>r.text()).then(h=>{const m=h.match(/const BUILD='(\d+)'/);if(m&&m[1]>BUILD&&!sessionStorage.getItem('rl'+m[1])){sessionStorage.setItem('rl'+m[1],'1');location.replace(location.pathname+'?v='+m[1]+location.hash);}}).catch(()=>{});}catch(_){}
 
 // ---------- products: commodity search & selection ----------
@@ -1094,7 +1094,7 @@ function intro(force){const el=$('#intro');if(!ISKW){if(el)el.remove();return;}i
      bx.innerHTML=`<div class="isel"><img class="of" src="oflags/${z[1]}.svg" alt=""><b>${z[2]}</b></div><div class="ipk-t">اختر القطاع</div><div class="isec">
       <button class="isc${hasT?'':' off'}" data-s="t"${hasT?'':' disabled'}><svg viewBox="0 0 24 24"><path d="M3 17l5-5 4 4 8-8"/><path d="M14 8h6v6"/></svg><b>التجارة الخارجية</b><small>الصادرات والواردات والشركاء التجاريون</small></button>
       <button class="isc" data-s="f"><svg viewBox="0 0 24 24"><path d="M4 20V10M10 20V4M16 20v-7M22 20H2"/></svg><b>الاقتصاد والمالية</b><small>الناتج الاقتصادي والمؤشرات النقدية والمالية العامة والحساب الخارجي</small></button>
-      <button class="isc iop" data-s="o"><svg viewBox="0 0 24 24"><path d="M7 7h11l-3-3M17 17H6l3 3"/><circle cx="12" cy="12" r="2.2"/></svg><b>فرص التبادل التجاري</b><small>ما تحتاجه الدول وما يمكن تصديره إليها</small></button></div>
+      <button class="isc iop" data-s="o"><svg viewBox="0 0 24 24"><path d="M7 7h11l-3-3M17 17H6l3 3"/><circle cx="12" cy="12" r="2.2"/></svg><b>فرص التجارة الدولية</b><small>ما تحتاجه الدول وما يمكن تصديره إليها</small></button></div>
       <button class="ichg">تغيير الدولة</button>`;
      bx.querySelector('.ichg').onclick=pick;
      bx.querySelectorAll('.isc').forEach(b=>b.onclick=e=>{if(b.disabled)return;try{sessionStorage.setItem('tzoom',c);sessionStorage.setItem('kwIntro','1');}catch(_){}if(b.dataset.s==='f'){location.href=(EN?'finance_en.html':'finance.html')+'?c='+c;return;}if(b.dataset.s==='o'){location.href=(EN?'opportunities_en.html':'opportunities.html')+'?c='+c;return;}location.href=location.pathname+'?c='+c+(c==='KW'?'#kw':'');});};
