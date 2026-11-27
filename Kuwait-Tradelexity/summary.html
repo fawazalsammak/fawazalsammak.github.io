@@ -379,7 +379,7 @@ img.cemb.ofh{width:auto!important;height:38px!important;max-width:70px;border-ra
 
 a,a:link,a:visited,a:hover{text-decoration:none!important}u,abbr{text-decoration:none!important}
 
-.fsw{display:inline-flex;border:1px solid #D4B85A88;border-radius:999px;overflow:hidden;margin:4px 0 6px}.fsw a,.fsw span{font:800 13px Noto Naskh Arabic,sans-serif;padding:8px 16px;color:#e6ebf3;text-decoration:none}.fsw span{background:#D4B85A;color:#0B193A}.tsw{display:flex;width:max-content;margin:6px auto 10px}
+.fsw{display:inline-flex;border:1px solid #D4B85A88;border-radius:999px;overflow:hidden;margin:4px 0 6px}.fsw a,.fsw span{font:800 13px Noto Naskh Arabic,sans-serif;padding:8px 16px;color:#e6ebf3;text-decoration:none}.fsw span{background:#D4B85A;color:#0B193A}.tsw{display:flex;flex-wrap:wrap;justify-content:center;width:max-content;max-width:100%;margin:6px auto 10px}
 
 #intro .ilang{position:fixed;top:calc(12px + env(safe-area-inset-top));inset-inline-end:12px;z-index:9999;font:800 13px Montserrat,Noto Naskh Arabic,sans-serif;color:#0B193A;background:#D4B85A;border-radius:999px;padding:7px 14px;text-decoration:none;box-shadow:0 2px 10px #0006}
 #intro:not(.pk):not(.sel) .ilang{display:none}
@@ -442,7 +442,7 @@ requestAnimationFrame(loop);})();
 </header>
 <main>
 <button id="backIntro" class="back" type="button" data-h="index.html?home=1"><span>→</span> العودة إلى الصفحة الرئيسية</button>
-<div class="fsw"><span>الملخص</span><a id="swT" href="index.html">التجارة الخارجية</a><a id="swF" href="finance.html">الاقتصاد والمالية</a><a id="swO" href="opportunities.html">آفاق التبادل</a></div>
+<div class="fsw"><span>الملخص</span><a id="swT" href="index.html">التجارة الخارجية</a><a id="swF" href="finance.html">الاقتصاد والمالية</a><a id="swO" href="opportunities.html">فرص التبادل</a></div>
 <section id="out"><div class="note">…</div></section>
 <div class="fbrand" style="margin:30px 0 60px"><canvas class="spin fbg" aria-hidden="true"></canvas><div><div class="fbn" dir="ltr">Trade<span>lexity</span></div><div class="fbt" dir="ltr">GLOBAL TRADE FINANCE INTELLIGENCE</div></div></div>
 </main>
@@ -488,7 +488,7 @@ Promise.all([fetch('sum.json').then(r=>r.json()),fetch('fin.json').then(r=>r.jso
     <h3 style="margin-top:12px"><span>${L('أبرز الاحتياجات (صافي الواردات)','Main needs (net imports)')}</span></h3><div class="rl">${d.nd.map(hrow).join('')}</div></div></div>
   <div class="go"><a href="${$('#swT').href}"><b>${L('التجارة الخارجية','Foreign Trade')}</b><small>${L('الصادرات والواردات والشركاء والسلع','Exports, imports, partners, products')}</small></a>
    <a href="${$('#swF').href}"><b>${L('الاقتصاد والمالية','Economy & Finance')}</b><small>${L('الناتج والمؤشرات النقدية والاستثمار والمخاطر','Output, monetary, investment, risk')}</small></a>
-   <a href="${$('#swO').href}"><b>${L('آفاق التبادل التجاري','Trade Prospects')}</b><small>${L('الفرص والاحتياجات والموردون','Opportunities, needs, suppliers')}</small></a></div>
+   <a href="${$('#swO').href}"><b>${L('فرص التبادل التجاري','Trade Prospects')}</b><small>${L('الفرص والاحتياجات والموردون','Opportunities, needs, suppliers')}</small></a></div>
   <div class="note">${L('القيم بالدولار الأمريكي. اضغط على أي دولة لعرض ملخصها.','Values in US dollars. Tap any country to open its summary.')}</div>`;
 }).catch(e=>console.error('SUMERR',e));
 </script>
