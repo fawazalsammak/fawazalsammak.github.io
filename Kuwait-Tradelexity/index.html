@@ -393,6 +393,18 @@ a,a:link,a:visited,a:hover{text-decoration:none!important}u,abbr{text-decoration
 
 #intro .ilang{position:fixed;top:calc(12px + env(safe-area-inset-top));inset-inline-end:12px;z-index:9999;font:800 13px Montserrat,Noto Naskh Arabic,sans-serif;color:#0B193A;background:#D4B85A;border-radius:999px;padding:7px 14px;text-decoration:none;box-shadow:0 2px 10px #0006}
 #intro:not(.pk):not(.sel) .ilang{display:none}
+
+#lgate{position:fixed;inset:0;z-index:100000;align-items:center;justify-content:center;padding:20px;background:radial-gradient(120% 80% at 50% 20%,#1e3a7a,#0B193A 70%);transition:opacity .45s}
+#lgate.out{opacity:0}
+#lgf{width:min(380px,100%);background:#ffffff0d;border:1px solid #D4B85A66;border-radius:22px;padding:26px 22px;box-shadow:0 20px 50px #0008;backdrop-filter:blur(8px);display:grid;gap:14px}
+.lgb{text-align:center}.lgn{font:700 32px Montserrat,sans-serif;color:#fff}.lgn span{color:#D4B85A}.lgt{font:700 9.5px Montserrat,sans-serif;letter-spacing:2.2px;color:#D4B85A;margin-top:4px}
+.lgh{display:flex;justify-content:space-between;align-items:baseline;border-top:1px solid #ffffff1f;padding-top:12px}.lgh b{font-size:19px;color:#fff}.lgh span{font:700 13px Montserrat,sans-serif;color:#9fb3d9}
+#lgf label{display:grid;gap:6px}#lgf label>span{display:flex;justify-content:space-between;font-size:13px;color:#c9d2e3}#lgf label i{font-style:normal;font:600 11.5px Montserrat,sans-serif;color:#8a9ab8}
+#lgf input{width:100%;box-sizing:border-box;font:600 16px Montserrat,Noto Naskh Arabic,sans-serif;color:#fff;background:#0B193A;border:1px solid #ffffff30;border-radius:12px;padding:12px 14px;direction:ltr;text-align:left}
+#lgf input:focus{outline:none;border-color:#D4B85A;box-shadow:0 0 0 3px #D4B85A33}
+.lge{min-height:0;font-size:12.5px;color:#f3a3a3;text-align:center}.lge:empty{display:none}
+.lgbtn{font:800 16px Noto Naskh Arabic,Montserrat,sans-serif;color:#0B193A;background:#D4B85A;border:0;border-radius:12px;padding:13px;cursor:pointer}
+.lgbtn:hover{filter:brightness(1.07)}.lgd{font-size:11.5px;color:#8a9ab8;text-align:center;line-height:1.7}
 </style>
 <style>/* sources hidden on request – remove this rule to restore */ .srcl{display:none!important}</style>
 </head>
@@ -411,6 +423,20 @@ let last=0,tt=2,CVS=[],cvT=0;function loop(now){const dt=last?Math.min((now-last
 requestAnimationFrame(loop);})();
 </script>
 
+<div id="lgate" role="dialog" aria-label="تسجيل الدخول" style="display:none"><form id="lgf" autocomplete="off" novalidate>
+<div class="lgb"><div class="lgn" dir="ltr">Trade<span>lexity</span></div><div class="lgt" dir="ltr">GLOBAL TRADE FINANCE INTELLIGENCE</div></div>
+<div class="lgh"><b>تسجيل الدخول</b><span dir="ltr">Sign in</span></div>
+<label><span>اسم المستخدم <i dir="ltr">Username</i></span><input id="lgu" type="text" inputmode="email" autocomplete="off" spellcheck="false"></label>
+<label><span>كلمة المرور <i dir="ltr">Password</i></span><input id="lgp" type="password" autocomplete="off"></label>
+<div class="lge" id="lge"></div>
+<button type="submit" class="lgbtn">دخول · Sign in</button>
+<div class="lgd">نسخة تجريبية – أدخل أي اسم مستخدم وكلمة مرور<br><span dir="ltr">Demo version – enter any username and password</span></div>
+</form></div>
+<script>(()=>{const q=new URLSearchParams(location.search);let ok=false;try{ok=sessionStorage.getItem('tlAuth')==='1';}catch(_){}
+if(ok||q.has('c')||q.has('go')||(location.hash.length>1&&location.hash!=='#kw'))return;const g=document.getElementById('lgate');g.style.display='flex';document.body.classList.add('noscroll');
+document.getElementById('lgf').onsubmit=e=>{e.preventDefault();const u=document.getElementById('lgu').value.trim(),p=document.getElementById('lgp').value;
+ if(!u||!p){document.getElementById('lge').textContent='يرجى إدخال اسم المستخدم وكلمة المرور · Please enter a username and password';return;}
+ document.getElementById('lgp').value='';try{sessionStorage.setItem('tlAuth','1');}catch(_){}g.classList.add('out');setTimeout(()=>{g.remove();document.body.classList.remove('noscroll');},450);};})();</script>
 <div id="intro" data-w="1" role="dialog" aria-label="الصفحة الافتتاحية"><a class="ilang" id="iLang" href="en.html?home=1" lang="en">English</a><div class="tsp" aria-hidden="true"><canvas id="tspG"></canvas><div class="tspN"><span style="--d:0.90s" class="">T</span><span style="--d:0.99s" class="">r</span><span style="--d:1.08s" class="">a</span><span style="--d:1.17s" class="">d</span><span style="--d:1.26s" class="">e</span><span style="--d:1.35s" class="g">l</span><span style="--d:1.44s" class="g">e</span><span style="--d:1.53s" class="g">x</span><span style="--d:1.62s" class="g tspI">ı</span><span style="--d:1.71s" class="g">t</span><span style="--d:1.80s" class="g">y</span></div><div class="tspT">GLOBAL TRADE FINANCE INTELLIGENCE</div></div>
   <div class="istars"></div>
   <div class="iin">
@@ -968,7 +994,7 @@ function armCounts(root){if(!cntIO||matchMedia('(prefers-reduced-motion: reduce)
 new MutationObserver(ms=>{const set=new Set();ms.forEach(m=>{const t=m.target.nodeType===1?m.target:m.target.parentElement;if(t&&!t.closest('b'))set.add(t);});set.forEach(armCounts);}).observe(document.querySelector('main'),{childList:true,subtree:true});
 
 // ---------- auto-update (bypass stale phone cache) ----------
-const BUILD='1795812983';
+const BUILD='1795813222';
 try{fetch(location.pathname+'?b='+Date.now(),{cache:'no-store'}).then(r=>r.text()).then(h=>{const m=h.match(/const BUILD='(\d+)'/);if(m&&m[1]>BUILD&&!sessionStorage.getItem('rl'+m[1])){sessionStorage.setItem('rl'+m[1],'1');location.replace(location.pathname+'?v='+m[1]+location.hash);}}).catch(()=>{});}catch(_){}
 
 // ---------- products: commodity search & selection ----------
