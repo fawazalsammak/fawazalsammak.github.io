@@ -656,9 +656,9 @@ function render(){const ml=marketList();if(X===Y||![...$('#sY').options].some(o=
  R=analyse();const bl=bilat(X,Y),bal=bl.x-bl.m,best=R.ops[0];
  const lv=R.TCI>=40?L('عالٍ','High'):R.TCI>=25?L('متوسط','Medium'):L('منخفض','Low');
  const yr=O.c[X].ly||O.c[X].y[O.c[X].y.length-1];
- $('#kp').innerHTML=`<div class="kc"><small>${L('الصادرات','Exports')}</small><b>${usd(bl.x)}</b><span class="ln" style="background:#D4B85A"></span></div>
-  <div class="kc"><small>${L('الواردات','Imports')}</small><b>${usd(bl.m)}</b><span class="ln" style="background:#5e9e8f"></span></div>
-  <div class="kc"><small>${L('الميزان التجاري','Trade balance')}</small><b class="${bal>=0?'up':'dn'}">${(bal<0?'−':'+')+usd(Math.abs(bal))}</b><span class="ln" style="background:#8a94a6"></span></div>
+ $('#kp').innerHTML=`<div class="kc"><small>${L('صادرات '+nm(X)+' إلى '+nm(Y),nm(X)+' exports to '+nm(Y))}</small><b>${usd(bl.x)}</b><span class="ln" style="background:#D4B85A"></span></div>
+  <div class="kc"><small>${L('واردات '+nm(X)+' من '+nm(Y),nm(X)+' imports from '+nm(Y))}</small><b>${usd(bl.m)}</b><span class="ln" style="background:#5e9e8f"></span></div>
+  <div class="kc"><small>${L('الميزان التجاري','Trade balance')}</small><b class="${bal>=0?'up':'dn'}">${usd(Math.abs(bal))}</b><small>${L('لصالح '+nm(bal>=0?X:Y),'in favour of '+nm(bal>=0?X:Y))}</small><span class="ln" style="background:#8a94a6"></span></div>
   <div class="kc"><small>${L('مؤشر التكامل التجاري','Trade Complementarity Index')}</small>${gauge(R.TCI)}<small>${lv}</small></div>`;
  $('#tbo').textContent=L('لـ'+nm(X)+' في '+nm(Y),nm(X)+' in '+nm(Y));$('#tbn').textContent=nm(Y);$('#tbs').textContent=nm(X);
  $('#kyr').textContent=L('التبادل الثنائي · '+yr,'Bilateral trade · '+yr);
