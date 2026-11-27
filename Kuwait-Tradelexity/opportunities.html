@@ -417,16 +417,16 @@ main{max-width:820px}
 .tl .n{font:800 clamp(11px,3vw,14px)/1.25 Almarai,sans-serif}
 .tl .v{font:800 clamp(11px,3vw,15px) Montserrat,Almarai,sans-serif;unicode-bidi:isolate}
 .tl .pd{display:flex;gap:3px}.tl .pd i{width:6px;height:6px;border-radius:50%;background:#0B193A33}.tl .pd i.on{background:#b3261e}
-.tl.sm .n,.tl.sm .pd{display:none}.tl.xs .v{display:none}
+.tl.sm .pd,.tl.sm .tt{display:none}.tl.sm{justify-content:center;padding:6px}.tl.sm .n{font-size:11px}.tl.xs .v{display:none}.tl.xs .n{font-size:10px;line-height:1.2}
 .lg{display:flex;flex-wrap:wrap;gap:6px 12px;font-size:11px;color:var(--mut);margin:8px 4px 0}
 .lg span{display:inline-flex;align-items:center;gap:5px}.lg i{width:12px;height:12px;border-radius:4px;display:inline-block}
-.br{display:grid;grid-template-columns:34px 1fr auto;gap:4px 8px;align-items:center;padding:8px 6px;border-radius:14px;cursor:pointer}
+.br{display:grid;grid-template-columns:1fr auto;gap:4px 8px;align-items:center;padding:8px 6px;border-radius:14px;cursor:pointer}
 .br:hover{background:#ffffff0a}
 .br .e{font-size:22px;text-align:center;grid-row:span 2}
 .br .n{font-weight:800;font-size:13.5px;display:flex;align-items:center;gap:6px;min-width:0}
 .br .n span{white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .br .v{font-weight:800;font-size:13px;unicode-bidi:isolate}
-.br .tr{grid-column:2/4;height:9px;border-radius:6px;background:#ffffff10;overflow:hidden}
+.br .tr{grid-column:1/3;height:9px;border-radius:6px;background:#ffffff10;overflow:hidden}
 .br .tr i{display:block;height:100%;border-radius:6px;width:0;transition:width .9s cubic-bezier(.2,.8,.2,1)}
 .pdot{display:inline-flex;gap:2px}.pdot i{width:6px;height:6px;border-radius:50%;background:#ffffff26}.pdot i.on{background:#ef8b8b}
 .rca{font-size:10.5px;font-weight:800;padding:1px 7px;border-radius:999px;background:#7fd3a526;color:#9ee6bd;white-space:nowrap}
@@ -537,7 +537,7 @@ requestAnimationFrame(loop);})();
  <div class="lg"><span><i style="background:#D4B85A"></i>فرصة قوية</span><span><i style="background:#4f8f83"></i>حاجة قائمة</span><span><i style="background:#3b4a68"></i>منافسة محلية</span><span><i style="background:#e58f8f;border-radius:50%;width:7px;height:7px"></i>سنوات العجز</span></div></section>
 <section class="pane" id="pn"><div id="bn"></div></section>
 <section class="pane" id="ps"><div id="bs"></div></section>
-<button class="pdfb" id="pdfb" type="button"><svg class="hi" viewBox="0 0 24 24"><path d="M7 3h7l4 4v14H7zM14 3v4h4M12 10v7M9 14l3 3 3-3"/></svg>تحميل موجز الفرص (PDF)</button>
+<button class="pdfb" id="pdfb" type="button">تحميل موجز الفرص (PDF)</button>
 <div class="fbrand" style="margin:30px 0 90px"><canvas class="spin fbg" aria-hidden="true"></canvas><div><div class="fbn" dir="ltr">Trade<span>lexity</span></div><div class="fbt" dir="ltr">GLOBAL TRADE FINANCE INTELLIGENCE</div></div></div>
 </main>
 <div id="brief"></div>
@@ -611,14 +611,14 @@ let TMK='';function drawTM(still){const el=$('#tm');if(!el)return;const key=X+Y;
  const W=el.clientWidth,H=el.clientHeight;const items=top.map((o,i)=>({o,i,v:Math.sqrt(o.pot)}));
  const rects=squarify(items,0,0,W,H);
  el.innerHTML=rects.map((r,j)=>{const o=r.o,sm=r.w<92||r.h<74,xs=r.w<58||r.h<48;const lx=EN?r.x:W-r.x-r.w;
-  return `<div class="tl ${tileCls(o)}${sm?' sm':''}${xs?' xs':''}" data-k="${o.k}" style="left:${lx}px;top:${r.y}px;width:${r.w}px;height:${r.h}px;${anim?`animation-delay:${j*40}ms`:'animation:none'}" title="${sn(o.k)}"><div class="tt"><span class="e">${ico(o.k)}</span><span class="cd">HS ${o.k}</span></div><div><div class="n">${sn(o.k)}</div><div class="v">${usd(o.pot)}</div></div><div class="pd">${pdots(o.need,o.n)}</div></div>`;}).join('');
+  return `<div class="tl ${tileCls(o)}${sm?' sm':''}${xs?' xs':''}" data-k="${o.k}" style="left:${lx}px;top:${r.y}px;width:${r.w}px;height:${r.h}px;${anim?`animation-delay:${j*40}ms`:'animation:none'}" title="${sn(o.k)}"><div class="tt"><span class="cd">HS ${o.k}</span></div><div><div class="n">${sn(o.k)}</div><div class="v">${usd(o.pot)}</div></div><div class="pd">${pdots(o.need,o.n)}</div></div>`;}).join('');
  el.querySelectorAll('.tl').forEach(t=>t.onclick=()=>sheet(t.dataset.k));}
-function bars(list,val,col,extra){const mx=list.length?val(list[0]):1;return list.map(o=>`<div class="br" data-k="${o.k}"><div class="e">${ico(o.k)}</div><div class="n"><span>${sn(o.k)}</span>${extra(o)}</div><div class="v">${usd(val(o))}</div><div class="tr"><i data-w="${Math.max(3,val(o)/mx*100)}" style="background:${col}"></i></div></div>`).join('')||`<div class="empty">–</div>`;}
+function bars(list,val,col,extra){const mx=list.length?val(list[0]):1;return list.map(o=>`<div class="br" data-k="${o.k}"><div class="n"><span>${sn(o.k)}</span>${extra(o)}</div><div class="v">${usd(val(o))}</div><div class="tr"><i data-w="${Math.max(3,val(o)/mx*100)}" style="background:${col}"></i></div></div>`).join('')||`<div class="empty">–</div>`;}
 function grow(){requestAnimationFrame(()=>document.querySelectorAll('.pane.on .tr i').forEach(i=>i.style.width=i.dataset.w+'%'));}
 function sheet(k){const a=R.A[k]||{x:0},b=R.B[k]||{x:0,m:0,need:0,n:3},rca=R.rcaOf(k),cx=((O.c[X].cx||{})[Y]||{})[k],pot=Math.min(a.x,b.m),net=b.m-b.x;
  const v=(a.x&&b.m&&rca>=1&&net>0)?['g','',L('فرصة قوية: '+nm(X)+' منافسة و'+nm(Y)+' بحاجة إليها','Strong opportunity: '+nm(X)+' is competitive and '+nm(Y)+' needs it')]:(a.x&&b.m&&net>0)?['y','',L('فرصة محتملة: '+nm(Y)+' بحاجة إليها لكن حضور '+nm(X)+' محدود','Possible opportunity: '+nm(Y)+' needs it but '+nm(X)+'\'s supply is limited')]:['r','',L('فرصة ضعيفة: '+nm(Y)+' تنتجها محلياً أو '+nm(X)+' لا تصدّرها','Weak: '+nm(Y)+' produces it or '+nm(X)+' doesn\'t export it')];
  const rp=Math.min(100,rca/4*100);
- $('#shb').innerHTML=`<div class="gr"></div><div class="hd"><span class="e">${ico(k)}</span><div><b>${sn(k)}</b><small>HS ${k} · ${full(k)}</small></div></div>
+ $('#shb').innerHTML=`<div class="gr"></div><div class="hd"><div><b>${sn(k)}</b><small>HS ${k} · ${full(k)}</small></div></div>
  <div class="vd ${v[0]}"><i></i>${v[2]}</div>
  <div class="sg"><div class="st"><small>${L('واردات '+nm(Y)+' سنوياً','Annual imports of '+nm(Y))}</small><b>${usd(b.m)}</b></div><div class="st"><small>${L('صادرات '+nm(X)+' سنوياً','Annual exports of '+nm(X))}</small><b>${usd(a.x)}</b></div>
  <div class="st"><small>${L('حجم الفرصة','Opportunity size')}</small><b style="color:#f4e2a3">${usd(pot)}</b></div><div class="st"><small>${cx!=null?L('يُصدَّر إليها حالياً','Already sold there'):L('صافي حاجة '+nm(Y),'Net need of '+nm(Y))}</small><b>${cx!=null?usd(cx):(net>0?usd(net):'–')}</b></div></div>
