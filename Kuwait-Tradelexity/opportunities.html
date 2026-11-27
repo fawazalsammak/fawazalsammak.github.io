@@ -599,11 +599,11 @@ function flowSVG(bl){const mx=Math.max(bl.x,bl.m,1),wx=3+13*Math.sqrt(bl.x/mx),w
  <g transform="translate(${R1} 90)"><circle r="33" fill="#0B193A" stroke="#8fd1bf" stroke-width="2.5"/><image href="${flag(Y)}" x="-30" y="-30" width="60" height="60" preserveAspectRatio="xMidYMid slice" clip-path="url(#cc)"/></g>
  <text x="180" y="98" text-anchor="middle" fill="#fff" style="font-size:10px;opacity:.55">${O.c[X].ly||O.c[X].y[O.c[X].y.length-1]}</text></svg>`;}
 function pdots(n,t){let s='';for(let i=0;i<(t||3);i++)s+=`<i class="${i<n?'on':''}"></i>`;return s;}
-function drawTM(){const el=$('#tm');if(!el)return;const top=R.ops.slice(0,12);if(!top.length){el.innerHTML=`<div class="empty">${L('لا تتوفر بيانات كافية','Not enough data')}</div>`;return;}
+let TMK='';function drawTM(still){const el=$('#tm');if(!el)return;const key=X+Y;if(!still&&TMK===key&&el.childElementCount)return;const anim=!still&&TMK!==key;TMK=key;const top=R.ops.slice(0,12);if(!top.length){el.innerHTML=`<div class="empty">${L('لا تتوفر بيانات كافية','Not enough data')}</div>`;return;}
  const W=el.clientWidth,H=el.clientHeight;const items=top.map((o,i)=>({o,i,v:Math.sqrt(o.pot)}));
  const rects=squarify(items,0,0,W,H);
  el.innerHTML=rects.map((r,j)=>{const o=r.o,sm=r.w<92||r.h<74,xs=r.w<58||r.h<48;const lx=EN?r.x:W-r.x-r.w;
-  return `<div class="tl ${tileCls(o)}${sm?' sm':''}${xs?' xs':''}" data-k="${o.k}" style="left:${lx}px;top:${r.y}px;width:${r.w}px;height:${r.h}px;animation-delay:${j*40}ms" title="${sn(o.k)}"><div class="tt"><span class="e">${ico(o.k)}</span><span class="cd">HS ${o.k}</span></div><div><div class="n">${sn(o.k)}</div><div class="v">${usd(o.pot)}</div></div><div class="pd">${pdots(o.need,o.n)}</div></div>`;}).join('');
+  return `<div class="tl ${tileCls(o)}${sm?' sm':''}${xs?' xs':''}" data-k="${o.k}" style="left:${lx}px;top:${r.y}px;width:${r.w}px;height:${r.h}px;${anim?`animation-delay:${j*40}ms`:'animation:none'}" title="${sn(o.k)}"><div class="tt"><span class="e">${ico(o.k)}</span><span class="cd">HS ${o.k}</span></div><div><div class="n">${sn(o.k)}</div><div class="v">${usd(o.pot)}</div></div><div class="pd">${pdots(o.need,o.n)}</div></div>`;}).join('');
  el.querySelectorAll('.tl').forEach(t=>t.onclick=()=>sheet(t.dataset.k));}
 function bars(list,val,col,extra){const mx=list.length?val(list[0]):1;return list.map(o=>`<div class="br" data-k="${o.k}"><div class="e">${ico(o.k)}</div><div class="n"><span>${sn(o.k)}</span>${extra(o)}</div><div class="v">${usd(val(o))}</div><div class="tr"><i data-w="${Math.max(3,val(o)/mx*100)}" style="background:${col}"></i></div></div>`).join('')||`<div class="empty">–</div>`;}
 function grow(){requestAnimationFrame(()=>document.querySelectorAll('.pane.on .tr i').forEach(i=>i.style.width=i.dataset.w+'%'));}
@@ -667,7 +667,7 @@ Promise.all([fetch('opp.json').then(r=>r.json()),fetch('fin.json').then(r=>r.jso
  $('#swap').onclick=()=>{$('#swap').classList.toggle('sp');[X,Y]=[Y,X];render();};
  document.querySelectorAll('.otabs button').forEach(b=>b.onclick=()=>setTab(b.dataset.t));
  $('#sh').onclick=e=>{if(e.target.id==='sh')$('#sh').classList.remove('on');};
- let rt;addEventListener('resize',()=>{clearTimeout(rt);rt=setTimeout(()=>{if(TAB==='o')drawTM();},150);});
+ let rt,lw=innerWidth;addEventListener('resize',()=>{if(innerWidth===lw)return;lw=innerWidth;clearTimeout(rt);rt=setTimeout(()=>{if(TAB==='o')drawTM(true);},150);});
  $('#backIntro').onclick=()=>{location.href=$('#backIntro').dataset.h;};$('.lang').onclick=e=>{e.currentTarget.href=$('.lang').dataset.h+location.search;};
  $('#pdfb').onclick=brief;
  render();}).catch(e=>console.error('OPPERR',e));
