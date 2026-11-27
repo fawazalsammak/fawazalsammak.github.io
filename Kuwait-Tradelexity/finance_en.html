@@ -383,6 +383,17 @@ img.cemb.ofh{width:auto!important;height:38px!important;max-width:70px;border-ra
 
 a,a:link,a:visited,a:hover{text-decoration:none!important}u,abbr{text-decoration:none!important}
 
+.rban{display:flex;align-items:center;justify-content:space-between;gap:12px;margin:12px 0;padding:14px 16px;border-radius:18px;border:1.5px solid;background:linear-gradient(135deg,#ffffff0f,#ffffff05);cursor:pointer}
+.rban small{display:block;color:var(--mut);font-size:12.5px}.rban b{display:block;font-size:19px;margin:2px 0}.rban em{font-style:normal;font-size:12.5px;color:#c9d2e3}
+.rbs{font:800 32px Montserrat,sans-serif;white-space:nowrap}.rbs i{font-style:normal;font-size:13px;color:var(--mut);margin-inline-start:2px}
+.rhero{border:1.5px solid;border-radius:20px;padding:10px 14px 14px;text-align:center;background:radial-gradient(120% 90% at 50% 0%,#2a4a8f55,transparent 70%),var(--panel);margin:10px 0}
+.rlv{font-size:22px;font-weight:800;margin-top:4px}.rvd{color:#dfe7f5;font-size:14px;margin:4px 0 10px}
+.rrk{display:flex;justify-content:center;gap:18px;flex-wrap:wrap;font-size:13px;color:var(--mut)}.rrk b{color:#fff;margin-inline-start:4px}
+.rps{display:grid;gap:12px}.rpt{display:flex;justify-content:space-between;align-items:baseline}.rpt b{font-size:15px}.rpv{font:800 18px Montserrat,sans-serif}
+.rpb{height:9px;border-radius:6px;background:#ffffff12;margin:6px 0 3px;overflow:hidden}.rpb i{display:block;height:100%;border-radius:6px}.rp small{color:var(--mut);font-size:12px}
+.rl{list-style:none;margin:0;padding:0;display:grid;gap:8px}.rl li{display:flex;justify-content:space-between;gap:10px;font-size:14px;border-bottom:1px solid #ffffff10;padding-bottom:6px}
+.rt{margin:0;padding-inline-start:18px;display:grid;gap:8px;font-size:14px;line-height:1.7;color:#dfe7f5}
+
 .fsw{display:inline-flex;border:1px solid #D4B85A88;border-radius:999px;overflow:hidden;margin:4px 0 6px}
 .fsw a,.fsw span{font:800 13px Noto Naskh Arabic,sans-serif;padding:8px 16px;color:#e6ebf3;text-decoration:none}
 .fsw span{background:#D4B85A;color:#0B193A}
@@ -453,13 +464,13 @@ requestAnimationFrame(loop);})();
  <div class="fsw"><a id="swT" data-h="en.html" href="en.html">Foreign Trade</a><span>Economy & Finance</span><a id="swO" data-h="opportunities_en.html" href="opportunities_en.html">Opportunities</a></div>
  <span class="cur" role="group"><button id="cUsd" aria-pressed="true">USD</button><button id="cLoc" aria-pressed="false">د.ك</button></span>
 </div>
-<nav class="ftabs"><button data-go="output"><span>Output</span></button><button data-go="monetary"><span>Monetary</span></button><button data-go="fiscal"><span>Fiscal</span></button><button data-go="home" class=ctr><b>Home</b></button><button data-go="external"><span>External</span></button><button data-go="fdi"><span>FDI</span></button><button data-go="rating"><span>Ratings</span></button></nav>
-<section class="fsec" id="vHome"></section><section class="fsec" id="vOut"></section><section class="fsec" id="vMon"></section><section class="fsec" id="vFis"></section><section class="fsec" id="vExt"></section><section class="fsec" id="vFdi"></section><section class="fsec" id="vRat"></section>
+<nav class="ftabs"><button data-go="output"><span>Output</span></button><button data-go="monetary"><span>Monetary</span></button><button data-go="fiscal"><span>Fiscal</span></button><button data-go="home" class=ctr><b>Home</b></button><button data-go="external"><span>External</span></button><button data-go="fdi"><span>FDI</span></button><button data-go="rating"><span>Ratings</span></button><button data-go="risk"><span>Risk</span></button></nav>
+<section class="fsec" id="vHome"></section><section class="fsec" id="vRisk"></section><section class="fsec" id="vOut"></section><section class="fsec" id="vMon"></section><section class="fsec" id="vFis"></section><section class="fsec" id="vExt"></section><section class="fsec" id="vFdi"></section><section class="fsec" id="vRat"></section>
 <div class="fbrand" style="margin:30px 0 8px"><canvas class="spin fbg" aria-hidden="true"></canvas><div><div class="fbn" dir="ltr">Trade<span>lexity</span></div><div class="fbt" dir="ltr">GLOBAL TRADE FINANCE INTELLIGENCE</div></div></div>
 <nav class="bnav" aria-label="nav"><button data-go="output"><span>Output</span></button><button data-go="monetary"><span>Monetary</span></button><button data-go="fiscal"><span>Fiscal</span></button><button data-go="home" class=ctr><b>Home</b></button><button data-go="external"><span>External</span></button><button data-go="fdi"><span>FDI</span></button><button data-go="rating"><span>Ratings</span></button></nav>
 </main>
 <script>
-const T_NAV=['Output', 'Monetary', 'Fiscal', 'Home', 'External', 'FDI', 'Ratings'];
+const T_NAV=['Output', 'Monetary', 'Fiscal', 'Home', 'External', 'FDI', 'Ratings', 'Risk'];
 
 const LANG=document.documentElement.lang,EN=LANG==='en';
 const L=(a,e)=>EN?e:a;
@@ -512,6 +523,7 @@ function home(){const g=F.NGDPD,gr=F.NGDP_RPCH;
   $('#vHome').innerHTML=`<div class="fh"><h2>${L('نظرة عامة','Overview')}</h2><span class="sub srcl">${L('صندوق النقد الدولي – آفاق الاقتصاد العالمي (أكتوبر 2026) · البنك الدولي · البنوك المركزية','IMF WEO (Oct 2026) · World Bank · central banks')}</span></div>
    <div class="fhero"><small>${L('الناتج المحلي الإجمالي 2025','Gross domestic product 2025')}</small><b>${fmt(toC(gdp),1)}</b><div style="color:#c9d2e3">${L('مليار','billion')} ${csym()}</div>
    <div class="row"><span>${L('النمو الحقيقي 2025','Real growth 2025')}<b class="${tone(gr['2025'])}" dir="ltr">${sg(gr['2025'])}%</b></span><span>${L('تقدير 2026','2026 projection')}<b class="${tone(gr['2026'])}" dir="ltr">${sg(gr['2026'])}%</b></span><span>${L('نصيب الفرد','Per capita')}<b>$${fmt(F.NGDPDPC['2025'],0)}</b></span></div></div>
+   ${(()=>{const R=riskOf(F),lv=lvl(R.score);return `<div class="rban" data-go="risk" style="border-color:${lv[2]}"><div><small>${L('تقييم مخاطر الاستثمار','Investment risk assessment')}</small><b style="color:${lv[2]}">${L(lv[0],lv[1])}</b><em>${lv[3]}</em></div><span class="rbs" style="color:${lv[2]}">${R.score??'–'}<i>/100</i></span></div>`;})()}
    <div class="fgrid">
     ${k(L('التضخم 2025','Inflation 2025'),fmt(F.PCPIPCH['2025'])+'%',L('أسعار المستهلك','Consumer prices'),'monetary')}
     ${k(L(F.POL.ar,F.POL.en),fmt(F.POL.v,2)+'%',L('آخر تعديل ','Last change ')+F.POL.d,'monetary')}
@@ -587,7 +599,45 @@ function fdi(){const inn={},out={};Object.entries(F.FDIIN).forEach(([y,v])=>inn[
    ${card(L('تدفقات الاستثمار الأجنبي المباشر الواردة','Inward FDI flows'),L('مليار ','billion ')+csym(),bars(inn))}
    ${card(L('تدفقات الاستثمار المباشر الصادرة','Outward FDI flows'),L('مليار ','billion ')+csym(),bars(out,{color:'#9fb3d9'}))}
    ${card(L('التدفقات الواردة – '+RL()+' 2025','Inward FDI – '+RL()+' 2025'),L('مليار دولار','US$ billion'),cmp('FDIG','2025',{suf:''}))}`;}
-const V={home:['vHome',home],fdi:['vFdi',fdi],rating:['vRat',rating],output:['vOut',output],monetary:['vMon',monetary],fiscal:['vFis',fiscal],external:['vExt',external]};
+
+// ---------- investment risk assessment ----------
+const cl=(v,a,b)=>v==null||!isFinite(v)?null:Math.max(0,Math.min(100,(v-a)/(b-a)*100));
+const avgN=a=>{const v=a.filter(x=>x!=null);return v.length?v.reduce((s,x)=>s+x,0)/v.length:null;};
+function ratN(D){const R=D.RAT||{};let best=null,txt='';for(const a of ['sp','md','ft'])if(R[a]){const r=R[a][0];if(r==='SD'||r==='D'){return {n:0,txt:r};}const n=NOTCH[r];if(n&&(best==null||n>best)){best=n;txt=r;}if(r==='NR'&&best==null)txt='NR';}return {n:best,txt};}
+function riskOf(D){const g=avgN([D.NGDP_RPCH['2025'],D.NGDP_RPCH['2026']]),inf=D.PCPIPCH['2025'],fb=D.GGXCNL_NGDP['2025'],debt=D.GGXWDG_NGDP['2025'],ca=D.BCA_NGDPD['2025'],
+  rm=last(D.RESM||{})[1],fdi=last(D.FDI||{})[1],rt=ratN(D);
+  const ind={g:[cl(g,-2,6),g],inf:[inf==null?null:100-cl(Math.abs(inf-2.5),0,25),inf],fb:[cl(fb,-8,3),fb],debt:[debt==null?null:100-cl(debt,30,150),debt],ca:[cl(ca,-8,6),ca],rm:[cl(rm,2,10),rm],
+   rt:[rt.n==null?(rt.txt==='NR'?15:25):(rt.n===0?0:cl(rt.n,5,22)),rt.txt],fdi:[fdi==null?null:cl(fdi,0,5),fdi]};
+  const P=[['macro',20,['g','inf']],['fis',20,['fb','debt']],['ext',20,['ca','rm']],['cred',30,['rt']],['inv',10,['fdi']]].map(([id,w,ks])=>({id,w,v:avgN(ks.map(k=>ind[k][0]))}));
+  const ok=P.filter(p=>p.v!=null),tw=ok.reduce((s,p)=>s+p.w,0);const score=tw?ok.reduce((s,p)=>s+p.v*p.w,0)/tw:null;
+  let sc=score==null?null:Math.round(score);if(sc!=null&&rt.n===0)sc=Math.min(sc,30);return {score:sc,P,ind,rt};}
+const PN={macro:['الاستقرار الاقتصادي','Macroeconomic stability','النمو والتضخم','Growth & inflation'],fis:['الملاءة المالية','Fiscal strength','العجز والدين الحكومي','Deficit & public debt'],
+ ext:['المتانة الخارجية','External resilience','الحساب الجاري والاحتياطيات','Current account & reserves'],cred:['الجدارة الائتمانية','Creditworthiness','التصنيف السيادي','Sovereign rating'],inv:['جاذبية الاستثمار','Investment appeal','تدفقات الاستثمار المباشر','FDI inflows']};
+const IN={g:['النمو الحقيقي (متوسط 2025–2026)','Real growth (2025–26 avg)','%'],inf:['التضخم 2025','Inflation 2025','%'],fb:['رصيد المالية العامة 2025','Fiscal balance 2025','% '+'GDP'],debt:['الدين الحكومي 2025','Government debt 2025','% GDP'],
+ ca:['الحساب الجاري 2025','Current account 2025','% GDP'],rm:['تغطية الاحتياطيات للواردات','Reserve import cover','m'],rt:['التصنيف الائتماني','Credit rating',''],fdi:['الاستثمار الأجنبي المباشر الوارد','FDI inflows','% GDP']};
+function lvl(s){return s==null?['–','–','#9fb3d9','']:s>=68?['مخاطر منخفضة','Low risk','#7fd3a5',L('بيئة استثمارية مواتية','Favourable investment environment')]:s>=55?['مخاطر معتدلة','Moderate risk','#D4B85A',L('مناسبة لاستثمار انتقائي مع متابعة','Suitable for selective investment with monitoring')]:s>=40?['مخاطر مرتفعة','High risk','#f0a25a',L('تتطلب ضمانات وأدوات حماية قبل الاستثمار','Requires guarantees and protection before investing')]:['مخاطر مرتفعة جداً','Very high risk','#e07a7a',L('يُنصح بالتريث أو الاقتصار على التجارة المضمونة','Caution advised – limit to secured trade')];}
+function fv(k,v){if(v==null)return '–';if(k==='rt')return `<span dir="ltr">${v||L('غير مصنّف','Not rated')}</span>`;if(k==='rm')return fmt(v)+' '+L('أشهر','months');if(k==='debt'||k==='inf')return `<span dir="ltr">${fmt(v)}%</span>`;return `<span dir="ltr">${sg(v)}%</span>`;}
+function risk(){const R=riskOf(F),lv=lvl(R.score);
+  const rows=ORDER.map(c=>({c,s:riskOf(ALL[c]).score})).filter(r=>r.s!=null).sort((a,b)=>b.s-a.s);const rank=rows.findIndex(r=>r.c===CTRY)+1;
+  const allS=Object.keys(ALL).map(c=>riskOf(ALL[c]).score).filter(x=>x!=null).sort((a,b)=>b-a),wr=R.score==null?0:allS.filter(x=>x>R.score).length+1;
+  const items=Object.entries(R.ind).filter(([k,[s]])=>s!=null).map(([k,[s,v]])=>({k,s,v}));
+  const str=items.filter(i=>i.s>=65).sort((a,b)=>b.s-a.s).slice(0,4),wk=items.filter(i=>i.s<45).sort((a,b)=>a.s-b.s).slice(0,4);
+  const gauge=s=>{const p=(s||0)/100,a=Math.PI*(1-p),x=100+80*Math.cos(a),y=100-80*Math.sin(a);return `<svg viewBox="0 0 200 112" style="width:220px;max-width:70%;display:block;margin:6px auto 0"><defs><linearGradient id="rg" x1="0" x2="1"><stop offset="0" stop-color="#e07a7a"/><stop offset=".5" stop-color="#D4B85A"/><stop offset="1" stop-color="#7fd3a5"/></linearGradient></defs><path d="M20 100A80 80 0 0 1 180 100" fill="none" stroke="#ffffff1a" stroke-width="16" stroke-linecap="round"/><path d="M20 100A80 80 0 0 1 180 100" fill="none" stroke="url(#rg)" stroke-width="16" stroke-linecap="round" opacity=".35"/><circle cx="${x.toFixed(1)}" cy="${y.toFixed(1)}" r="11" fill="#fff" stroke="${lv[2]}" stroke-width="5"/><text x="100" y="92" text-anchor="middle" fill="#fff" style="font:800 34px Montserrat,sans-serif">${R.score??'–'}</text><text x="100" y="110" text-anchor="middle" fill="#9fb3d9" style="font:600 11px Montserrat,sans-serif">/ 100</text></svg>`;};
+  const pill=p=>{const v=p.v;return `<div class="rp"><div class="rpt"><b>${L(PN[p.id][0],PN[p.id][1])}</b><span class="rpv" style="color:${lvl(v)[2]}">${v==null?'–':Math.round(v)}</span></div><div class="rpb"><i style="width:${v??0}%;background:${lvl(v)[2]}"></i></div><small>${L(PN[p.id][2],PN[p.id][3])} · ${L('الوزن ','weight ')}${p.w}%</small></div>`;};
+  const li=(i,good)=>`<li><span>${L(IN[i.k][0],IN[i.k][1])}</span><b class="${good?'up':'dn'}">${fv(i.k,i.v)}</b></li>`;
+  const tools=R.score==null?[]:R.score>=68?[L('الاستثمار المباشر والشراكات طويلة الأجل ممكنة وفق دراسة الجدوى المعتادة.','Direct investment and long-term partnerships are feasible under normal due diligence.'),L('مراقبة التصنيف الائتماني وأسعار الفائدة بشكل دوري.','Monitor credit rating and interest rates periodically.')]
+   :R.score>=55?[L('التدرّج في حجم الاستثمار والبدء بمشاريع قصيرة إلى متوسطة الأجل.','Scale investment gradually, starting with short-to-medium-term projects.'),L('التحوّط من مخاطر سعر الصرف عند التعامل بالعملة المحلية.','Hedge currency risk when dealing in local currency.'),L('التحقق من وجود اتفاقية لتشجيع وحماية الاستثمار مع دولة الكويت.','Check for a bilateral investment protection agreement with Kuwait.')]
+   :[L('الاستعانة بتأمين ضد المخاطر السياسية وتأمين ائتمان الصادرات (مثل المؤسسة الإسلامية لتأمين الاستثمار وائتمان الصادرات أو الوكالة الدولية لضمان الاستثمار).','Use political-risk and export-credit insurance (e.g. ICIEC or MIGA).'),L('تفضيل الدفع المسبق أو الاعتمادات المستندية المؤكدة في التجارة.','Prefer advance payment or confirmed letters of credit for trade.'),L('التحقق من اتفاقية حماية الاستثمار وآليات تسوية المنازعات قبل أي التزام.','Verify investment-protection treaty and dispute-settlement mechanisms before committing.'),L('تجنّب الالتزامات طويلة الأجل بالعملة المحلية.','Avoid long-term commitments in local currency.')];
+  $('#vRisk').innerHTML=`<div class="fh"><h2>${L('تقييم مخاطر الاستثمار','Investment Risk Assessment')}</h2><span class="sub">${L('مؤشر مركّب من 0 إلى 100 – كلما ارتفع انخفضت المخاطر','Composite index 0–100 – higher means lower risk')}</span></div>
+   <div class="rhero" style="border-color:${lv[2]}88">${gauge(R.score)}<div class="rlv" style="color:${lv[2]}">${L(lv[0],lv[1])}</div><div class="rvd">${lv[3]}</div>
+    <div class="rrk"><span>${L('الترتيب الإقليمي','Regional rank')} <b>${rank||'–'} / ${rows.length}</b></span><span>${L('الترتيب بين ','Rank among ')+allS.length+L(' دولة',' countries')} <b>${wr||'–'}</b></span></div></div>
+   ${card(L('محاور التقييم','Assessment pillars'),'',`<div class="rps">${R.P.map(pill).join('')}</div>`)}
+   <div class="two">${card(L('نقاط القوة','Strengths'),'',str.length?`<ul class="rl">${str.map(i=>li(i,true)).join('')}</ul>`:`<div class="note">${L('لا توجد مؤشرات قوية بارزة.','No standout strengths.')}</div>`)}
+   ${card(L('مواطن المخاطر','Risk factors'),'',wk.length?`<ul class="rl">${wk.map(i=>li(i,false)).join('')}</ul>`:`<div class="note">${L('لا توجد مخاطر بارزة في المؤشرات.','No significant risk flags.')}</div>`)}</div>
+   ${card(L('ما الذي يُنصح به قبل اتخاذ القرار؟','What to consider before deciding'),'',`<ul class="rt">${tools.map(t=>`<li>${t}</li>`).join('')}</ul>`)}
+   ${card(L('مقارنة المخاطر – '+RL(),'Risk comparison – '+RL()),L('مرتبة من الأقل مخاطر','Ranked from lowest risk'),`<div class="cmp">${rows.map(r=>`<div class="r ${r.c===CTRY?'me':''}"><span><img class="ofs" src="oflags/${CF[r.c].iso}.svg" alt="">${EN?CF[r.c].en:CF[r.c].ar}</span><span class="tr"><i style="inset-inline-start:0;width:${r.s}%;background:${lvl(r.s)[2]}"></i></span><span class="v">${r.s}</span></div>`).join('')}</div>`)}
+   <div class="note">${L('تقييم استرشادي مبني على مؤشرات صندوق النقد الدولي والبنك الدولي والتصنيفات السيادية، ولا يغني عن دراسة الجدوى والعناية الواجبة.','Indicative assessment based on IMF and World Bank indicators and sovereign ratings; not a substitute for feasibility studies and due diligence.')}</div>`;}
+const V={risk:['vRisk',risk],home:['vHome',home],fdi:['vFdi',fdi],rating:['vRat',rating],output:['vOut',output],monetary:['vMon',monetary],fiscal:['vFis',fiscal],external:['vExt',external]};
 function route(){const h=(location.hash||'#home').slice(1),v=V[h]?h:'home';document.querySelectorAll('.fsec').forEach(s=>s.classList.remove('on'));
   const [id,fn]=V[v];fn();$('#'+id).classList.add('on');
   document.querySelectorAll('.bnav button,.ftabs button').forEach(b=>b.classList.toggle('on',b.dataset.go===v));
