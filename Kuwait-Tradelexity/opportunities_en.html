@@ -464,6 +464,39 @@ main{max-width:820px}
 .vd i{width:9px;height:9px;border-radius:50%;flex:none;background:currentColor}
 .otabs button{letter-spacing:.2px}
 .pdot i.on{background:#e58f8f}
+
+.pdfb{display:flex;align-items:center;justify-content:center;gap:8px;width:100%;margin:14px 0 0;padding:13px;border-radius:14px;border:1px solid #D4B85A;background:transparent;color:#D4B85A;font:800 14px Almarai,sans-serif;cursor:pointer}
+.pdfb .hi{font-size:18px}.pdfb:hover{background:#D4B85A;color:#0B193A}
+#brief{display:none}
+@page{size:A4;margin:0}
+@media print{
+ body{background:#fff!important}body>*:not(#brief){display:none!important}
+ #brief{display:block!important;width:210mm;height:296mm;overflow:hidden;box-sizing:border-box;padding:12mm 13mm 10mm;color:#1b2333;font-family:Almarai,Montserrat,sans-serif;-webkit-print-color-adjust:exact;print-color-adjust:exact;position:relative}
+}
+#brief .bh{display:flex;justify-content:space-between;align-items:center;border-bottom:2.5px solid #0B193A;padding-bottom:5mm}
+#brief .bh .br1{font:800 17pt Montserrat,sans-serif;color:#0B193A;direction:ltr}#brief .bh .br1 span{color:#b8963a}
+#brief .bh .br2{font:700 6.5pt Montserrat,sans-serif;letter-spacing:1.6px;color:#6b7486;direction:ltr}
+#brief .bh .dt{font-size:8pt;color:#6b7486;text-align:end}
+#brief .ttl{display:flex;align-items:center;gap:4mm;margin:6mm 0 5mm}
+#brief .ttl img{height:12mm;width:18mm;object-fit:cover;border:1px solid #d5dae3;border-radius:1.5mm}
+#brief .ttl .ar{font-size:16pt;color:#5e9e8f;font-weight:800}
+#brief .ttl h2{margin:0;font-size:17pt;color:#0B193A}#brief .ttl small{display:block;color:#6b7486;font-size:9pt;margin-top:1mm}
+#brief .kr{display:grid;grid-template-columns:repeat(4,1fr);gap:3mm;margin-bottom:5mm}
+#brief .kk{border:1px solid #d5dae3;border-radius:2.5mm;padding:3mm;border-top:3px solid #5e9e8f}
+#brief .kk:nth-child(2){border-top-color:#0B193A}#brief .kk:nth-child(3){border-top-color:#8a94a6}#brief .kk:nth-child(4){border-top-color:#b8963a}
+#brief .kk small{display:block;font-size:7.5pt;color:#6b7486}#brief .kk b{display:block;font-size:13pt;color:#0B193A;margin-top:1mm;unicode-bidi:isolate}
+#brief h3{font-size:10.5pt;color:#0B193A;margin:0 0 2mm;padding-inline-start:2.5mm;border-inline-start:3px solid #b8963a}
+#brief table{width:100%;border-collapse:collapse;font-size:8pt}
+#brief th{background:#0B193A;color:#fff;font-weight:700;padding:1.8mm 1.5mm;text-align:start;font-size:7.5pt}
+#brief td{padding:1.6mm 1.5mm;border-bottom:1px solid #e4e8ee;unicode-bidi:isolate}
+#brief tr:nth-child(even) td{background:#f5f7fa}
+#brief td.num,#brief th.num{text-align:end;white-space:nowrap}
+#brief .tg{display:inline-block;padding:.4mm 2mm;border-radius:5mm;font-size:7pt;font-weight:700;white-space:nowrap}
+#brief .tg.g{background:#e6f2ef;color:#2f6f61}#brief .tg.y{background:#f7f0dc;color:#8a6d1f}#brief .tg.r{background:#eef0f4;color:#5a6476}
+#brief .cols{display:grid;grid-template-columns:1fr 1fr;gap:5mm;margin-top:5mm}
+#brief .mt2{margin-top:5mm}
+#brief .nt{position:absolute;bottom:9mm;inset-inline:13mm;font-size:6.8pt;color:#6b7486;line-height:1.55;border-top:1px solid #d5dae3;padding-top:2.5mm}
+#brief .sum{font-size:8.6pt;line-height:1.7;color:#2b3445;background:#f5f7fa;border-radius:2.5mm;padding:3mm 4mm;margin-bottom:5mm}
 </style></head>
 <body>
 <script>
@@ -497,8 +530,10 @@ requestAnimationFrame(loop);})();
  <div class="lg"><span><i style="background:#D4B85A"></i>Strong</span><span><i style="background:#4f8f83"></i>Market need</span><span><i style="background:#3b4a68"></i>Local competition</span><span><i style="background:#e58f8f;border-radius:50%;width:7px;height:7px"></i>Shortage years</span></div></section>
 <section class="pane" id="pn"><div id="bn"></div></section>
 <section class="pane" id="ps"><div id="bs"></div></section>
+<button class="pdfb" id="pdfb" type="button"><svg class="hi" viewBox="0 0 24 24"><path d="M7 3h7l4 4v14H7zM14 3v4h4M12 10v7M9 14l3 3 3-3"/></svg>Download opportunity brief (PDF)</button>
 <div class="fbrand" style="margin:30px 0 90px"><canvas class="spin fbg" aria-hidden="true"></canvas><div><div class="fbn" dir="ltr">Trade<span>lexity</span></div><div class="fbt" dir="ltr">GLOBAL TRADE FINANCE INTELLIGENCE</div></div></div>
 </main>
+<div id="brief"></div>
 <div class="sh" id="sh"><div class="sb" id="shb"></div></div>
 <script>
 const EN=document.documentElement.lang==='en',L=(a,e)=>EN?e:a,$=s=>document.querySelector(s);
@@ -521,17 +556,17 @@ const ico=k=>`<svg class="hi" viewBox="0 0 24 24" aria-hidden="true"><path d="${
 const avg=a=>{const v=a.filter(x=>x>0);return v.length?v.reduce((s,x)=>s+x,0)/v.length:0;};
 function chap(c){const d=O.c[c],n=d.y.length,r={};for(const [k,v] of Object.entries(d.ch)){const xs=v.slice(0,n),ms=v.slice(n);r[k]={x:avg(xs)||0,m:avg(ms)||0,need:ms.filter((m,i)=>m>xs[i]&&m>0).length,n};}return r;}
 let WX=null;function world(){if(WX)return WX;WX={};let T=0;for(const c in O.c){for(const [k,v] of Object.entries(chap(c))){WX[k]=(WX[k]||0)+v.x;T+=v.x;}}WX._T=T;return WX;}
-function bilat(a,b){const pa=O.c[a].p[b],pb=O.c[b].p[a];let x=pa?pa[0]:null,m=pa?pa[1]:null,src='a';if((x==null||(!x&&!m))&&pb){x=pb[1];m=pb[0];src='b';}return {x:x||0,m:m||0,src};}
+function bilat(a,b){const pa=O.c[a].p[b],pb=O.c[b].p[a];let x=pa?pa[0]:0,m=pa?pa[1]:0;if(pb){if(pb[1]>x)x=pb[1];if(!m)m=pb[0];}return {x:x||0,m:m||0};}
 let R;
 function analyse(){const A=chap(X),B=chap(Y),W=world(),Ax=Object.values(A).reduce((s,v)=>s+v.x,0)||1,Bm=Object.values(B).reduce((s,v)=>s+v.m,0)||1;
  const ks=new Set([...Object.keys(A),...Object.keys(B)]);let d=0;ks.forEach(k=>{d+=Math.abs(((B[k]||{}).m||0)/Bm-((A[k]||{}).x||0)/Ax);});
  const rcaOf=k=>A[k]?(A[k].x/Ax)/((W[k]||1)/W._T):0;
- const ops=[];for(const k of ks){const a=A[k]||{x:0},b=B[k]||{x:0,m:0,need:0,n:3};if(!a.x||!b.m)continue;
+ const ops=[];for(const k of ks){if(+k>=98)continue;const a=A[k]||{x:0},b=B[k]||{x:0,m:0,need:0,n:3};if(!a.x||!b.m)continue;
   const rca=rcaOf(k),pot=Math.min(a.x,b.m),net=b.m-b.x,score=pot*Math.min(2.5,Math.max(.3,rca))*(net>0?1:.4)*(.6+.4*b.need/(b.n||3));
   ops.push({k,ax:a.x,bm:b.m,bx:b.x,rca,pot,net,need:b.need,n:b.n,score});}
  ops.sort((p,q)=>q.score-p.score);
- const lacks=Object.entries(B).map(([k,v])=>({k,net:v.m-v.x,m:v.m,need:v.need,n:v.n})).filter(o=>o.net>0).sort((p,q)=>q.net-p.net).slice(0,10);
- const str=Object.entries(A).map(([k,v])=>({k,x:v.x,rca:rcaOf(k)})).filter(o=>o.rca>=1).sort((p,q)=>q.x-p.x).slice(0,10);
+ const lacks=Object.entries(B).map(([k,v])=>({k,net:v.m-v.x,m:v.m,need:v.need,n:v.n})).filter(o=>o.net>0&&+o.k<98).sort((p,q)=>q.net-p.net).slice(0,10);
+ const str=Object.entries(A).map(([k,v])=>({k,x:v.x,rca:rcaOf(k)})).filter(o=>o.rca>=1&&+o.k<98).sort((p,q)=>q.x-p.x).slice(0,10);
  return {TCI:Math.round(100*(1-d/2)),ops,lacks,str,A,B,rcaOf};}
 /* squarified treemap */
 function squarify(items,x,y,w,h){const out=[];let rest=items.slice();const tot=rest.reduce((s,i)=>s+i.v,0);const sc=w*h/tot;rest.forEach(i=>i.a=i.v*sc);
@@ -576,6 +611,28 @@ function sheet(k){const a=R.A[k]||{x:0},b=R.B[k]||{x:0,m:0,need:0,n:3},rca=R.rca
  <div class="mt"><div class="l"><span>${L('تنافسية '+nm(X)+' (الميزة النسبية)','Competitiveness of '+nm(X)+' (RCA)')}</span><b>×${rca.toLocaleString('en-US',{maximumFractionDigits:1})}</b></div><div class="tk"><i style="width:${rp}%;background:${rca>=1?'#7fd3a5':'#D4B85A'}"></i></div></div>
  <button class="cl" type="button">${L('إغلاق','Close')}</button>`;
  $('#sh').classList.add('on');$('#shb .cl').onclick=()=>$('#sh').classList.remove('on');}
+
+function brief(){const bl=bilat(X,Y),bal=bl.x-bl.m,ly=O.c[X].ly||O.c[X].y[O.c[X].y.length-1],yrs=O.c[X].y;
+ const f1=v=>v.toLocaleString('en-US',{maximumFractionDigits:1});
+ const tag=o=>o.rca>=1&&o.net>0?['g',L('قوية','Strong')]:o.net>0?['y',L('محتملة','Possible')]:['r',L('محدودة','Limited')];
+ const lv=R.TCI>=40?L('مرتفع','high'):R.TCI>=25?L('متوسط','moderate'):L('منخفض','low');
+ const top=R.ops.slice(0,10),strong=top.filter(o=>o.rca>=1&&o.net>0).slice(0,3).map(o=>sn(o.k));
+ const d=new Date().toLocaleDateString(EN?'en-GB':'ar-KW-u-nu-latn',{day:'numeric',month:'long',year:'numeric'});
+ const summ=L(`يبلغ مؤشر التكامل التجاري بين صادرات ${nm(X)} وواردات ${nm(Y)} ${R.TCI} من 100 (مستوى ${lv}). بلغت صادرات ${nm(X)} إلى ${nm(Y)} ${usd(bl.x)} مقابل واردات بقيمة ${usd(bl.m)} في ${ly}.${strong.length?` وتتركز أبرز الفرص في: ${strong.join('، ')}.`:''}`,
+  `The trade complementarity index between ${nm(X)}'s exports and ${nm(Y)}'s imports is ${R.TCI} out of 100 (${lv}). In ${ly}, ${nm(X)} exported ${usd(bl.x)} to ${nm(Y)} and imported ${usd(bl.m)}.${strong.length?` The strongest opportunities are in ${strong.join(', ')}.`:''}`);
+ const mini=(list,val,ex)=>`<table><thead><tr><th>HS</th><th>${L('السلعة','Product')}</th><th class="num">${L('القيمة','Value')}</th><th class="num">${ex[0]}</th></tr></thead><tbody>${list.slice(0,6).map(o=>`<tr><td>${o.k}</td><td>${sn(o.k)}</td><td class="num">${usd(val(o))}</td><td class="num">${ex[1](o)}</td></tr>`).join('')}</tbody></table>`;
+ $('#brief').innerHTML=`<div class="bh"><div><div class="br1">Trade<span>lexity</span></div><div class="br2">GLOBAL TRADE FINANCE INTELLIGENCE</div></div><div class="dt">${L('موجز فرص التبادل التجاري','Trade Opportunity Brief')}<br>${d}</div></div>
+ <div class="ttl"><img src="${flag(X)}" alt=""><span class="ar">${EN?'→':'←'}</span><img src="${flag(Y)}" alt=""><div><h2>${L('فرص صادرات '+nm(X)+' إلى '+nm(Y),nm(X)+' export opportunities in '+nm(Y))}</h2><small>${L('متوسط '+yrs[0]+'–'+yrs[yrs.length-1]+' · القيم بالدولار الأمريكي','Average '+yrs[0]+'–'+yrs[yrs.length-1]+' · values in US dollars')}</small></div></div>
+ <div class="kr"><div class="kk"><small>${L('مؤشر التكامل التجاري','Complementarity index')}</small><b>${R.TCI} / 100</b></div><div class="kk"><small>${L('الصادرات إلى '+nm(Y),'Exports to '+nm(Y))} (${ly})</small><b>${usd(bl.x)}</b></div><div class="kk"><small>${L('الواردات من '+nm(Y),'Imports from '+nm(Y))} (${ly})</small><b>${usd(bl.m)}</b></div><div class="kk"><small>${L('الميزان التجاري','Trade balance')}</small><b style="color:${bal>=0?'#2f6f61':'#a13d3d'}">${(bal<0?'−':'+')+usd(Math.abs(bal))}</b></div></div>
+ <div class="sum">${summ}</div>
+ <h3>${L('أبرز 10 فرص تصديرية','Top 10 export opportunities')}</h3>
+ <table><thead><tr><th>#</th><th>HS</th><th>${L('السلعة','Product')}</th><th class="num">${L('واردات '+nm(Y),nm(Y)+' imports')}</th><th class="num">${L('صادرات '+nm(X),nm(X)+' exports')}</th><th class="num">${L('حجم الفرصة','Opportunity')}</th><th class="num">${L('سنوات العجز','Shortage yrs')}</th><th class="num">RCA</th><th>${L('التقييم','Rating')}</th></tr></thead>
+ <tbody>${top.map((o,i)=>{const t=tag(o);return `<tr><td>${i+1}</td><td>${o.k}</td><td>${sn(o.k)}</td><td class="num">${usd(o.bm)}</td><td class="num">${usd(o.ax)}</td><td class="num"><b>${usd(o.pot)}</b></td><td class="num">${o.need}/${o.n}</td><td class="num">${f1(o.rca)}</td><td><span class="tg ${t[0]}">${t[1]}</span></td></tr>`;}).join('')}</tbody></table>
+ <div class="cols"><div><h3>${L('أكبر احتياجات '+nm(Y),'Largest needs of '+nm(Y))}</h3>${mini(R.lacks,o=>o.net,[L('سنوات العجز','Shortage'),o=>o.need+'/'+o.n])}</div>
+ <div><h3>${L('نقاط قوة '+nm(X)+' التصديرية','Export strengths of '+nm(X))}</h3>${mini(R.str,o=>o.x,['RCA',o=>f1(o.rca)])}</div></div>
+ <div class="nt">${L('المنهجية: مؤشر التكامل التجاري (UNCTAD) = 100 × (1 − ½ Σ|حصة السلعة في واردات السوق − حصتها في صادرات الدولة المصدّرة|). حجم الفرصة = الأصغر بين صادرات الدولة المصدّرة وواردات السوق من السلعة. الميزة النسبية الظاهرة (RCA) = حصة السلعة من صادرات الدولة ÷ حصتها من إجمالي صادرات الدول المشمولة؛ أكبر من 1 تعني ميزة تنافسية. سنوات العجز = عدد السنوات التي تجاوزت فيها واردات السوق صادراته من السلعة. البيانات على مستوى فصول النظام المنسق (HS 2 أرقام). تُحتسب الصادرات الثنائية بالأعلى بين بيانات الدولة المصدّرة وبيانات الشريك (البيانات المرآتية) لشمول صادرات النفط الخام.<br>المصادر: قاعدة بيانات الأمم المتحدة لتجارة السلع (UN Comtrade)؛ إحصاءات التجارة الخارجية – الإدارة المركزية للإحصاء (دولة الكويت). المؤشرات استرشادية ولا تمثل دراسة جدوى.',
+  'Methodology: Trade complementarity index (UNCTAD) = 100 × (1 − ½ Σ|product share of market imports − product share of exporter exports|). Opportunity = the smaller of the exporter\'s exports and the market\'s imports of the product. Revealed comparative advantage (RCA) = product share of the country\'s exports ÷ its share of total exports of covered countries; above 1 indicates competitiveness. Shortage years = years in which the market\'s imports exceeded its exports of the product. Data at HS 2-digit chapter level. Bilateral exports use the higher of exporter-reported and partner-reported (mirror) figures so that crude oil is captured.<br>Sources: UN Comtrade database; Foreign Trade Statistics – Central Statistical Bureau (State of Kuwait). Indicators are for guidance and do not constitute a feasibility study.')}</div>`;
+ const imgs=[...document.querySelectorAll('#brief img')];Promise.all(imgs.map(i=>i.complete?1:new Promise(r=>{i.onload=i.onerror=r;}))).then(()=>setTimeout(()=>window.print(),150));}
 function setTab(t){TAB=t;document.querySelectorAll('.otabs button').forEach(b=>b.classList.toggle('on',b.dataset.t===t));document.querySelectorAll('.pane').forEach(p=>p.classList.toggle('on',p.id==='p'+t));if(t==='o')drawTM();grow();}
 function render(){if(X===Y)Y=Object.keys(O.c).find(c=>c!==X);
  history.replaceState(null,'','?c='+X+'&to='+Y);document.title='Tradelexity – '+nm(X)+' → '+nm(Y);
@@ -604,6 +661,7 @@ Promise.all([fetch('opp.json').then(r=>r.json()),fetch('fin.json').then(r=>r.jso
  $('#sh').onclick=e=>{if(e.target.id==='sh')$('#sh').classList.remove('on');};
  let rt;addEventListener('resize',()=>{clearTimeout(rt);rt=setTimeout(()=>{if(TAB==='o')drawTM();},150);});
  $('#backIntro').onclick=()=>{location.href=$('#backIntro').dataset.h;};$('.lang').onclick=e=>{e.currentTarget.href=$('.lang').dataset.h+location.search;};
+ $('#pdfb').onclick=brief;
  render();}).catch(e=>console.error('OPPERR',e));
 </script>
 </body></html>
