@@ -57,10 +57,10 @@ const IND=[
  ['lend','اقراض|فائده القروض|lending rate','LEND',['سعر فائدة الإقراض','Lending rate'],'rate',0],
  ['fdio','استثمار صادر|استثمارات صادره|fdi outflow|outward fdi|outward investment','FDIOUT',['تدفقات الاستثمار المباشر الصادرة','FDI outflows'],'bn',1],
  ['fdi','استثمار اجنبي|استثمار مباشر|استثمارات اجنبيه|استثمارات مباشره|fdi|foreign direct|foreign investment','FDIIN',['تدفقات الاستثمار الأجنبي المباشر الواردة','FDI inflows'],'bn',1],
- ['bal','ميزان|فائض|عجز تجاري|trade balance|balance|surplus|deficit','@b',['الميزان التجاري','Trade balance'],'usdm',1],
- ['exp','صادر|تصدير|مصدر|export','@x',['الصادرات','Exports'],'usdm',1],
- ['imp','وارد|استيراد|مستورد|import','@m',['الواردات','Imports'],'usdm',1],
- ['tot','تبادل|حجم التجاره|تجاره خارجيه|تجاره|total trade|foreign trade|trade','@t',['حجم التبادل التجاري','Total trade'],'usdm',1],
+ ['bal','ميزان|فائض|عجز تجاري|trade balance|balance|surplus|deficit','@b',['الميزان التجاري غير النفطي','Non-oil trade balance'],'usdm',1],
+ ['exp','صادر|تصدير|مصدر|export','@x',['الصادرات غير النفطية','Non-oil exports'],'usdm',1],
+ ['imp','وارد|استيراد|مستورد|import','@m',['الواردات غير النفطية','Non-oil imports'],'usdm',1],
+ ['tot','تبادل|حجم التجاره|تجاره خارجيه|تجاره|total trade|foreign trade|trade','@t',['حجم التبادل التجاري غير النفطي','Non-oil trade volume'],'usdm',1],
  ['pol','فائده|interest|policy rate','#pol',['سعر الفائدة الرئيسي','Policy rate'],'rate',0],
  ['risk','مخاطر|risk|هل استثمر|امن للاستثمار|امان|safe|safest|riskiest','#risk',['درجة مخاطر الاستثمار (من 100)','Investment risk score (out of 100)'],'n0',0],
  ['rat','تصنيف|rating|ستاندرد','#rt',['التصنيف الائتماني (S&P)','Credit rating (S&P)'],'txt',0],
@@ -112,9 +112,10 @@ function opps(a,b){const A=OP[a],B=OP[b];if(!A||!B||!A.ch||!B.ch)return L('لا 
  let d=0;new Set([...Object.keys(ax),...Object.keys(bm)]).forEach(k=>{d+=Math.abs((bm[k]||0)/BM-(ax[k]||0)/AX);});const tci=Math.round(100*(1-d/2)),lv=tci>=40?L('عالٍ','high'):tci>=25?L('متوسط','medium'):L('منخفض','low');
  const top=Object.keys(ax).filter(k=>bm[k]).map(k=>[k,Math.min(ax[k],bm[k])]).sort((p,q)=>q[1]-p[1]).slice(0,5);
  return L(`فرص صادرات ${nm(a)} إلى ${nm(b)} – مؤشر التكامل التجاري <b>${tci}</b> (${lv}). أكبر السلع التي تصدّرها ${nm(a)} وتستوردها ${nm(b)}:`,`Export prospects for ${nm(a)} in ${nm(b)} – trade complementarity index <b>${tci}</b> (${lv}). Largest products that ${nm(a)} exports and ${nm(b)} imports:`)+tbl(top.map(([k,v])=>[hs(k),usd(v)]))+note(L('القيمة = الأقل بين صادرات الأولى وواردات الثانية من السلعة (متوسط سنوي).','Value = the smaller of the first country\'s exports and the second\'s imports of the product (annual average).'))+olink(a,b);}
-function chTrade(c,pr,exp){const o=OP[c];if(!o||!o.ch||!o.ch[pr[2]])return L(`لا تتوفر بيانات ${EN?pr[4]:pr[3]} ${la(c)}.`,`No ${pr[4]} data for ${nm(c)}.`)+links(c);const n=o.y.length,a=o.ch[pr[2]],v=exp?a[n-1]:a[2*n-1],y=o.y[n-1],tot=exp?o.t[0]:o.t[1];
+const chv=(o,k)=>o?(k==='27'?o.o27:(o.ch||{})[k]):null;
+function chTrade(c,pr,exp){const o=OP[c];if(!o||!o.ch||!chv(o,pr[2]))return L(`لا تتوفر بيانات ${EN?pr[4]:pr[3]} ${la(c)}.`,`No ${pr[4]} data for ${nm(c)}.`)+links(c);const n=o.y.length,a=chv(o,pr[2]),v=exp?a[n-1]:a[2*n-1],y=o.y[n-1],tot=(exp?o.t[0]:o.t[1])+(pr[2]==='27'&&o.oil?(exp?o.oil[0]:o.oil[1]):0);
  return L(`${exp?'صادرات':'واردات'} ${nm(c)} من ${hs(pr[2])} (${y}): <b>${usd(v)}</b>${tot&&String(y)===String(o.ly||y)?'، أي '+num(v/tot*100)+'% من إجمالي '+(exp?'الصادرات':'الواردات'):''}.`,`${nm(c)} ${exp?'exports':'imports'} of ${hs(pr[2])} (${y}): <b>${usd(v)}</b>${tot&&String(y)===String(o.ly||y)?', '+num(v/tot*100)+'% of total '+(exp?'exports':'imports'):''}.`)+(pr[1]?note(L(`الرقم لمجموعة «${hs(pr[2])}» كاملة، وليس ${pr[3]} وحده.`,`The figure is for the whole "${hs(pr[2])}" group, not ${pr[4]} alone.`)):'')+links(c);}
-function chRank(pr,exp,set,gname,n){const rows=set.map(c=>{const o=OP[c];if(!o||!o.ch||!o.ch[pr[2]])return null;const k=o.y.length;return [c,exp?o.ch[pr[2]][k-1]:o.ch[pr[2]][2*k-1]];}).filter(r=>r&&r[1]>0).sort((a,b)=>b[1]-a[1]);
+function chRank(pr,exp,set,gname,n){const rows=set.map(c=>{const o=OP[c];if(!o||!o.ch||!chv(o,pr[2]))return null;const k=o.y.length;return [c,exp?chv(o,pr[2])[k-1]:chv(o,pr[2])[2*k-1]];}).filter(r=>r&&r[1]>0).sort((a,b)=>b[1]-a[1]);
  if(!rows.length)return L('لا تتوفر بيانات لهذا الترتيب.','No data for this ranking.');
  return L(`أكبر ${exp?'مصدّري':'مستوردي'} ${hs(pr[2])}${gname?' – '+gname:''} (أحدث سنة):`,`Largest ${exp?'exporters':'importers'} of ${hs(pr[2])}${gname?' – '+gname:''} (latest year):`)+tbl(rows.slice(0,n).map((r,i)=>[(i+1)+'. '+nm(r[0]),usd(r[1])]))+(pr[1]?note(L(`الترتيب لمجموعة «${hs(pr[2])}» كاملة، ضمن دول المنصة.`,`Ranking is for the whole "${hs(pr[2])}" group, among the portal's countries.`)):note(L('ضمن دول المنصة.','Among the portal\'s countries.')));}
 async function suppliers(c,pr){await need('prod');const pn=EN?pr[4]:pr[3],to=L(' إلى '+nm(c),' to '+nm(c));
@@ -124,7 +125,7 @@ async function suppliers(c,pr){await need('prod');const pn=EN?pr[4]:pr[3],to=L('
   return L(`أهم موردي ${pn}${to} (${py}) – إجمالي الواردات <b>${usd(t/1000)}</b>:`,`Main suppliers of ${pn}${to} (${py}) – total imports <b>${usd(t/1000)}</b>:`)+row(PD.n,ps,t,1000)+(mode==='m'?note(L('بحسب ما أعلنته الدول المصدّرة، لأن الدولة لم تنشر بياناتها. لا تشمل المصدّرين الذين لا ينشرون بياناتهم، مثل روسيا.','Based on what exporting countries reported, because this country has not published its data. Exporters that do not publish data, such as Russia, are not included.')):'')+links(c);}
  await need('sup');const g=SP.c[c]&&SP.c[c][pr[2]];
  if(g&&g.p&&g.p.length){const cn=hs(pr[2]);return (pr[1]?L(`لا تتوفر بعد بيانات تفصيلية عن ${pn}${to}. هذه بيانات المجموعة كاملة (${cn})، ${g.y}:`,`Product-level data for ${pn}${to} are not available yet. These are the figures for the whole group (${cn}), ${g.y}:`):L(`أهم موردي ${cn}${to} (${g.y}) – إجمالي الواردات <b>${usd(g.t)}</b>:`,`Main suppliers of ${cn}${to} (${g.y}) – total imports <b>${usd(g.t)}</b>:`))+row(SP.n,g.p,g.t,1)+links(c);}
- await need('opp');if(OP[c]&&OP[c].ch&&OP[c].ch[pr[2]])return chTrade(c,pr,false).replace(/<div>.*$/,'')+note(L('تفاصيل المورّدين لهذه السلعة غير متوفرة بعد.','Supplier details for this product are not available yet.'))+links(c);
+ await need('opp');if(OP[c]&&OP[c].ch&&chv(OP[c],pr[2]))return chTrade(c,pr,false).replace(/<div>.*$/,'')+note(L('تفاصيل المورّدين لهذه السلعة غير متوفرة بعد.','Supplier details for this product are not available yet.'))+links(c);
  return L(`بيانات موردي ${pn}${to} غير متوفرة بعد في المنصة.`,`Supplier data for ${pn}${to} are not yet available in the portal.`)+links(c);}
 function fdiList(c,dir){const e=FB.c[c]&&FB.c[c][dir];if(!e||!e.p||!e.p.length)return L(`لا تتوفر بيانات أرصدة الاستثمار المباشر ${la(c)}.`,`No direct-investment position data for ${nm(c)}.`)+links(c);
  return (dir==='i'?L(`أكبر المستثمرين في ${nm(c)} (رصيد الاستثمار المباشر، ${e.y}) – الإجمالي <b>${usd(e.T)}</b>:`,`Largest investors in ${nm(c)} (direct-investment position, ${e.y}) – total <b>${usd(e.T)}</b>:`):L(`أكبر وجهات استثمارات ${nm(c)} في الخارج (رصيد الاستثمار المباشر، ${e.y}) – الإجمالي <b>${usd(e.T)}</b>:`,`Largest destinations of ${nm(c)}'s investment abroad (direct-investment position, ${e.y}) – total <b>${usd(e.T)}</b>:`))+tbl(e.p.filter(p=>!['IL','PS','LY','SD','YE','DJ','BY'].includes(p[0])).slice(0,7).map(p=>[nm(p[0]),usd(p[1])+(p[2]?' ('+p[2]+')':'')]))+`<div><a href="${pg('finance',c)}">${L('صفحة الاقتصاد والمالية','Economy & Finance page')}</a></div>`;}
@@ -449,7 +450,7 @@ const help=()=>L('أنا بيان، مساعد tradelexity. أجيب من بيا
 async function answer(q){const NF=/عن أي دولة؟|Which country\?|لم أتعرف|I could not find/;let q2=null;try{q2=await spell(q);}catch(e){}
  if(q2&&q2!==nz(q)){const keep=last,b=await answer0(q2);if(typeof b==='string'&&!NF.test(b.slice(0,80)))return bhNote(q2,note(L('عُرضت النتائج بعد تصحيح الإملاء: ','Showing results after spelling correction: ')+'«'+q2+'»')+b);last=keep;}
  const a0=await answer0(q);return bhNote(q,a0);}
-const bhNote=(q,a)=>typeof a==='string'&&last==='BH'&&/صادر|وارد|تجار|تبادل|ميزان|export|import|trade|balance/.test(nz(q))&&!/غير النفطيه فقط|non-oil trade only/.test(a)?a+note(L('أرقام تجارة البحرين من 2023 تشمل التجارة غير النفطية فقط.','Bahrain\'s trade figures from 2023 cover non-oil trade only.')):a;
+const bhNote=(q,a)=>typeof a==='string'&&last&&D.c[last]&&D.c[last].est&&/صادر|وارد|تجار|تبادل|ميزان|export|import|trade|balance/.test(nz(q))&&!/تقديري|estimated/.test(a)?a+note(L('القيمة غير النفطية لآخر سنة تقديرية: استُبعد الوقود بنسبته في أقرب سنة متاحة التفصيل.','The latest non-oil figure is estimated: fuels were removed using their share in the nearest year with detail.')):a;
 async function answer0(q){q=String(q).replace(/\bU\.?S\.?A?\b/g,'usa').replace(/\bU\.?K\.?\b/g,'uk').replace(/\bU\.?A\.?E\.?\b/g,'uae');const t=nz(q),tt=' '+t+' ';
  if(/^(مرحبا|اهلا|السلام عليكم|هلا|hi|hello|hey)( |$)/.test(t)&&t.split(' ').length<4)return help();
  if(/مساعده|ماذا تستطيع|ماذا يمكنك|كيف استخدم|help|what can you/.test(t))return help();
