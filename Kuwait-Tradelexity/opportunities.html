@@ -571,10 +571,11 @@ requestAnimationFrame(loop);})();
  <div class="pc"><span class="lb">السوق المستهدفة</span><div class="fl"><img id="fY" alt=""></div><div class="nmw"><span class="nm" id="nY"></span><select id="sY" aria-label="market"></select></div></div>
 </div>
 <div class="kyr" id="kyr"></div><div class="kp" id="kp"></div>
-<div class="otabs"><button data-t="o" class="on">الفرص<small id="tbo"></small></button><button data-t="n">احتياجات السوق<small id="tbn"></small></button><button data-t="s">نقاط القوة<small id="tbs"></small></button></div>
+<div class="otabs"><button data-t="o" class="on">الفرص<small id="tbo"></small></button><button data-t="n">احتياجات السوق<small id="tbn"></small></button><button data-t="s">نقاط القوة<small id="tbs"></small></button><button data-t="r">إعادة التصدير<small id="tbr"></small></button></div>
 <section class="pane on" id="po"><div class="hint" id="hintO"></div><div class="tm" id="tm"></div></section>
 <section class="pane" id="pn"><div id="bn"></div></section>
 <section class="pane" id="ps"><div id="bs"></div></section>
+<section class="pane" id="pr"><div id="brx"></div></section>
 
 <div class="fbrand" style="margin:30px 0 90px"><canvas class="spin fbg" aria-hidden="true"></canvas><div><div class="fbn" dir="ltr">Trade<span>lexity</span></div><div class="fbt" dir="ltr">GLOBAL TRADE FINANCE INTELLIGENCE</div></div></div>
 </main>
@@ -620,7 +621,11 @@ function analyse(){const A=chap(X),B=chap(Y),W=world(),Ax=Object.values(A).reduc
  ops.sort((p,q)=>q.score-p.score);
  const lacks=Object.entries(B).map(([k,v])=>({k,net:v.m-v.x,m:v.m,need:v.need,n:v.n})).filter(o=>o.net>0&&+o.k<98).sort((p,q)=>q.net-p.net).slice(0,10);
  const str=Object.entries(A).map(([k,v])=>({k,x:v.x,rca:rcaOf(k)})).filter(o=>o.rca>=1&&+o.k<98).sort((p,q)=>q.x-p.x).slice(0,10);
- return {TCI:Math.round(100*(1-d/2)),ops,lacks,str,A,B,rcaOf};}
+ /* re-export: goods the exporter itself imports (it is a net buyer) that the market needs; pass-through capacity = min(market net need, exporter imports) */
+ const rex=[];for(const k of ks){if(+k>=98)continue;const a=A[k],b=B[k];if(!a||!b||!a.m||a.x>=a.m)continue;const net=b.m-b.x;if(net<=0)continue;const rr=a.x/a.m,pot=Math.min(net,a.m);rex.push({k,am:a.m,ax:a.x,rr,net,pot,score:pot*(.5+Math.min(1,rr))});}
+ rex.sort((p,q)=>q.score-p.score);
+ const Ah=Object.values(A).reduce((s,v)=>s+v.x+v.m,0)||1;let d2=0;ks.forEach(k=>{d2+=Math.abs(((B[k]||{}).m||0)/Bm-(((A[k]||{}).x||0)+((A[k]||{}).m||0))/Ah);});
+ return {TCI:Math.round(100*(1-d/2)),TCIr:Math.round(100*(1-d2/2)),ops,lacks,str,rex:rex.slice(0,10),A,B,rcaOf};}
 /* squarified treemap */
 function squarify(items,x,y,w,h){const out=[];let rest=items.slice();const tot=rest.reduce((s,i)=>s+i.v,0);const sc=w*h/tot;rest.forEach(i=>i.a=i.v*sc);
  while(rest.length){const sh=Math.min(w,h);let row=[],best=Infinity;
@@ -708,12 +713,17 @@ function render(){const ml=marketList();if(X===Y||![...$('#sY').options].some(o=
   <div class="kc"><small>${L('واردات '+nm(X)+' من '+nm(Y),nm(X)+' imports from '+nm(Y))}</small><b>${usd(bl.m)}</b><span class="ln" style="background:#5e9e8f"></span></div>
   <div class="kc"><small>${L('الميزان التجاري','Trade balance')}</small><b class="${bal>=0?'up':'dn'}">${usd(Math.abs(bal))}</b><small>${L('لصالح '+nm(bal>=0?X:Y),'in favour of '+nm(bal>=0?X:Y))}</small><span class="ln" style="background:#8a94a6"></span></div>
   <div class="kc"><small>${L('مؤشر التكامل التجاري','Trade Complementarity Index')}</small>${gauge(R.TCI)}<small>${lv}</small></div>`;
- $('#tbo').textContent=L(nm(X)+' في '+nm(Y),nm(X)+' in '+nm(Y));$('#tbn').textContent=nm(Y);$('#tbs').textContent=nm(X);
+ $('#tbo').textContent=L(nm(X)+' في '+nm(Y),nm(X)+' in '+nm(Y));$('#tbn').textContent=nm(Y);$('#tbs').textContent=nm(X);$('#tbr').textContent=L('عبر '+nm(X),'via '+nm(X));
  $('#kyr').textContent=L('التبادل الثنائي · '+yr,'Bilateral trade · '+yr);
  $('#inf').onclick=()=>{$('#shb').innerHTML=`<div class="gr"></div><div class="hd"><span class="e"><svg class="hi" viewBox="0 0 24 24"><path d="M12 3a9 9 0 1 0 0 18 9 9 0 0 0 0-18zM12 11v6M12 7.5h.01"/></svg></span><div><b>${L('كيف تُقرأ الصفحة','How to read this')}</b></div></div><div style="font-size:13px;line-height:1.8;color:#dfe7f5;margin-top:10px">${L('<b>مؤشر التكامل التجاري</b> (0–100): مدى توافق ما تصدّره الدولة الأولى مع ما تستورده الثانية؛ فوق 40 عالٍ، 25–40 متوسط، أقل من 25 منخفض.<br><b>المربعات</b>: كل مربع سلعة، وحجمه يمثل حجم الفرصة (الأصغر بين صادرات الأولى وواردات الثانية). الذهبي = فرصة قوية، الأخضر المائل للزرقة = حاجة قائمة بتنافسية أقل، الرمادي = منافسة محلية.<br><b>مؤشر العجز</b>: عدد السنوات (من 3) التي استوردت فيها السوق أكثر مما صدّرت.<br><b>الميزة النسبية ×</b>: أكثر من 1 تعني أن الدولة منافسة عالمياً في السلعة.<br>البيانات: فصول النظام المنسق، متوسط آخر 3 سنوات، بالدولار الأمريكي.','<b>Trade Complementarity Index</b> (0–100): how well the first country\'s exports match what the second imports; above 40 is high, 25–40 medium, below 25 low.<br><b>Tiles</b>: each tile is a product; its size is the opportunity (the smaller of the first country\'s exports and the market\'s imports). Gold = strong opportunity, teal = market need with lower competitiveness, slate = local competition.<br><b>Shortage marker</b>: years (of 3) the market imported more than it exported.<br><b>RCA ×</b>: above 1 means the country is globally competitive in that product.<br>Data: HS chapters, average of the latest 3 years, US$.')}</div><button class="cl" type="button">${L('إغلاق','Close')}</button>`;$('#sh').classList.add('on');$('#shb .cl').onclick=()=>$('#sh').classList.remove('on');};
  $('#hintO').innerHTML=`<span>${L('حجم الفرصة سنوياً، مرتبة من الأعلى','Annual opportunity size, highest first')}</span><span>${L('اختر أي سلعة لعرض التفاصيل','Select a product for details')}</span>`;
  $('#bn').innerHTML=`<div class="hint"><span>${L('صافي الواردات (الواردات − الصادرات)','Net imports (imports − exports)')}</span></div>`+bars(R.lacks,o=>o.net,'linear-gradient(90deg,#ef8b8b,#f3b0a0)',o=>`<span class="pdot">${pdots(o.need,o.n)}</span>`);
  $('#bs').innerHTML=`<div class="hint"><span>${L('الصادرات ذات الميزة النسبية','Exports with comparative advantage')}</span></div>`+bars(R.str,o=>o.x,'linear-gradient(90deg,#6fb5a6,#8fd1bf)',o=>`<span class="rca">×${o.rca.toLocaleString('en-US',{maximumFractionDigits:1})}</span>`);
+ {const up=R.TCIr-R.TCI,tot=R.rex.reduce((s,o)=>s+o.pot,0);
+  $('#brx').innerHTML=`<div class="hint"><span>${L('سلع يحتاجها السوق وتستوردها '+nm(X)+' نفسها: يمكن أن تمرّ عبرها','Goods the market needs that '+nm(X)+' itself buys from abroad: they can pass through it')}</span></div>`+
+   `<div style="font-size:13px;line-height:1.8;color:#dfe7f5;margin:2px 2px 12px">${up>0?L(`نعم، إعادة التصدير ترفع التكامل هنا: المؤشر <b>${R.TCI}</b> بصادرات ${nm(X)} الحالية، و<b>${R.TCIr}</b> عند احتساب كل ما يمرّ عبرها من سلع (صادرات + واردات).`,`Yes, re-export raises complementarity here: the index is <b>${R.TCI}</b> on ${nm(X)}'s current exports and <b>${R.TCIr}</b> when everything passing through it (exports + imports) is counted.`):L(`إعادة التصدير لا ترفع التكامل في هذه الحالة: المؤشر <b>${R.TCI}</b> بالصادرات الحالية و<b>${R.TCIr}</b> عند احتساب كل ما يمرّ عبر ${nm(X)}.`,`Re-export does not raise complementarity in this case: the index is <b>${R.TCI}</b> on current exports and <b>${R.TCIr}</b> when everything passing through ${nm(X)} is counted.`)}${tot?L(` طاقة المرور في أكبر ${R.rex.length} سلع: <b>${usd(tot)}</b> سنوياً.`,` Pass-through capacity in the top ${R.rex.length} goods: <b>${usd(tot)}</b> a year.`):''}</div>`+
+   bars(R.rex,o=>o.pot,'linear-gradient(90deg,#D4B85A,#e6d08a)',o=>`<span class="rca">${L('تصدّر '+Math.round(Math.min(1,o.rr)*100)+'% مما تستورد','sells abroad '+Math.round(Math.min(1,o.rr)*100)+'% of what it buys')}</span>`)+
+   `<div style="font-size:12px;opacity:.75;margin-top:10px;line-height:1.7">${L('حجم الفرصة = الأقل بين صافي حاجة السوق وواردات '+nm(X)+' من السلعة. النسبة = ما تصدّره '+nm(X)+' من السلعة مقارنة بما تستورده منها، وهي مؤشر تقريبي على نشاط إعادة التصدير القائم (وقد تشمل إنتاجاً محلياً). تقدير استرشادي.','Opportunity size = the lower of the market\'s net need and '+nm(X)+'\'s imports of the good. The percentage = what '+nm(X)+' sells abroad of the good compared with what it buys, a rough indicator of existing re-export activity (it may include local production). Indicative estimate.')}</div>`;}
  document.querySelectorAll('.br').forEach(b=>b.onclick=()=>sheet(b.dataset.k));
  setTab(TAB);}
 Promise.all([fetch('opp.json').then(r=>r.json()),fetch('fin.json').then(r=>r.json())]).then(([o,f])=>{O=o;CH=o.ch;N=f.c;
