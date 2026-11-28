@@ -1030,7 +1030,7 @@ function armCounts(root){if(!cntIO||matchMedia('(prefers-reduced-motion: reduce)
 new MutationObserver(ms=>{const set=new Set();ms.forEach(m=>{const t=m.target.nodeType===1?m.target:m.target.parentElement;if(t&&!t.closest('b'))set.add(t);});set.forEach(armCounts);}).observe(document.querySelector('main'),{childList:true,subtree:true});
 
 // ---------- auto-update (bypass stale phone cache) ----------
-const BUILD='1795884635';
+const BUILD='1795886297';
 try{fetch(location.pathname+'?b='+Date.now(),{cache:'no-store'}).then(r=>r.text()).then(h=>{const m=h.match(/const BUILD='(\d+)'/);if(m&&m[1]>BUILD&&!sessionStorage.getItem('rl'+m[1])){sessionStorage.setItem('rl'+m[1],'1');location.replace(location.pathname+'?v='+m[1]+location.hash);}}).catch(()=>{});}catch(_){}
 
 // ---------- products: commodity search & selection ----------
@@ -1239,6 +1239,6 @@ fetch(ISKW?'data.json':'data_'+CTRY+'.json').then(r=>r.json()).then(arr=>window.
 <script>(()=>{let p=null;try{p=sessionStorage.getItem('pickNow');sessionStorage.removeItem('pickNow');}catch(_){}if(!p)return;let n=0;const t=()=>{const g=document.getElementById('iGo');if(g&&g.offsetParent!==null){g.click();const w=document.querySelector('.ilg');if(w)w.remove();}else if(n++<40)setTimeout(t,100);};t();})();</script>
 <script src="zoomintro.js"></script>
 <script src="brand.js"></script>
-<script src="bot.js" defer></script>
+<script src="bot.js" defer></script><script src="co.js" defer></script>
 </body>
 </html>
