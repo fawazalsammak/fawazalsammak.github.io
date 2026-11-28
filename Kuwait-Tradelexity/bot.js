@@ -8,7 +8,7 @@ const css=`#tbB{position:fixed;inset-inline-start:14px;bottom:104px;z-index:9000
 #tbP.on{display:flex}#tbP header{display:flex;align-items:center;justify-content:space-between;padding:11px 14px;background:#0B193A;border-bottom:1px solid #D4B85A55;font-weight:800;color:#D4B85A}
 #tbP header button{background:none;border:1px solid #ffffff40;color:#dfe7f5;border-radius:999px;padding:3px 12px;font:700 12px Noto Naskh Arabic,sans-serif;cursor:pointer}
 #tbM{flex:1;overflow-y:auto;padding:12px;display:flex;flex-direction:column;gap:9px}
-#tbM .q,#tbM .a{max-width:92%;padding:9px 12px;border-radius:12px;line-height:1.7;word-break:break-word}
+#tbM .a{max-width:97%!important;overflow-x:auto}#tbM .a td,#tbM .a th{font-size:12.5px;padding:4px 3px!important;overflow-wrap:anywhere}#tbS{flex-wrap:nowrap!important;overflow-x:auto;scrollbar-width:none}#tbS button{flex:none;white-space:nowrap}#tbM .q,#tbM .a{max-width:92%;padding:9px 12px;border-radius:12px;line-height:1.7;word-break:break-word}
 #tbM .q{align-self:flex-end;background:#D4B85A;color:#0B193A;font-weight:700}#tbM .a{align-self:flex-start;background:#ffffff10;border:1px solid #ffffff1c}
 #tbM .a b{color:#fff}#tbM .a table{width:100%;border-collapse:collapse;margin-top:4px;font-size:13px}#tbM .a td,#tbM .a th{padding:4px 5px;border-bottom:1px solid #ffffff1c;text-align:start}#tbM .a th{color:#D4B85A;font-weight:700}
 #tbM .a a{display:inline-block;margin:7px 6px 0 0;padding:4px 11px;border-radius:999px;border:1px solid #D4B85A99;color:#D4B85A;text-decoration:none;font-weight:700;font-size:12.5px}
