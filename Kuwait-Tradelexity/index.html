@@ -385,7 +385,7 @@ img.cemb.ofh{width:auto!important;height:38px!important;max-width:70px;border-ra
 .ilg{display:flex;gap:12px;justify-content:center;flex-wrap:wrap}.ilg .ibtn{min-width:170px}.ilb[data-l=en]{font-family:Montserrat,Noto Naskh Arabic,sans-serif}
 .iaz{grid-column:1/-1;color:#D4B85A;font:800 15px Noto Naskh Arabic,Montserrat,sans-serif;padding:8px 4px 2px;border-bottom:1px solid #D4B85A44;margin-top:4px;text-align:start}
 #intro.pk .iin{height:auto;min-height:100vh;min-height:100dvh;justify-content:flex-start}
-#intro.pk .ihd{position:sticky;top:0;z-index:3;padding:8px 0 2px;margin:0 -16px;background:linear-gradient(180deg,#14285a 80%,#14285a00)}
+#intro.pk .ihd{position:sticky;top:0;z-index:3;padding:10px 16px 8px;margin:0 -16px 8px;background:#14285a;box-shadow:0 6px 12px #0b193a88}#intro.pk .ihd .isrch{margin:0 auto}@media(max-width:700px){#intro.pk .ihd{padding-inline-end:128px}#intro.pk .ihd .isrch{width:100%;box-sizing:border-box}}
 
 a,a:link,a:visited,a:hover{text-decoration:none!important}u,abbr{text-decoration:none!important}
 
@@ -1030,7 +1030,7 @@ function armCounts(root){if(!cntIO||matchMedia('(prefers-reduced-motion: reduce)
 new MutationObserver(ms=>{const set=new Set();ms.forEach(m=>{const t=m.target.nodeType===1?m.target:m.target.parentElement;if(t&&!t.closest('b'))set.add(t);});set.forEach(armCounts);}).observe(document.querySelector('main'),{childList:true,subtree:true});
 
 // ---------- auto-update (bypass stale phone cache) ----------
-const BUILD='1795863523';
+const BUILD='1795866011';
 try{fetch(location.pathname+'?b='+Date.now(),{cache:'no-store'}).then(r=>r.text()).then(h=>{const m=h.match(/const BUILD='(\d+)'/);if(m&&m[1]>BUILD&&!sessionStorage.getItem('rl'+m[1])){sessionStorage.setItem('rl'+m[1],'1');location.replace(location.pathname+'?v='+m[1]+location.hash);}}).catch(()=>{});}catch(_){}
 
 // ---------- products: commodity search & selection ----------
@@ -1120,7 +1120,7 @@ function intro(force){const el=$('#intro');if(!ISKW){if(el)el.remove();return;}i
     const byR=r=>{const gp=GRP.find(g=>g[0]===r);return r==='all'?azAll():tiles(srt(CO.filter(x=>gp?gp[3].includes(x[0]):cont(x)===r)));};
     const tiles=list=>list.map(([c,i,n])=>`<button class="ipc" data-c="${c}"><img class="of" src="oflags/${i}.svg" alt="" loading="lazy">${n}</button>`).join('')||`<div class="inone">${EN?'No match':'لا توجد نتائج'}</div>`;
     const pick=()=>{el.classList.remove('sel');el.classList.add('pk');
-     bx.innerHTML=`<div class="ipk-t">${EN?'Choose a country':'اختر الدولة'}</div><div class="ihd"><input class="isrch" type="search" placeholder="${EN?'Search '+CO.length+' economies…':'ابحث بين '+CO.length+' اقتصاداً…'}" aria-label="search"><div class="irg">${RGS.map(([k,a,e])=>`<button data-r="${k}" class="${k===RGc?'on':''}">${EN?e:a}</button>`).join('')}</div><div class="irgl">${EN?'Economic groups':'المجموعات الاقتصادية'}</div><div class="irg">${GRP.map(([k,a,e])=>`<button data-r="${k}">${EN?e:a}</button>`).join('')}</div></div><div class="ipk">${byR(RGc)}</div>`;
+     bx.innerHTML=`<div class="ipk-t">${EN?'Choose a country':'اختر الدولة'}</div><div class="ihd"><input class="isrch" type="search" placeholder="${EN?'Search '+CO.length+' economies…':'ابحث بين '+CO.length+' اقتصاداً…'}" aria-label="search"></div><div class="ihd2"><div class="irg">${RGS.map(([k,a,e])=>`<button data-r="${k}" class="${k===RGc?'on':''}">${EN?e:a}</button>`).join('')}</div><div class="irgl">${EN?'Economic groups':'المجموعات الاقتصادية'}</div><div class="irg">${GRP.map(([k,a,e])=>`<button data-r="${k}">${EN?e:a}</button>`).join('')}</div></div><div class="ipk">${byR(RGc)}</div>`;
      const g=bx.querySelector('.ipk'),q=bx.querySelector('.isrch');
      const bind=()=>g.querySelectorAll('.ipc').forEach(b=>b.onclick=()=>{const c=b.dataset.c;try{sessionStorage.setItem('tzoom',c);sessionStorage.setItem('kwIntro','1');}catch(_){}location.href=(EN?'summary_en.html':'summary.html')+'?c='+c;});
      bx.querySelectorAll('.irg button').forEach(b=>b.onclick=()=>{RGc=b.dataset.r;q.value='';bx.querySelectorAll('.irg button').forEach(x=>x.classList.toggle('on',x===b));g.innerHTML=byR(RGc);bind();});
