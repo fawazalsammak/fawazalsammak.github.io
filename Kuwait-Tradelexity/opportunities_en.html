@@ -602,7 +602,7 @@ const avg=a=>{const v=a.filter(x=>x>0);return v.length?v.reduce((s,x)=>s+x,0)/v.
 const CC={};function chap(c){if(CC[c])return CC[c];return CC[c]=chap0(c);}
 function chap0(c){const d=O.c[c],n=d.y.length,r={};for(const [k,v] of Object.entries(d.ch)){const xs=v.slice(0,n),ms=v.slice(n);r[k]={x:avg(xs)||0,m:avg(ms)||0,need:ms.filter((m,i)=>m>xs[i]&&m>0).length,n};}return r;}
 let WX=null;function world(){if(WX)return WX;WX={};let T=0;for(const c in O.c){for(const [k,v] of Object.entries(chap(c))){WX[k]=(WX[k]||0)+v.x;T+=v.x;}}WX._T=T;return WX;}
-function bilat(a,b){const pa=O.c[a].p[b],pb=O.c[b].p[a];let x=pa?pa[0]:0,m=pa?pa[1]:0;if(pb){if(pb[1]>x)x=pb[1];if(!m)m=pb[0];}return {x:x||0,m:m||0};}
+function bilat(a,b){const pa=O.c[a].p[b],pb=O.c[b].p[a];if(pa&&O.c[a].pn)return {x:pa[0]||0,m:pa[1]||0};if(pb&&O.c[b].pn)return {x:pb[1]||0,m:pb[0]||0};let x=pa?pa[0]:0,m=pa?pa[1]:0;if(pb){if(pb[1]>x)x=pb[1];if(!m)m=pb[0];}return {x:x||0,m:m||0};}
 
 function tci(a,b){const A=chap(a),B=chap(b);let ax=0,bm=0;for(const k in A)ax+=A[k].x;for(const k in B)bm+=B[k].m;if(!ax||!bm)return null;
  const ks=new Set([...Object.keys(A),...Object.keys(B)]);let d=0;ks.forEach(k=>{d+=Math.abs(((B[k]||{}).m||0)/bm-((A[k]||{}).x||0)/ax);});return Math.round(100*(1-d/2));}

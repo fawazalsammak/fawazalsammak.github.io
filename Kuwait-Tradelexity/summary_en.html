@@ -502,7 +502,7 @@ Promise.all([fetch('sum.json').then(r=>r.json()),fetch('fin.json').then(r=>r.jso
    <div><small>${L('الدين الحكومي','Government debt')}</small><b dir="ltr">${pc(d.debt)}</b><small>${L('من الناتج','of GDP')}</small></div><div><small>${L('رصيد المالية العامة','Fiscal balance')}</small><b dir="ltr">${pc(d.fb,1)}</b><small>${L('من الناتج','of GDP')}</small></div>
    <div><small>${L('سعر الفائدة الرئيسي','Policy rate')}</small><b dir="ltr">${d.pol!=null?d.pol+'%':'–'}</b></div><div><small>${L('الاستثمار الأجنبي الوارد','FDI inflows')}</small><b>${d.fdiin!=null?(+d.fdiin).toLocaleString('en-US',{maximumFractionDigits:1})+L(' مليار $',' $ bn'):'–'}</b></div></div></div>
   ${kwSec}
-  <div class="two"><div class="sec"><h3><span>${L('أكبر الشركاء التجاريين','Top trading partners')}</span><a href="${$('#swT').href}">${L('الكل ←','All →')}</a></h3><div class="rl">${d.par.map(([c,v],i)=>row(c,fm(v),i+1)).join('')}</div></div>
+  <div class="two"><div class="sec"><h3><span>${L('أكبر الشركاء التجاريين','Top trading partners')+(d.pn?'':L(' (تشمل الوقود)',' (including fuel)'))}</span><a href="${$('#swT').href}">${L('الكل ←','All →')}</a></h3><div class="rl">${d.par.map(([c,v],i)=>row(c,fm(v),i+1)).join('')}</div></div>
    <div class="sec"><h3><span>${L('أبرز الصادرات','Main exports')}</span></h3><div class="rl">${d.ex.map(hrow).join('')}</div>
     <h3 style="margin-top:12px"><span>${L('أبرز الاحتياجات (صافي الواردات)','Main needs (net imports)')}</span></h3><div class="rl">${d.nd.map(hrow).join('')}</div></div></div>
   <div class="go"><a href="${$('#swT').href}"><b>${L('التجارة الخارجية','Foreign Trade')}</b><small>${L('الصادرات والواردات والشركاء والسلع','Exports, imports, partners, products')}</small></a>
